@@ -58,5 +58,11 @@ pipeline {
             sh "sshpass -p ${SSH_password} ssh ${SSH_user}@${SSH_ip} 'kubectl rollout restart deployment nextjs-deployment'"
           }
         }
+
+        stage("Clean up") {
+            steps {
+                sh "docker rmi $(docker images -f "dangling=true" -q)"
+            }
+        }
     }
 }
