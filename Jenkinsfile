@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                   def scannerHome = tool 'SonarQube-Scanner';
-                  withSonarQubeEnv('SonarQube-Server') {
+                  withSonarQubeEnv('SonarQube-Server-Frontend') {
                     sh "${tool("SonarQube-Scanner")}/bin/sonar-scanner -Dsonar.projectKey=Family-Frontend-Web"
                   }
                 }
