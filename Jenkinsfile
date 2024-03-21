@@ -61,7 +61,7 @@ pipeline {
 
         stage("Clean up") {
             steps {
-                sh "docker rmi $(docker images -f "dangling=true" -q)"
+                sh "docker rmi \$(docker images -f \"dangling=true\" -q)"
             }
         }
     }
