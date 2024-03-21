@@ -47,7 +47,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Dockerhub Credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh "echo ${PASSWORD} | docker login --username ${USERNAME} --password-stdin"
-                        sh "TAG=${COMMIT_ID} docker compose push"
+                        sh "docker compose push"
                     }
                 }
             }
