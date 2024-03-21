@@ -1,0 +1,32 @@
+.outer {
+    // border: 1px solid gray;
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: center; /* Căn giữa theo chiều ngang */
+    // align-items: center; /* Căn giữa theo chiều dọc */
+    padding-bottom: 10%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    // justify-items: center;
+    // align-items: center;
+}
+.step_input_container {
+    margin-top: 5%;
+    // margin-: 5%;
+    width: 70%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid orange;
+    h2 {
+        text-align: center;
+        // font-size: 2.1rem;
+        font-weight: 500;
+    }
+    .form {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
