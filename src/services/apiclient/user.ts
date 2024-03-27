@@ -1,34 +1,21 @@
 import { UserProfile } from "@/redux/user/userProfile/type";
 import UserUrl from "@/services/url/user-url";
 import axios, { AxiosResponse } from "axios";
-import instance from "../http-interceptor/axios-instance";
 const UserService = {
-  getUserProfile: async () => {
+  getUserProfile: async (accessToken: String) => {
+    console.log("cout<<", UserUrl.getUserProfile, accessToken);
     try {
-      const response = await instance.get(UserUrl.getUserProfile);
+      const response = await axios.get(UserUrl.getUserProfile, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       return response.data.data as UserProfile;
     } catch (error: any) {
       console.log(error.message);
       throw new Error("Error fetching user data");
     }
   },
-  updateUserProfile: async (data: any) => {
-    try {
-      const response = await instance.put(UserUrl.updateUserProfile, data);
-      return response.data;
-    } catch (error: any) {
-      console.log(error.message);
-      throw new Error("Error updating user data");
-    }
-  },
-  changePassword: async (data: any) => {
-    try {
-      const response = await instance.put(UserUrl.changePassword, data);
-      return response.data;
-    } catch (error: any) {
-      console.log(error.message);
-      throw new Error("Error updating user data");
-    }
-  }
 };
 export default UserService;

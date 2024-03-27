@@ -25,7 +25,7 @@ import * as z from "zod";
 const LoginPage = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const router = useRouter();
+  const router = useRouter()
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -45,11 +45,10 @@ const LoginPage = () => {
       LocalStorage.StoreRefreshToken(response.data.refreshToken);
 
       setSuccess("Login successful");
-      const redirect = sessionStorage.getItem("redirect");
-      router.push("/manage/create");
+      const redirect = sessionStorage.getItem('redirect')
       if (redirect) {
-        sessionStorage.removeItem("redirect");
-        router.push(redirect);
+        sessionStorage.removeItem('redirect')
+        router.push(redirect)
       }
     } catch (error: any) {
       setError(error.message);

@@ -69,6 +69,32 @@ const AuthServices = {
       throw new Error(ERROR_TEXTS.API_ERROR);
     }
   },
+  googleLogin: async () => {
+    try {
+      const response: AxiosResponse = await axios.post(AuthUrl.googleLogin);
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+      }
+    } catch (error) {
+      throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+    }
+  },
+  facebookLogin: async () => {
+    try {
+      const response: AxiosResponse = await axios.post(AuthUrl.facebookLogin);
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+      }
+    } catch (error) {
+      throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+    }
+  },
 };
 
 export default AuthServices;
