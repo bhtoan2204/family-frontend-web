@@ -1,5 +1,6 @@
 "use client";
 
+import { signin } from "@/actions/signin";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -14,18 +15,17 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
-import LocalStorage from "@/store/local-storage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const LoginPage = () => {
+const SigninForm = () => {
+  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
-  const router = useRouter()
+  const router = useRouter();
   const form = useForm<z.infer<typeof LoginSchema>>({
     resolver: zodResolver(LoginSchema),
     defaultValues: {
@@ -38,21 +38,12 @@ const LoginPage = () => {
     setError("");
     setSuccess("");
 
-    try {
-      const response = await axios.post("/api/login", data);
-
-      LocalStorage.StoreAccessToken(response.data.accessToken);
-      LocalStorage.StoreRefreshToken(response.data.refreshToken);
-
-      setSuccess("Login successful");
-      const redirect = sessionStorage.getItem('redirect')
-      if (redirect) {
-        sessionStorage.removeItem('redirect')
-        router.push(redirect)
-      }
-    } catch (error: any) {
-      setError(error.message);
-    }
+    startTransition(() => {
+      signin(data).then((response) => {
+        setError(response.error);
+        setSuccess(response.success);
+      });
+    });
   };
 
   return (
@@ -76,6 +67,7 @@ const LoginPage = () => {
                   <FormControl>
                     <Input
                       {...field}
+                      disabled={isPending}
                       placeholder="john.doe@example.com"
                       type="email"
                     />
@@ -91,7 +83,12 @@ const LoginPage = () => {
                 <FormItem>
                   <FormLabel>Password</FormLabel>
                   <FormControl>
-                    <Input {...field} placeholder="******" type="password" />
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder="******"
+                      type="password"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,7 +97,7 @@ const LoginPage = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" className="w-full">
             Login
           </Button>
         </form>
@@ -109,4 +106,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SigninForm;

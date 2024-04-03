@@ -30,7 +30,7 @@ export const CardWrapper = ({
   isLogin,
 }: CardWrapperProps) => {
   return (
-    <Card className={isLogin ? "w-[25vw] shadow-md": "w-[30vw] shadow-md"}>
+    <Card className={isLogin ? "w-[50vw] shadow-md" : "w-[50vw] shadow-md"}>
       <CardHeader>
         <Header title={headerTitle} label={headerLabel} />
       </CardHeader>

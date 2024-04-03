@@ -1,32 +1,22 @@
-"use client"
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Metadata } from "next";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
-import ModalProvider from "@/providers/ModalProvider";
-import { Provider } from "react-redux";
-import store from "@/redux/store";
 
+const font = Open_Sans({ subsets: ["latin"] });
 
-const inter = Inter({ subsets: ["latin"] });
+export const metadata: Metadata = {
+  title: "FamFund",
+  description: "A platform for managing family finances.",
+};
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
-
   return (
     <html lang="en">
-      <body className={inter.className}>
-
-        <ModalProvider>
-          <Provider store={store}>
-
-            {children}
-          </Provider>
-        </ModalProvider>
-      </body>
+      <body className={font.className}>{children}</body>
     </html>
   );
 }

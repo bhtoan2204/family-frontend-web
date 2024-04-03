@@ -12,7 +12,6 @@ export const POST = async (req: Request) => {
       email: body.email,
       password: body.password,
     });
-    console.log(response.data);
     return NextResponse.json({
       accessToken: response.accessToken,
       refreshToken: response.refreshToken,

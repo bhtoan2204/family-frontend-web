@@ -20,7 +20,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const SignupPage = () => {
+const SignupForm = () => {
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
 
@@ -169,4 +169,4 @@ const SignupPage = () => {
   );
 };
 
-export default SignupPage;
+export default SignupForm;
