@@ -2,7 +2,6 @@ import { LoginSchema } from "@/schemas";
 import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { AuthServices } from "./services/apiclient";
-import LocalStorage from "./store/local-storage";
 
 export default {
   providers: [
