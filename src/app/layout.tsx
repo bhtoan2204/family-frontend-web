@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import { ReactNode } from "react";
 import "./globals.css";
+import Navbar from "@/components/navbar";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         className={cn("relative h-full font-sans antialiased", font.className)}
       >
         <main className="relative flex flex-col min-h-screen">
+          <Navbar />
           <div className="flex-grow fle-1">{children}</div>
         </main>
       </body>
