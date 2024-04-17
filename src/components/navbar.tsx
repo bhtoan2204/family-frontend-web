@@ -1,74 +1,48 @@
-import { Icons } from "@/components/icons";
-import NavItems from "@/components/nav-items";
+import { ArrowRight } from "lucide-react";
 import Link from "next/link";
-import MaxWidthWarrper from "./max-width-wrapper";
+import MaxWidthWrapper from "./max-width-wrapper";
 import { buttonVariants } from "./ui/button";
 
 const Navbar = () => {
-  const user = null;
   return (
-    <div className="bg-white sticky z-50 top-0 inset-x-0 h-16">
-      <header className="relative bg-white">
-        <MaxWidthWarrper>
-          <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center">
-              {/* Mobile nav */}
-              <div className="ml-4 flex lg:ml-0">
-                <Link href="/">
-                  <Icons.Logo className="h-10 w-10" />
-                </Link>
-              </div>
-              <div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch">
-                <NavItems />
-              </div>
-              <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                  {user ? null : (
-                    <Link
-                      href="/signin"
-                      className={buttonVariants({
-                        variant: "ghost",
-                      })}
-                    >
-                      Sign in
-                    </Link>
-                  )}
-                  {user ? null : (
-                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                  )}
-                  {user ? (
-                    <p></p>
-                  ) : (
-                    <Link
-                      href="/signup"
-                      className={buttonVariants({
-                        variant: "ghost",
-                      })}
-                    >
-                      Sign up
-                    </Link>
-                  )}
-                  {user ? (
-                    <span className="h-6 w-px bg-gray-200" aria-hidden="true" />
-                  ) : null}
-                  {user ? null : (
-                    <div className="flex lg:ml-6">
-                      <span
-                        className="h-6 w-px bg-gray-200"
-                        aria-hidden="true"
-                      />
-                    </div>
-                  )}
-                  <div className="ml-4 flow-root lg:ml-6">
-
-                  </div>
-                </div>
-              </div>
-            </div>
+    <nav className="sticky h-14 inset-x-0 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all">
+      <MaxWidthWrapper>
+        <div className="flex h-14 items-center justify-between border-b border-zinc-200">
+          <Link className="flex x-40 font-semibold" href="/">
+            <span>FamFund.</span>
+          </Link>
+          {/* Note: add mobile navbar */}
+          <div className="hidden items-center space-x-4 sm:flex">
+            <Link
+              className={buttonVariants({
+                variant: "ghost",
+                size: "sm",
+              })}
+              href="/pricing"
+            >
+              Pricing
+            </Link>
+            <Link
+              className={buttonVariants({
+                variant: "ghost",
+                size: "sm",
+              })}
+              href="/signin"
+            >
+              Sign in
+            </Link>
+            <Link
+              className={buttonVariants({
+                size: "sm",
+              })}
+              href="/signup"
+            >
+              Get started <ArrowRight className="ml-1.5 h-5 w-5" />
+            </Link>
           </div>
-        </MaxWidthWarrper>
-      </header>
-    </div>
+        </div>
+      </MaxWidthWrapper>
+    </nav>
   );
 };
 

@@ -22,10 +22,17 @@ const config = {
         montserrat: ["Montserrat", "sans-serif"],
         inter: ["Inter", "sans-serif"],
         inconsolata: ["Inconsolata", "monospace"],
-        consolata: ["Consolas","monaco","Ubuntu Mono","courier","monospace"]
+        consolata: [
+          "Consolas",
+          "monaco",
+          "Ubuntu Mono",
+          "courier",
+          "monospace",
+        ],
       },
       backgroundImage: {
-        ttuPattern: "url('https://t4.ftcdn.net/jpg/04/79/42/69/360_F_479426925_tcBcQnxod8QbmmiPSDn3MCxWSuNyAkdk.jpg')",
+        ttuPattern:
+          "url('https://t4.ftcdn.net/jpg/04/79/42/69/360_F_479426925_tcBcQnxod8QbmmiPSDn3MCxWSuNyAkdk.jpg')",
       },
       colors: {
         border: "hsl(var(--border))",
@@ -83,7 +90,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 } satisfies Config;
 
 export default config;
