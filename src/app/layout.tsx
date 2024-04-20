@@ -1,3 +1,4 @@
+import AuthProvider from "@/components/auth/auth-provider";
 import Navbar from "@/components/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
@@ -26,9 +27,11 @@ export default function RootLayout({
           font.className
         )}
       >
-        <Toaster />
-        <Navbar />
-        {children}
+        <AuthProvider>
+          <Toaster />
+          <Navbar />
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

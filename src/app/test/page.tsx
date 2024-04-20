@@ -1,15 +1,18 @@
-import { auth, signOut } from "@/auth";
+"use client";
 
-const Test = async () => {
-  const session = await auth();
+import { signOut } from "@/auth";
+import { useSession } from "next-auth/react";
+
+const Test = () => {
+  const { data: session } = useSession();
 
   const handleSignOut = async () => {
-    "use server";
     await signOut();
   };
+
   return (
     <div>
-      <div>{JSON.stringify(session)}</div>
+      <div>{session?.accessToken}</div>
       <form action={handleSignOut}>
         <button type="submit">Sign out</button>
       </form>

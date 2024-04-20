@@ -21,9 +21,6 @@ export const signin = async (data: z.infer<typeof LoginSchema>) => {
       redirectTo: DEFAULT_LOGIN_REDIRECT,
     });
 
-    // LocalStorage.StoreAccessToken(data.accessToken);
-    // LocalStorage.StoreRefreshToken(data.refreshToken);
-
     return { success: "Logged in" };
   } catch (error) {
     if (error instanceof AuthError) {
@@ -31,7 +28,7 @@ export const signin = async (data: z.infer<typeof LoginSchema>) => {
         case "CredentialsSignin":
           return { error: "Invalid credentials!" };
         default:
-          return { error: "Something went wrong!" };
+          return { error: "Invalid credentials!" };
       }
     }
     throw error;

@@ -1,5 +1,6 @@
 "use client";
 
+import { signUp } from "@/actions/auth/signup";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -15,14 +16,16 @@ import {
 import { Input } from "@/components/ui/input";
 import { SignupSchema } from "@/schemas/auth-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import axios from "axios";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useState, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
 const SignupForm = () => {
+  const [isPending, startTransition] = useTransition();
   const [error, setError] = useState<string | undefined>("");
   const [success, setSuccess] = useState<string | undefined>("");
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof SignupSchema>>({
     resolver: zodResolver(SignupSchema),
@@ -46,15 +49,19 @@ const SignupForm = () => {
         return;
       }
 
-      await axios.post("/api/signup", {
-        email: data.email,
-        password: data.password,
-        firstName: data.firstName,
-        lastName: data.lastName,
-        phone: data.phone,
+      startTransition(() => {
+        signUp(data)
+          .then((response) => {
+            if (response.error) {
+              setError(response.error);
+            }
+            setSuccess(response.success);
+            router.push("/signin");
+          })
+          .catch((error) => {
+            return;
+          });
       });
-
-      setSuccess("Signup successful");
     } catch (error: any) {
       setError(error.message);
     }
@@ -160,7 +167,7 @@ const SignupForm = () => {
           </div>
           <FormError message={error} />
           <FormSuccess message={success} />
-          <Button type="submit" className="w-full">
+          <Button disabled={isPending} type="submit" className="w-full">
             Sign Up
           </Button>
         </form>

@@ -1,6 +1,6 @@
 "use client";
 
-import { signin } from "@/actions/signin";
+import { signin } from "@/actions/auth/signin";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -39,10 +39,16 @@ const SigninForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      signin(data).then((response) => {
-        setError(response.error);
-        setSuccess(response.success);
-      });
+      signin(data)
+        .then((response) => {
+          if (response.error) {
+            setError(response.error);
+          }
+          setSuccess(response.success);
+        })
+        .catch((error) => {
+          return;
+        });
     });
   };
 

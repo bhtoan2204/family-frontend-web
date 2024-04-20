@@ -1,1 +1,1 @@
-export { LoginSchema } from "./auth-schema";
+export { LoginSchema, SignupSchema } from "./auth-schema";
