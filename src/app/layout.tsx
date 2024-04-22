@@ -1,6 +1,4 @@
 import AuthProvider from "@/components/auth/auth-provider";
-import Navbar from "@/components/navbar";
-import { Toaster } from "@/components/ui/toaster";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
@@ -27,11 +25,7 @@ export default function RootLayout({
           font.className
         )}
       >
-        <AuthProvider>
-          <Toaster />
-          <Navbar />
-          {children}
-        </AuthProvider>
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

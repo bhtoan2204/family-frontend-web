@@ -1,6 +1,7 @@
 import { refreshToken } from "@/actions/auth/refresh-token";
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
+import { SignOut } from "./actions/auth/signout";
 
 export const {
   handlers: { GET, POST },
@@ -21,6 +22,11 @@ export const {
       if (user) return { ...token, ...user };
       const currentTime = Math.floor(new Date().getTime() / 1000);
       if (currentTime < token.accessTokenExpiresIn) return token;
+      if (
+        currentTime > token.refreshTokenExpiresIn ||
+        token.refreshTokenExpiresIn === null
+      )
+        await SignOut();
       return await refreshToken(token);
     },
   },
