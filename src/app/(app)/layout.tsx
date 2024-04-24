@@ -1,5 +1,6 @@
 "use client";
 
+import { SignOut } from "@/actions/auth/signout";
 import Loader from "@/components/loader";
 import { useSession } from "next-auth/react";
 import { ReactNode, useEffect, useState } from "react";
@@ -14,12 +15,17 @@ const AppLayout = ({
   const { data: session } = useSession();
   const [accessToken, setAccessToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  console.log("session", session);
   useEffect(() => {
-    if (session?.accessToken) {
-      setAccessToken(session.accessToken);
-      setLoading(false);
-    }
+    const getAccessToken = async () => {
+      if (session?.accessToken) {
+        setAccessToken(session.accessToken);
+        setLoading(false);
+      } else {
+        setLoading(false);
+        await SignOut();
+      }
+    };
+    getAccessToken();
   }, [session?.accessToken]);
 
   if (loading) {

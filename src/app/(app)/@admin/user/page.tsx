@@ -1,9 +1,14 @@
+import { CustomBreadcrumb } from "@/components/breadcrumb";
+import UserTable from "@/components/table/user-table";
+
 const UserPage = () => {
   return (
-    <div>
-      <h1>User Page</h1>
-    </div>
+    <>
+      <CustomBreadcrumb pageName="User" />
+
+      <UserTable />
+    </>
   );
-}
+};
 
 export default UserPage;

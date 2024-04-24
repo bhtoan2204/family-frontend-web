@@ -1,9 +1,7 @@
+import Control from "@/components/admin/dashboard/control";
+
 const ControlPage = () => {
-  return (
-    <div>
-      <h1>Control Page</h1>
-    </div>
-  );
+  return <Control />;
 };
 
 export default ControlPage;

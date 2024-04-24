@@ -1,4 +1,4 @@
-import Statistics from "@/components/dashboard/statistics";
+import Statistics from "@/components/admin/dashboard/statistics";
 
 const StatisticsPage = () => {
   return <Statistics />;

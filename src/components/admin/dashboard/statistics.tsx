@@ -1,7 +1,7 @@
 "use client";
 
-import CardDataStats from "../card-data-stats";
 import { ChartOne, ChartTwo } from "@/components/charts";
+import CardDataStats from "../../card-data-stats";
 
 const Statistics = () => {
   return (
