@@ -1,7 +1,7 @@
 "use client";
 
+import CardDataStats from "@/components/card-data-stats";
 import { ChartOne, ChartTwo } from "@/components/charts";
-import CardDataStats from "../../card-data-stats";
 
 const Statistics = () => {
   return (
@@ -49,7 +49,7 @@ const Statistics = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
+        <CardDataStats title="Total Family" total="2.450" rate="2.59%" levelUp>
           <svg
             className="fill-primary dark:fill-white"
             width="22"

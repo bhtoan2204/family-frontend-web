@@ -1,11 +1,11 @@
 "use client";
 
 import { SignOut } from "@/actions/auth/signout";
+import MaxWidthWrapper from "@/components/max-width-wrapper";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import MaxWidthWrapper from "./max-width-wrapper";
-import { Button, buttonVariants } from "./ui/button";
 
 const Navbar = () => {
   const { data: session } = useSession();

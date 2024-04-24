@@ -1,5 +1,5 @@
-import ChartOne from "./chart-one";
-import ChartThree from "./chart-three";
-import ChartTwo from "./chart-two";
+import ChartOne from "@/components/charts/chart-one";
+import ChartThree from "@/components/charts/chart-three";
+import ChartTwo from "@/components/charts/chart-two";
 
 export { ChartOne, ChartThree, ChartTwo };

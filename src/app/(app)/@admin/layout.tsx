@@ -1,6 +1,6 @@
 "use client";
 
-import DefaultLayout from "@/components/layouts/default-layout";
+import DefaultLayout from "@/components/admin/layouts/default-layout";
 import "@/css/satoshi.css";
 import "@/css/style.css";
 import "flatpickr/dist/flatpickr.min.css";

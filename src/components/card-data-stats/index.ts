@@ -1,3 +1,3 @@
-import CardDataStats from "./card-data-stats";
+import CardDataStats from "@/components/card-data-stats/card-data-stats";
 
 export default CardDataStats;

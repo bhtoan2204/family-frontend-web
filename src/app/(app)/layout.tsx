@@ -1,6 +1,5 @@
 "use client";
 
-import { SignOut } from "@/actions/auth/signout";
 import Loader from "@/components/loader";
 import { useSession } from "next-auth/react";
 import { ReactNode, useEffect, useState } from "react";
@@ -20,9 +19,6 @@ const AppLayout = ({
       if (session?.accessToken) {
         setAccessToken(session.accessToken);
         setLoading(false);
-      } else {
-        setLoading(false);
-        await SignOut();
       }
     };
     getAccessToken();
@@ -33,9 +29,9 @@ const AppLayout = ({
   }
 
   if (!accessToken) {
-    return <>{user}</>;
-  } else {
     return <>{admin}</>;
+  } else {
+    return <>{user}</>;
   }
 };
 

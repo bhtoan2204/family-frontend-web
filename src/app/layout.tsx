@@ -1,4 +1,4 @@
-import AuthProvider from "@/components/auth/auth-provider";
+import AuthProvider from "@/components/providers/auth-provider";
 import { cn } from "@/lib/utils";
 import { Metadata } from "next";
 import { Open_Sans } from "next/font/google";

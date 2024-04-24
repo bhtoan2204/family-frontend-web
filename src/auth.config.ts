@@ -3,8 +3,8 @@ import type { NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Facebook from "next-auth/providers/facebook";
 import Google from "next-auth/providers/google";
-import { AuthServices } from "./services/apiclient";
-import { AuthUrl } from "./services/url";
+import { AuthServices } from "@/services/apiclient";
+import { AuthUrl } from "@/services/url";
 
 export default {
   providers: [
@@ -26,7 +26,6 @@ export default {
             return null;
           }
 
-          const response = await AuthServices.login({ email, password });
           const res = await fetch(AuthUrl.signin, {
             method: "POST",
             headers: {
