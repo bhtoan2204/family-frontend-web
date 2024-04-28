@@ -12,7 +12,7 @@ const getOrder = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Somwthing wrong!" };
+    return { error: "Something wrong!" };
   }
 };
 

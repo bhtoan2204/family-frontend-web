@@ -2,9 +2,9 @@
 
 import FamilyUrl from "@/services/url/family-url";
 
-const getAllFamily = async (token: string) => {
+const getFamilyDetail = async (token: string, familyId: string) => {
   try {
-    const response = await fetch(FamilyUrl.getAllFamily, {
+    const response = await fetch(`${FamilyUrl.getFamily}${familyId}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -20,4 +20,4 @@ const getAllFamily = async (token: string) => {
   }
 };
 
-export default getAllFamily;
+export default getFamilyDetail;

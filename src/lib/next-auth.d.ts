@@ -7,6 +7,19 @@ declare module "next-auth" {
     refreshToken: string;
     accessTokenExpiresIn: number;
     refreshTokenExpiresIn: number;
+    user: {
+      id: string;
+      email: string;
+      phone: string;
+      firstname: string;
+      lastname: string;
+      avatar: string;
+      created_at: string;
+      updated_at: string;
+      isEmailVerified: boolean;
+      isPhoneVerified: boolean;
+      isAdmin: boolean;
+    };
   }
 }
 
@@ -16,5 +29,18 @@ declare module "next-auth/jwt" {
     refreshToken: string;
     accessTokenExpiresIn: number;
     refreshTokenExpiresIn: number;
+    user: {
+      id: string;
+      email: string;
+      phone: string;
+      firstname: string;
+      lastname: string;
+      avatar: string;
+      created_at: string;
+      updated_at: string;
+      isEmailVerified: boolean;
+      isPhoneVerified: boolean;
+      isAdmin: boolean;
+    };
   }
 }

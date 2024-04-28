@@ -27,6 +27,6 @@ export const paymentUrl = async (
     const data = await response.json();
     return data.paymentUrl;
   } catch (error: any) {
-    return { error: "Somwthing wrong!" };
+    return { error: "Something wrong!" };
   }
 };

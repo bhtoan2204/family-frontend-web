@@ -1,7 +1,8 @@
 import { refreshToken } from "@/actions/auth/refresh-token";
+import { SignOut } from "@/actions/auth/signout";
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
-import { SignOut } from "@/actions/auth/signout";
+import getUserProfile from "@/actions/user/get-user-profile";
 
 export const {
   handlers: { GET, POST },
@@ -11,6 +12,19 @@ export const {
 } = NextAuth({
   callbacks: {
     async session({ session, token }) {
+      const userData = await getUserProfile(token.accessToken);
+      
+      session.user.id = userData.id_user;
+      session.user.email = userData.email;
+      session.user.phone = userData.phone;
+      session.user.firstname = userData.firstname;
+      session.user.lastname = userData.lastname;
+      session.user.avatar = userData.avatar;
+      session.user.created_at = userData.created_at;
+      session.user.updated_at = userData.updated_at;
+      session.user.isEmailVerified = userData.isemailverified;
+      session.user.isPhoneVerified = userData.isphoneverified;
+      session.user.isAdmin = userData.isadmin as boolean;
       session.accessToken = token.accessToken;
       session.refreshToken = token.refreshToken;
       session.accessTokenExpiresIn = token.accessTokenExpiresIn;
