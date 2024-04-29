@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { User } from "@/types/admin/user";
+import { User } from "@/types/user";
 import {
   ColumnDef,
   ColumnFiltersState,

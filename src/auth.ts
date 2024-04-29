@@ -1,8 +1,7 @@
-import { refreshToken } from "@/actions/auth/refresh-token";
-import { SignOut } from "@/actions/auth/signout";
+import { AuthActions } from "@/actions/auth-actions";
+import { UserActions } from "@/actions/user-actions";
 import authConfig from "@/auth.config";
 import NextAuth from "next-auth";
-import getUserProfile from "@/actions/user/get-user-profile";
 
 export const {
   handlers: { GET, POST },
@@ -12,8 +11,8 @@ export const {
 } = NextAuth({
   callbacks: {
     async session({ session, token }) {
-      const userData = await getUserProfile(token.accessToken);
-      
+      const userData = await UserActions.GetUserProfile(token.accessToken);
+
       session.user.id = userData.id_user;
       session.user.email = userData.email;
       session.user.phone = userData.phone;
@@ -39,9 +38,9 @@ export const {
         currentTime > token.refreshTokenExpiresIn ||
         token.refreshTokenExpiresIn === null
       )
-        await SignOut();
+        await AuthActions.SignOut();
       if (currentTime < token.accessTokenExpiresIn) return token;
-      return await refreshToken(token);
+      return await AuthActions.RefreshToken(token);
     },
   },
   session: { strategy: "jwt" },

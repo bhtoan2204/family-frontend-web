@@ -20,7 +20,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Payment } from "@/types/admin/payment";
+import { Payment } from "@/types/payment";
 import {
   ColumnDef,
   ColumnFiltersState,

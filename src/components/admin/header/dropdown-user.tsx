@@ -1,4 +1,4 @@
-import { SignOut } from "@/actions/auth/signout";
+import { AuthActions } from "@/actions/auth-actions";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
@@ -162,7 +162,7 @@ const DropdownUser = () => {
           </li>
         </ul>
         <button
-          onClick={() => SignOut()}
+          onClick={() => AuthActions.SignOut()}
           className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
         >
           <svg

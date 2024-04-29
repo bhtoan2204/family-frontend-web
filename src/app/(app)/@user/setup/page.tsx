@@ -1,6 +1,6 @@
 "use client";
 
-import getAllFamily from "@/actions/family/get-all-family";
+import { FamilyActions } from "@/actions/family-actions";
 import InitialModal from "@/components/modals/initial-modal";
 import { Family } from "@/types/family";
 import { useSession } from "next-auth/react";
@@ -14,7 +14,9 @@ const SetupPage = () => {
   useEffect(() => {
     const getFamilies = async () => {
       if (session?.accessToken) {
-        const family: Family[] = await getAllFamily(session.accessToken);
+        const family: Family[] = await FamilyActions.GetAllFamilies(
+          session.accessToken
+        );
         setFamilies(family);
       }
     };

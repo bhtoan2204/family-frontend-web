@@ -1,4 +1,4 @@
-export interface Family {
+export type Family = {
   id_family: number;
   quantity: number;
   description: string;

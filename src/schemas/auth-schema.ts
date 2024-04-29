@@ -49,3 +49,21 @@ export const SignupSchema = z.object({
     })
     .min(6, "Password must be at least 6 characters"),
 });
+
+export const ChangePasswordSchema = z.object({
+  oldPassword: z
+    .string({
+      required_error: "Old password is required",
+    })
+    .min(6, "Password must be at least 6 characters"),
+  newPassword: z
+    .string({
+      required_error: "New password is required",
+    })
+    .min(6, "Password must be at least 6 characters"),
+  confirmPassword: z
+    .string({
+      required_error: "Confirm password is required",
+    })
+    .min(6, "Password must be at least 6 characters"),
+});

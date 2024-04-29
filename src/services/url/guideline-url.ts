@@ -1,4 +1,4 @@
-import {baseUrl} from "@/services/url"
+import { baseUrl } from "@/services/url";
 
 const GuideLineUrl = {
   getAllGuideline: `${baseUrl}/api/v1/guideline/gatAllGuideline`,
@@ -13,6 +13,6 @@ const GuideLineUrl = {
   deleteStep: `${baseUrl}/api/v1/guideline/deleteStep`,
   markShared: `${baseUrl}/api/v1/guideline/markShared`,
   getSharedGuideline: `${baseUrl}/api/v1/guideline/getSharedGuideline`,
-}
+};
 
-export default GuideLineUrl
+export default GuideLineUrl;

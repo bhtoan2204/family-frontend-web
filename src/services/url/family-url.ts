@@ -2,12 +2,12 @@ import { baseUrl } from "@/services/url";
 
 const FamilyUrl = {
   getAllFamily: `${baseUrl}/api/v1/family/getAllFamily`,
-  getFamily: `${baseUrl}/api/v1/family/getFamily?id_family=`,
+  getFamily: `${baseUrl}/api/v1/family/getFamily`,
   createFamily: `${baseUrl}/api/v1/family/createFamily`,
   updateFamily: `${baseUrl}/api/v1/family/updateFamily`,
   deleteFamily: `${baseUrl}/api/v1/family/deleteFamily`,
-  getAllMember: `${baseUrl}/api/v1/family/getAllMember?id_family=`,
-  getMember: `${baseUrl}/api/v1/family/getMember?id_user=`,
+  getAllMember: `${baseUrl}/api/v1/family/getAllMember`,
+  getMember: `${baseUrl}/api/v1/family/getMember`,
   addMember: `${baseUrl}/api/v1/family/addMember`,
   deleteMember: `${baseUrl}/api/v1/family/deleteMember`,
   changeAvatar: `${baseUrl}/api/v1/family/changeAvatar`,

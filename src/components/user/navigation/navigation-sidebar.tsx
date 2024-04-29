@@ -1,4 +1,4 @@
-import getAllFamily from "@/actions/family/get-all-family";
+import { FamilyActions } from "@/actions/family-actions";
 import { auth } from "@/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -12,7 +12,9 @@ const NavigationSidebar = async () => {
   const session = await auth();
   if (!session?.accessToken) return redirect("/login");
 
-  const families: Family[] = await getAllFamily(session.accessToken);
+  const families: Family[] = await FamilyActions.GetAllFamilies(
+    session.accessToken
+  );
   return (
     <div className="space-y-4 flex flex-col items-center h-full text-primary w-full dark:bg-[#1E1F22] py-3">
       <NavigationAction />
