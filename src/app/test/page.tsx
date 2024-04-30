@@ -1,13 +1,13 @@
 "use client";
 
-import { AuthActions } from "@/actions/auth-actions";
+import { SignOut } from "@/actions/auth-actions";
 import { useSession } from "next-auth/react";
 
 const Test = () => {
   const { data: session } = useSession();
 
   const handleSignOut = async () => {
-    await AuthActions.SignOut();
+    await SignOut();
   };
 
   return (

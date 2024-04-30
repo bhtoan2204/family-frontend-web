@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthActions } from "@/actions/auth-actions";
+import { SignIn } from "@/actions/auth-actions";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -39,7 +39,7 @@ const SigninForm = () => {
     setSuccess("");
 
     startTransition(() => {
-      AuthActions.SignIn(data)
+      SignIn(data)
         .then((response) => {
           if (response.error) {
             setError(response.error);

@@ -1,5 +1,5 @@
-import { AuthActions } from "@/actions/auth-actions";
-import { FamilyActions } from "@/actions/family-actions";
+import { SignOut } from "@/actions/auth-actions";
+import { GetFamilyDetail } from "@/actions/family-actions";
 import { auth } from "@/auth";
 import FamilySidebar from "@/components/user/family/family-sidebar";
 import { redirect } from "next/navigation";
@@ -14,13 +14,10 @@ const FamilyIdLayout = async ({
 }>) => {
   const session = await auth();
   if (!session?.accessToken) {
-    return AuthActions.SignOut();
+    return await SignOut();
   }
 
-  const family = await FamilyActions.GetFamilyDetail(
-    session.accessToken,
-    params.familyId
-  );
+  const family = await GetFamilyDetail(session.accessToken, params.familyId);
 
   if (!family) {
     return redirect("/setup");

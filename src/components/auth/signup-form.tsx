@@ -1,6 +1,6 @@
 "use client";
 
-import { AuthActions } from "@/actions/auth-actions";
+import { SignUp } from "@/actions/auth-actions";
 import { CardWrapper } from "@/components/auth/card-wrapper";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
@@ -50,7 +50,7 @@ const SignupForm = () => {
       }
 
       startTransition(() => {
-        AuthActions.SignUp(data)
+        SignUp(data)
           .then((response) => {
             if (response.error) {
               setError(response.error);
