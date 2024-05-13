@@ -1,6 +1,7 @@
 "use server";
 
 import RSSandCrawlerURL from "@/services/url/rss-crawler-url";
+import { News } from "@/types/news";
 
 export const GetNews = async (
   token: string,
@@ -20,9 +21,9 @@ export const GetNews = async (
       }
     );
     const data = await response.json();
-    return data;
+    return data.items as News[];
   } catch (error) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetLocalBankInterest = async (token: string) => {
@@ -37,6 +38,6 @@ export const GetLocalBankInterest = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

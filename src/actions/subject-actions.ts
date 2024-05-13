@@ -26,7 +26,7 @@ export const CreateSubject = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetSubjectDetail = async (
@@ -49,7 +49,7 @@ export const GetSubjectDetail = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateSubject = async (
@@ -78,7 +78,7 @@ export const UpdateSubject = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteSubject = async (
@@ -101,7 +101,7 @@ export const DeleteSubject = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const AddComponentScore = async (
@@ -130,7 +130,7 @@ export const AddComponentScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const InsertComponentScore = async (token: string, index: number) => {
@@ -148,7 +148,7 @@ export const InsertComponentScore = async (token: string, index: number) => {
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateComponentScore = async (
@@ -177,7 +177,7 @@ export const UpdateComponentScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteComponentScore = async (
@@ -204,7 +204,7 @@ export const DeleteComponentScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ModifyScore = async (
@@ -231,7 +231,7 @@ export const ModifyScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const RemoveScore = async (
@@ -258,7 +258,7 @@ export const RemoveScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ChangeStatus = async (
@@ -285,6 +285,6 @@ export const ChangeStatus = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

@@ -21,7 +21,7 @@ export const GetUserProfile = async (token: string) => {
       return { error: data.message };
     }
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ChangePassword = async (
@@ -49,7 +49,7 @@ export const ChangePassword = async (
       }),
     });
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ForgotPassword = async (email: string) => {
@@ -64,7 +64,7 @@ export const ForgotPassword = async (email: string) => {
       }),
     });
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateProfile = async (token: string, data: any) => {
@@ -78,7 +78,7 @@ export const UpdateProfile = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ChangeAvatar = async (token: string, data: any) => {
@@ -91,7 +91,7 @@ export const ChangeAvatar = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ValidateEmail = async (token: string, data: any) => {
@@ -104,7 +104,7 @@ export const ValidateEmail = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetAllUsers = async (token: string) => {
@@ -121,6 +121,6 @@ export const GetAllUsers = async (token: string) => {
 
     return data.data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

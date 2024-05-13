@@ -1,6 +1,7 @@
 "use server";
 
 import ChatUrl from "@/services/url/chat-url";
+import { UserChat } from "@/types/chat";
 
 export const GetAllChat = async (token: string, index: number) => {
   try {
@@ -14,7 +15,7 @@ export const GetAllChat = async (token: string, index: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetMessages = async (
@@ -31,9 +32,9 @@ export const GetMessages = async (
       },
     });
     const data = await response.json();
-    return data;
+    return data as UserChat[];
   } catch (error) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetMessagesOfFamily = async (
@@ -55,7 +56,7 @@ export const GetMessagesOfFamily = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const MarkSeenMessage = async (token: string, receiverId: number) => {
@@ -70,6 +71,36 @@ export const MarkSeenMessage = async (token: string, receiverId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
+  }
+};
+export const SendMessage = async (content: string) => {
+  try {
+  } catch (error) {}
+};
+export const RemoveMessage = async (
+  token: string,
+  messageId: string,
+  memberId: string
+) => {
+  try {
+    const reponse = await fetch(
+      `${ChatUrl.removeMessage}/${memberId}/${messageId}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await reponse.json();
+    console.log(data);
+    if (data.statusCode === 500) {
+      throw new Error(data);
+    }
+    return data;
+  } catch (error) {
+    throw new Error("Internal Error!");
   }
 };

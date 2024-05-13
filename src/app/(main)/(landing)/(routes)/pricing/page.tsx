@@ -1,6 +1,6 @@
 "use client";
 
-import { PaymentActions } from "@/actions/payment-actions";
+import { AllPackages } from "@/actions/payment-actions";
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { buttonVariants } from "@/components/ui/button";
 import {
@@ -23,7 +23,7 @@ const PricingPage = () => {
   useEffect(() => {
     const handleGetAllPricing = async () => {
       if (!session?.accessToken) return;
-      const allPrices = await PaymentActions.AllPackages(session?.accessToken);
+      const allPrices = await AllPackages(session?.accessToken);
       setPricing(allPrices);
     };
 

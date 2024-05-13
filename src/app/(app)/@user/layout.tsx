@@ -1,9 +1,11 @@
 import { ModalProvider } from "@/components/providers/modal-provider";
+import QueryProvider from "@/components/providers/query-provider";
+import { SocketProvider } from "@/components/providers/socket-provider";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { Open_Sans } from "next/font/google";
 import { ReactNode } from "react";
-import "./globals-dark.css"
+import "./globals-dark.css";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -21,8 +23,10 @@ const UserLayout = ({
           enableSystem={false}
           storageKey="user-default-theme"
         >
-          <ModalProvider />
-          {children}
+          <SocketProvider>
+            <ModalProvider />
+            <QueryProvider>{children}</QueryProvider>
+          </SocketProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use server";
 
 import CalendarUrl from "@/services/url/calendar-url";
+import { EventCalendar } from "@/types/calendar";
 
 export const GetAllEventOfFamily = async (token: string, familyId: number) => {
   try {
@@ -14,9 +15,9 @@ export const GetAllEventOfFamily = async (token: string, familyId: number) => {
       }
     );
     const data = await response.json();
-    return data;
+    return data.data as EventCalendar[];
   } catch (error) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetEventsOnDate = async (
@@ -35,7 +36,7 @@ export const GetEventsOnDate = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetCalendarDetail = async (token: string, calendarId: number) => {
@@ -52,7 +53,7 @@ export const GetCalendarDetail = async (token: string, calendarId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateCalendar = async (token: string, calendar: any) => {
@@ -68,7 +69,7 @@ export const CreateCalendar = async (token: string, calendar: any) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateCalendar = async (token: string, calendar: any) => {
@@ -84,7 +85,7 @@ export const UpdateCalendar = async (token: string, calendar: any) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteCalendar = async (token: string, calendarId: number) => {
@@ -102,6 +103,6 @@ export const DeleteCalendar = async (token: string, calendarId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

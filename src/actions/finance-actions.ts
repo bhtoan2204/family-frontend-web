@@ -25,7 +25,7 @@ export const GetFinanceSummary = async (token: string, familyId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 
@@ -50,7 +50,7 @@ export const GetAssets = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateAsset = async (token: string, data: any) => {
@@ -64,7 +64,7 @@ export const CreateAsset = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateAsset = async (token: string, data: any) => {
@@ -78,7 +78,7 @@ export const UpdateAsset = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteAsset = async (
@@ -95,7 +95,7 @@ export const DeleteAsset = async (
       },
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 
@@ -112,7 +112,7 @@ export const GetExpenseditures = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetExpensediture = async (token: string) => {
@@ -127,7 +127,7 @@ export const GetExpensediture = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateExpensediture = async (token: string, data: any) => {
@@ -141,7 +141,7 @@ export const CreateExpensediture = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateExpensediture = async (token: string, data: any) => {
@@ -155,7 +155,7 @@ export const UpdateExpensediture = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteExpensediture = async (
@@ -175,7 +175,7 @@ export const DeleteExpensediture = async (
       }
     );
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 
@@ -192,7 +192,7 @@ export const GetIncomeSource = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetIncome = async (
@@ -215,7 +215,7 @@ export const GetIncome = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetIncomeById = async (
@@ -237,7 +237,7 @@ export const GetIncomeById = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateIncome = async (token: string, data: any) => {
@@ -251,7 +251,7 @@ export const CreateIncome = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateIncome = async (token: string, data: any) => {
@@ -265,7 +265,7 @@ export const UpdateIncome = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteIncome = async (
@@ -282,7 +282,7 @@ export const DeleteIncome = async (
       },
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 
@@ -299,7 +299,7 @@ export const GetInvestmentType = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetInvestmentRiskLevel = async (token: string) => {
@@ -314,7 +314,7 @@ export const GetInvestmentRiskLevel = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetInvestment = async (token: string, familyId: number) => {
@@ -329,7 +329,7 @@ export const GetInvestment = async (token: string, familyId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateInvestment = async (token: string, data: any) => {
@@ -343,7 +343,7 @@ export const CreateInvestment = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateInvestment = async (token: string, data: any) => {
@@ -357,7 +357,7 @@ export const UpdateInvestment = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteInvestment = async (token: string) => {
@@ -370,7 +370,7 @@ export const DeleteInvestment = async (token: string) => {
       },
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 
@@ -387,7 +387,7 @@ export const GetLoanType = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetLoan = async (token: string, familyId: number) => {
@@ -402,7 +402,7 @@ export const GetLoan = async (token: string, familyId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateLoan = async (token: string, data: any) => {
@@ -416,7 +416,7 @@ export const CreateLoan = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateLoan = async (token: string, data: any) => {
@@ -430,7 +430,7 @@ export const UpdateLoan = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteLoan = async (
@@ -447,7 +447,7 @@ export const DeleteLoan = async (
       },
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 
@@ -464,7 +464,7 @@ export const GetSaving = async (token: string, familyId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateSaving = async (token: string, data: any) => {
@@ -478,7 +478,7 @@ export const CreateSaving = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateSaving = async (token: string, data: any) => {
@@ -492,7 +492,7 @@ export const UpdateSaving = async (token: string, data: any) => {
       body: JSON.stringify(data),
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteSaving = async (
@@ -509,6 +509,6 @@ export const DeleteSaving = async (
       },
     });
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

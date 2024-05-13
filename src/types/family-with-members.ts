@@ -1,6 +1,6 @@
 import { Family } from "@/types/family";
 import { Member } from "@/types/member";
 
-export type FamilyWithMember = Family & {
+export type FamilyWithMembers = Family & {
   members: Member[];
 };

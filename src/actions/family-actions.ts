@@ -1,7 +1,10 @@
 "use server";
 
-import { FamilySchema } from "@/schemas/family-schema";
+import { FamilySchema } from "@/schemas";
 import FamilyUrl from "@/services/url/family-url";
+import { Family } from "@/types/family";
+import { FamilyWithMembers } from "@/types/family-with-members";
+import { Member } from "@/types/member";
 import * as z from "zod";
 
 export const GetAllFamilies = async (token: string) => {
@@ -17,7 +20,7 @@ export const GetAllFamilies = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetFamilyDetail = async (token: string, familyId: string) => {
@@ -34,9 +37,9 @@ export const GetFamilyDetail = async (token: string, familyId: string) => {
     );
 
     const data = await response.json();
-    return data;
+    return data[0] as Family;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const CreateFamily = async (
@@ -67,7 +70,7 @@ export const CreateFamily = async (
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateFamily = async (
@@ -100,7 +103,7 @@ export const UpdateFamily = async (
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const DeleteFamily = async (token: string, familyId: number) => {
@@ -119,10 +122,10 @@ export const DeleteFamily = async (token: string, familyId: number) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
-export const GetAllMember = async (token: string, familyId: number) => {
+export const GetAllMember = async (token: string, familyId: string) => {
   try {
     const response = await fetch(
       `${FamilyUrl.getAllMember}?id_family=${familyId}`,
@@ -136,9 +139,9 @@ export const GetAllMember = async (token: string, familyId: number) => {
     );
 
     const data = await response.json();
-    return data;
+    return data as Member[];
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetMemberDetail = async (token: string, memberId: string) => {
@@ -152,9 +155,9 @@ export const GetMemberDetail = async (token: string, memberId: string) => {
     });
 
     const data = await response.json();
-    return data;
+    return data[0] as Member;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    throw new Error("Internal Error!");
   }
 };
 export const AddMember = async (
@@ -181,7 +184,7 @@ export const AddMember = async (
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteMember = async (
@@ -205,7 +208,7 @@ export const DeleteMember = async (
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const ChangeAvatar = async (
@@ -229,6 +232,43 @@ export const ChangeAvatar = async (
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
+  }
+};
+export const GetFamilyWithMember = async (
+  token: string,
+  userId: string,
+  familyId: string
+) => {
+  try {
+    const response = await GetFamilyDetail(token, familyId);
+    const family = response;
+
+    const members: Member[] = await GetAllMember(token, familyId);
+
+    const familyWithMember = {
+      ...family,
+      members: members,
+    } as FamilyWithMembers;
+
+    return familyWithMember;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+export const CheckIfUserIsInFamily = async (
+  token: string,
+  userId: string,
+  familyId: string
+) => {
+  try {
+    const response = await GetAllMember(token, familyId);
+    const members = response;
+
+    const isUserInFamily = members.some((member) => member.id_user === userId);
+
+    return isUserInFamily;
+  } catch (error) {
+    throw new Error("Internal Error!");
   }
 };

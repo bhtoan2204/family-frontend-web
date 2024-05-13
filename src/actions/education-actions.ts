@@ -22,7 +22,7 @@ export const GetAllEducation = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetEducationDetail = async (
@@ -44,7 +44,7 @@ export const GetEducationDetail = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateEducation = async (
@@ -73,7 +73,7 @@ export const CreateEducation = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateEducation = async (
@@ -102,7 +102,7 @@ export const UpdateEducation = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteEducation = async (
@@ -124,6 +124,6 @@ export const DeleteEducation = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

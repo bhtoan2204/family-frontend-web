@@ -22,7 +22,7 @@ export const GetAllGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetGuidelineDetail = async (
@@ -44,7 +44,7 @@ export const GetGuidelineDetail = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateGuideline = async (
@@ -67,7 +67,7 @@ export const CreateGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateGuideline = async (
@@ -92,7 +92,7 @@ export const UpdateGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteGuideline = async (
@@ -114,7 +114,7 @@ export const DeleteGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetStep = async (
@@ -136,7 +136,7 @@ export const GetStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const AddStep = async (
@@ -165,7 +165,7 @@ export const AddStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const InsetStep = async (
@@ -196,7 +196,7 @@ export const InsetStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateStep = async (
@@ -227,7 +227,7 @@ export const UpdateStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteStep = async (
@@ -250,7 +250,7 @@ export const DeleteStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const MarkShared = async (
@@ -272,7 +272,7 @@ export const MarkShared = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetSharedGuideline = async (
@@ -295,6 +295,6 @@ export const GetSharedGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

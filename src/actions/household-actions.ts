@@ -14,7 +14,7 @@ export const GetHouseholdCategory = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetHouseholdItem = async (
@@ -37,7 +37,7 @@ export const GetHouseholdItem = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetHouseholdItemDetail = async (
@@ -59,7 +59,7 @@ export const GetHouseholdItemDetail = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateHouseholdItem = async (
@@ -90,7 +90,7 @@ export const CreateHouseholdItem = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const UpdateHouseholdItem = async (
@@ -121,7 +121,7 @@ export const UpdateHouseholdItem = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const DeleteHouseholdItem = async (
@@ -143,7 +143,7 @@ export const DeleteHouseholdItem = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const InputHouseholdDurableItem = async (
@@ -168,7 +168,7 @@ export const InputHouseholdDurableItem = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const IutputHouseholdConsumableItem = async (
@@ -197,6 +197,6 @@ export const IutputHouseholdConsumableItem = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

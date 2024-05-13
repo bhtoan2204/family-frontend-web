@@ -2,6 +2,7 @@ import { SignOut } from "@/actions/auth-actions";
 import { GetFamilyDetail } from "@/actions/family-actions";
 import { auth } from "@/auth";
 import FamilySidebar from "@/components/user/family/family-sidebar";
+import { Family } from "@/types/family";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
 
@@ -17,7 +18,10 @@ const FamilyIdLayout = async ({
     return await SignOut();
   }
 
-  const family = await GetFamilyDetail(session.accessToken, params.familyId);
+  const family: Family = await GetFamilyDetail(
+    session.accessToken,
+    params.familyId
+  );
 
   if (!family) {
     return redirect("/setup");

@@ -15,7 +15,7 @@ export const AllPackages = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetPackageDetail = async (token: string, packageId: number) => {
@@ -34,7 +34,7 @@ export const GetPackageDetail = async (token: string, packageId: number) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetPaymentMethod = async (token: string) => {
@@ -49,7 +49,7 @@ export const GetPaymentMethod = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CreateOrderVNPAY = async (
@@ -77,7 +77,7 @@ export const CreateOrderVNPAY = async (
     const data = await response.json();
     return data.paymentUrl;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const CheckOrder = async (token: string, order: any) => {
@@ -93,7 +93,7 @@ export const CheckOrder = async (token: string, order: any) => {
     const data = await response.json();
     return data;
   } catch (error: any) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const GetOrder = async (token: string) => {
@@ -108,6 +108,6 @@ export const GetOrder = async (token: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

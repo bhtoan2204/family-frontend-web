@@ -16,7 +16,7 @@ export const SendEmailConfirmation = async (token: string, email: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const SendInvite = async (token: string, familyId: string) => {
@@ -35,6 +35,6 @@ export const SendInvite = async (token: string, familyId: string) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };

@@ -17,7 +17,7 @@ export const GetNotifications = async (token: string, index: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
 export const MarkAsRead = async (token: string, notificationId: number) => {
@@ -35,6 +35,6 @@ export const MarkAsRead = async (token: string, notificationId: number) => {
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Something wrong!" };
+    return { error: "Internal Error!" };
   }
 };
