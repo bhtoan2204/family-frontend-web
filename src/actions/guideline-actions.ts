@@ -20,9 +20,9 @@ export const GetAllGuideline = async (
       }
     );
     const data = await response.json();
-    return data;
+    return data.data.items;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetGuidelineDetail = async (

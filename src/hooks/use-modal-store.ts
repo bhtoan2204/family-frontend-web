@@ -1,3 +1,4 @@
+import { EventCalendar } from "@/types/calendar";
 import { Family } from "@/types/family";
 import { create } from "zustand";
 
@@ -10,12 +11,18 @@ export type ModalType =
   | "leaveFamily"
   | "deleteFamily"
   | "messageFile"
-  | "deleteMessage";
+  | "deleteMessage"
+  | "createCalendar"
+  | "modifyCalendar"
+  | "createGuideline"
+  | "openImage";
 
 interface ModalData {
   family?: Family;
   apiUrl?: string;
   query?: Record<string, any>;
+  event?: EventCalendar;
+  imageUrl?: string;
 }
 
 interface ModalStore {

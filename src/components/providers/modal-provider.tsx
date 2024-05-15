@@ -1,5 +1,6 @@
 "use client";
 
+import CreateCalendarModal from "@/components/modals/create-calendar-modal";
 import CreateFamilyModal from "@/components/modals/create-family-modal";
 import DeleteFamilyModel from "@/components/modals/delete-family-model";
 import DeleteMessageModel from "@/components/modals/delete-message-model";
@@ -8,6 +9,8 @@ import InviteModel from "@/components/modals/invite-model";
 import LeaveFamilyModel from "@/components/modals/leave-family-model";
 import MembersModel from "@/components/modals/members-model";
 import MessageFileModal from "@/components/modals/message-file-modal";
+import ModifyCalendarModal from "@/components/modals/modify-calendar.modal";
+import OpenImageModal from "@/components/modals/open-image-modal";
 import { useEffect, useState } from "react";
 
 export const ModalProvider = () => {
@@ -29,6 +32,9 @@ export const ModalProvider = () => {
       <DeleteFamilyModel />
       <MessageFileModal />
       <DeleteMessageModel />
+      <ModifyCalendarModal />
+      <CreateCalendarModal />
+      <OpenImageModal />
     </>
   );
 };

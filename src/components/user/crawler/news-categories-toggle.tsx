@@ -23,7 +23,7 @@ const NewsCategoriesToggle = ({ familyId }: { familyId: string }) => {
           <Compass className="h-5 w-5" />
         </button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="max-h-100 w-auto grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-5 hide-scrollbar overflow-auto text-xs font-medium text-black dark:text-neutral-400 space-y-[2px]">
+      <DropdownMenuContent className="max-h-100 w-auto grid grid-cols-1 lg:grid-cols-3 gap-10 md:gap-5 hide-scrollbar overflow-auto text-xs font-medium space-y-[2px] dark:bg-zinc-500 bg-white">
         {NewsCategories.map((category, id) => {
           return (
             <DropdownMenuItem

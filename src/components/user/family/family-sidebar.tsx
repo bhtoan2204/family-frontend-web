@@ -1,14 +1,20 @@
 import { GetFamilyWithMember } from "@/actions/family-actions";
+import { GetAllGuideline } from "@/actions/guideline-actions";
 import { auth } from "@/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import FamilyCalendar from "@/components/user/family/family-calendar";
 import FamilyConversation from "@/components/user/family/family-conversation";
+import FamilyEducation from "@/components/user/family/family-education";
+import FamilyFinance from "@/components/user/family/family-finance";
+import FamilyGuideline from "@/components/user/family/family-guideline";
 import FamilyHeader from "@/components/user/family/family-header";
+import FamilyHousehold from "@/components/user/family/family-household";
 import FamilyMember from "@/components/user/family/family-member";
 import FamilyNews from "@/components/user/family/family-news";
 import FamilySearch from "@/components/user/family/family-search";
 import FamilySection from "@/components/user/family/family-section";
+import { GuidelineItemType } from "@/types/guideline";
 import { roleIconMapRight } from "@/util/rol-icon-map";
 import { redirect } from "next/navigation";
 
@@ -28,6 +34,16 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
     familyId
   ).catch((error) => {
     return redirect("/setup");
+  });
+
+  const allGuidelines: GuidelineItemType[] = await GetAllGuideline(
+    session.accessToken,
+    Number(familyId),
+    1,
+    10
+  ).catch((error) => {
+    console.log(error);
+    return [];
   });
 
   if (family.members.length === 0 || !family) {
@@ -102,7 +118,9 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
             sectionType="guideline"
             family={family}
           />
-          <div className="space-y-[2px]"></div>
+          <div className="space-y-[2px]">
+            <FamilyGuideline itemId={allGuidelines[0].id_item} />
+          </div>
         </div>
         <div className="mb-2">
           <FamilySection
@@ -111,7 +129,9 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
             sectionType="education"
             family={family}
           />
-          <div className="space-y-[2px]"></div>
+          <div className="space-y-[2px]">
+            <FamilyEducation />
+          </div>
         </div>
         <div className="mb-2">
           <FamilySection
@@ -120,7 +140,9 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
             sectionType="household"
             family={family}
           />
-          <div className="space-y-[2px]"></div>
+          <div className="space-y-[2px]">
+            <FamilyHousehold />
+          </div>
         </div>
         <div className="mb-2">
           <FamilySection
@@ -129,7 +151,9 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
             sectionType="finance"
             family={family}
           />
-          <div className="space-y-[2px]"></div>
+          <div className="space-y-[2px]">
+            <FamilyFinance />
+          </div>
         </div>
         <div className="mb-2">
           <FamilySection

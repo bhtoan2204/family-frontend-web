@@ -9,7 +9,6 @@ import {
   Earth,
   FerrisWheel,
   Heart,
-  Home,
   Hospital,
   Layers3,
   Mailbox,
@@ -32,11 +31,6 @@ const NewsCategories = [
     title: "Newest",
     url: "/newest",
     icon: <Mailbox className="h-5 w-5 mr-2" />,
-  },
-  {
-    title: "Home",
-    url: "/home",
-    icon: <Home className="h-5 w-5 mr-2" />,
   },
   {
     title: "Health",

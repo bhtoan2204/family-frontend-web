@@ -1,5 +1,3 @@
-"use client";
-
 import MobileToggle from "@/components/mobile-toggle";
 import {
   Breadcrumb,
@@ -17,18 +15,13 @@ import {
 } from "@/components/ui/dropdown-menu";
 import NewsCategoriesToggle from "@/components/user/crawler/news-categories-toggle";
 import { NewsCategories } from "@/util/news-caterories";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface NewsHeaderProps {
   familyId: string;
 }
 
 const NewsHeader = ({ familyId }: NewsHeaderProps) => {
-  const router = useRouter();
-  const onCilck = (url: string) => {
-    router.push(`/family/${familyId}/crawler/main${url}`);
-  };
-
   return (
     <div className="text-md font-semibold px-3 flex items-center h-12 border-neutral-200 dark:border-neutral-800 border-b-2">
       <MobileToggle familyId={familyId} />
@@ -45,14 +38,23 @@ const NewsHeader = ({ familyId }: NewsHeaderProps) => {
               <DropdownMenuTrigger className="flex items-center gap-1">
                 <BreadcrumbEllipsis className="h-4 w-4" />
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="start">
+              <DropdownMenuContent
+                align="start"
+                className="dark:bg-zinc-500 bg-white"
+              >
                 {NewsCategories.map((category, id) => {
                   return (
                     <DropdownMenuItem
-                      onClick={() => onCilck(category.url)}
                       key={category.title}
+                      className="hover:bg-zinc-700"
                     >
-                      {category.title}
+                      <Link
+                        className="flex items-center gap-1"
+                        href={`/family/${familyId}/crawler/home${category.url}`}
+                      >
+                        {category.icon}
+                        {category.title}
+                      </Link>
                     </DropdownMenuItem>
                   );
                 })}
