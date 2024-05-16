@@ -18,14 +18,16 @@ pipeline {
 
     stages{
         stage("Checkout") {
-            checkout scm
+            steps {
+                checkout scm
+            }
         }
 
         stage("SonarQube Analysis") {
             steps {
                 script {
                   def scannerHome = tool 'SonarQube-Scanner';
-                  withSonarQubeEnv('SonarQube-Server') {
+                  withSonarQubeEnv('SonarQube-Server-Frontend') {
                     sh "${tool("SonarQube-Scanner")}/bin/sonar-scanner -Dsonar.projectKey=Family-Frontend-Web"
                   }
                 }
@@ -45,7 +47,7 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'Dockerhub Credentials', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh "echo ${PASSWORD} | docker login --username ${USERNAME} --password-stdin"
-                        sh "TAG=${COMMIT_ID} docker compose push"
+                        sh "docker compose push"
                     }
                 }
             }
@@ -55,6 +57,12 @@ pipeline {
           steps {
             sh "sshpass -p ${SSH_password} ssh ${SSH_user}@${SSH_ip} 'kubectl rollout restart deployment nextjs-deployment'"
           }
+        }
+
+        stage("Clean up") {
+            steps {
+                sh "docker rmi \$(docker images -f \"dangling=true\" -q)"
+            }
         }
     }
 }
