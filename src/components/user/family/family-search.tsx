@@ -49,7 +49,7 @@ const FamilySearch = ({ familyData }: FamilySearchProps) => {
     setOpen(false);
 
     if (type === "member") {
-      router.push(`/family/${params.familyId}/conversations/${id}`);
+      router.push(`/family/${params!.familyId}/conversations/${id}`);
     }
   };
 
