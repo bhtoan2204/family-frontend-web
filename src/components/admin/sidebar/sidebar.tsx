@@ -116,7 +116,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
               <SidebarLinkGroup
                 activeCondition={
                   pathname === "/dashboard/statistics" ||
-                  pathname.includes("dashboard")
+                  pathname!.includes("dashboard")
                 }
               >
                 {(handleClick, open) => {
@@ -129,7 +129,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                           {
                             "bg-graydark dark:bg-meta-4":
                               pathname === "/dashboard/statistics" ||
-                              pathname.includes("dashboard"),
+                              pathname!.includes("dashboard"),
                           }
                         )}
                         onClick={(e) => {
@@ -230,7 +230,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   href="/user"
                   className={cn(
                     "group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4",
-                    { "bg-graydark dark:bg-meta-4": pathname.includes("user") }
+                    { "bg-graydark dark:bg-meta-4": pathname!.includes("user") }
                   )}
                 >
                   <svg
@@ -262,7 +262,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     "group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4",
                     {
                       "bg-graydark dark:bg-meta-4":
-                        pathname.includes("package"),
+                        pathname!.includes("package"),
                     }
                   )}
                 >
@@ -295,7 +295,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     "group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4",
                     {
                       "bg-graydark dark:bg-meta-4":
-                        pathname.includes("feature"),
+                        pathname!.includes("feature"),
                     }
                   )}
                 >
@@ -331,7 +331,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   href="/chat"
                   className={cn(
                     "group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4",
-                    { "bg-graydark dark:bg-meta-4": pathname.includes("chat") }
+                    { "bg-graydark dark:bg-meta-4": pathname!.includes("chat") }
                   )}
                 >
                   <svg
@@ -357,7 +357,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 <Link
                   href="/settings"
                   className={`group relative flex items-center gap-2.5 rounded-sm px-4 py-2 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                    pathname.includes("settings") &&
+                    pathname!.includes("settings") &&
                     "bg-graydark dark:bg-meta-4"
                   }`}
                 >
