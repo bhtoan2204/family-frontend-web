@@ -1,8 +1,8 @@
 "use client";
 
-import { paymentUrl } from "@/actions/payment/payment";
-import { ArrowRight } from "lucide-react";
+import { CreateOrderVNPAY } from "@/actions/payment-actions";
 import { Button } from "@/components/ui/button";
+import { ArrowRight } from "lucide-react";
 
 const UpgradeButton = ({
   packageId,
@@ -14,7 +14,7 @@ const UpgradeButton = ({
   token: string;
 }) => {
   const handleNavigateToPaymentUrl = async () => {
-    const url = await paymentUrl(token, packageId, amount);
+    const url = await CreateOrderVNPAY(token, packageId, amount);
     window.open(url, "_blank");
   };
 
