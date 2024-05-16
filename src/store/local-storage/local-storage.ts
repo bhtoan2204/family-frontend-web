@@ -1,9 +1,13 @@
+"use client";
+
 import KeyStore from "@/store/local-storage/key-store";
 
 const LocalStorage = {
   StoreAccessToken: (token: string) =>
+    typeof window !== "undefined" &&
     localStorage.setItem(KeyStore.ACCESS_TOKEN, token),
   StoreRefreshToken: (token: string) =>
+    typeof window !== "undefined" &&
     localStorage.setItem(KeyStore.REFRESH_TOKEN, token),
   GetAccessToken: () => localStorage.getItem(KeyStore.ACCESS_TOKEN),
   GetRefreshToken: () => localStorage.getItem(KeyStore.REFRESH_TOKEN),

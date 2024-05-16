@@ -1,12 +1,12 @@
 import ERROR_TEXTS from "@/constants/error-texts";
 import { AuthUrl } from "@/services/url";
 import axios, { AxiosResponse } from "axios";
+import { JWT } from "next-auth/jwt";
 
 const AuthServices = {
   login: async ({ email, password }: { email: string; password: string }) => {
-    console.log(AuthUrl.login);
     try {
-      const response: AxiosResponse = await axios.post(AuthUrl.login, {
+      const response: AxiosResponse = await axios.post(AuthUrl.signin, {
         email,
         password,
       });
@@ -53,20 +53,54 @@ const AuthServices = {
       throw new Error(ERROR_TEXTS.SIGNUP_ERROR);
     }
   },
-  refreshToken: async () => {
+  refreshToken: async (token: JWT) => {
     try {
-      const response: AxiosResponse = await axios.post(AuthUrl.refreshToken);
+      const response: AxiosResponse = await axios.post(AuthUrl.refreshToken, {
+        headers: {
+          Authorization: `Bearer ${token.refreshToken}`,
+        },
+      });
       const tokenData = response.data;
+      token.accessToken = tokenData.accessToken;
+      token.refreshToken = tokenData.refreshToken;
+      token.accessTokenExpiresIn = tokenData.accessTokenExpiresIn;
+      token.refreshTokenExpiresIn = tokenData.refreshTokenExpiresIn;
+      console.log("token data", token);
       if (response.statusText === "OK") {
         return {
-          accessToken: tokenData.accessToken,
-          refreshToken: tokenData.refreshToken,
+          ...token,
         };
       } else {
         throw new Error(ERROR_TEXTS.RESPONSE_ERROR);
       }
     } catch (error) {
       throw new Error(ERROR_TEXTS.API_ERROR);
+    }
+  },
+  googleLogin: async () => {
+    try {
+      const response: AxiosResponse = await axios.post(AuthUrl.googleLogin);
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+      }
+    } catch (error) {
+      throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+    }
+  },
+  facebookLogin: async () => {
+    try {
+      const response: AxiosResponse = await axios.post(AuthUrl.facebookLogin);
+
+      if (response.status === 200) {
+        return response.data;
+      } else {
+        throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
+      }
+    } catch (error) {
+      throw new Error(ERROR_TEXTS.USER_NOT_FOUND);
     }
   },
 };
