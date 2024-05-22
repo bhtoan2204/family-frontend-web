@@ -5,17 +5,20 @@ import Loader from "@/components/loader";
 import InitialModal from "@/components/modals/initial-modal";
 import { Family } from "@/types/family";
 import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const SetupPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const { data: session } = useSession();
   const [families, setFamilies] = useState<Family[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    if (!session?.accessToken) {
-      return redirect("/signin");
+    if (!session) {
+      // If there's no session, redirect to sign-in page
+      router.replace("/signin");
+      return;
     }
 
     const getFamilies = async () => {
@@ -26,16 +29,26 @@ const SetupPage = () => {
       }
     };
     getFamilies();
-  }, [session?.accessToken]);
+  }, [session, router]);
 
-  if (families.length > 0 && !isLoading) {
-    return redirect(`/family/${families[0].id_family}`);
+  useEffect(() => {
+    if (!isLoading) {
+      if (families.length > 0) {
+        // Redirect to the family page if families are available
+        router.replace(`/family/${families[0].id_family}`);
+      }
+    }
+  }, [families, isLoading, router]);
+
+  if (isLoading) {
+    return <Loader />;
   }
+
   if (families.length === 0 && !isLoading) {
-    console.log(isLoading, families.length);
     return <InitialModal />;
   }
-  return <Loader />;
+
+  return null;
 };
 
 export default SetupPage;
