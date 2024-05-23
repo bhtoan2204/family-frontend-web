@@ -1,7 +1,10 @@
+import { GetFinanceSummary } from "@/actions/finance-actions";
 import { auth } from "@/auth";
 import FinanceHeader from "@/components/user/finance/finance-header";
+import FinanceSummary from "@/components/user/finance/finance-summary";
 import GuidelineHeader from "@/components/user/guideline/guideline-header";
 import GuidelineStepCard from "@/components/user/guideline/guideline-step-card";
+import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
 
 const TV = [
@@ -76,11 +79,24 @@ interface FinancePageProps {
   };
 }
 
-const GuidelinePage = async ({ params }: FinancePageProps) => {
+const FinancePage = async ({ params }: FinancePageProps) => {
   const session = await auth();
 
   if (!session?.accessToken) {
     return redirect("/login");
+  }
+
+  const summaryData = await GetFinanceSummary(session.accessToken, parseInt(params.familyId));
+
+  if (summaryData === null) {
+    return (
+      <div className="flex flex-col flex-1 justify-center items-center">
+        <Loader2 className="w-7 h-7 tex-zinc-500 animate-spin my-4" />
+        <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          Loading finance...
+        </p>
+      </div>
+    );
   }
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
@@ -88,15 +104,8 @@ const GuidelinePage = async ({ params }: FinancePageProps) => {
 
       <div className="container space-y-3 mt-5">
         {params.financeCode === "1" &&
-          TV.map((step, index) => (
-            <GuidelineStepCard
-              step={index + 1}
-              title={step.title}
-              description={step.description}
-              image={step.image}
-              key={step.id}
-            />
-          ))}
+          <FinanceSummary familyId={params.familyId} summaryData={summaryData} />
+        }
         {params.financeCode === "2" &&
           Refrigerator.map((step, index) => (
             <GuidelineStepCard
@@ -112,4 +121,4 @@ const GuidelinePage = async ({ params }: FinancePageProps) => {
   );
 };
 
-export default GuidelinePage;
+export default FinancePage;

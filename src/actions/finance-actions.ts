@@ -8,6 +8,7 @@ import FinanceUrl, {
   LoanUrl,
   SavingUrl,
 } from "@/services/url/finance-url";
+import { FinanceSummary } from "@/types/finance-summary";
 
 // Finance Actions
 export const GetFinanceSummary = async (token: string, familyId: number) => {
@@ -23,7 +24,7 @@ export const GetFinanceSummary = async (token: string, familyId: number) => {
       }
     );
     const data = await response.json();
-    return data;
+    return data.data as FinanceSummary;
   } catch (error) {
     return { error: "Internal Error!" };
   }
