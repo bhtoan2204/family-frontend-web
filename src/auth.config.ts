@@ -32,7 +32,11 @@ export default {
             },
             body: JSON.stringify({ email, password }),
           });
-          return res.json();
+          const data = await res.json();
+          if (data.statusCode === 401 || data.statusCode === 400) {
+            throw new Error(data.message);
+          }
+          return await res.json();
         }
         return null;
       },

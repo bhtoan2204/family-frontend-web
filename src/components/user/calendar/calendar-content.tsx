@@ -3,7 +3,7 @@
 import "./calendar-content.css";
 
 import { tz } from "moment-timezone";
-import { Fragment, useCallback, useEffect, useRef } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 
 import { EventCalendar } from "@/types/calendar";
 import {
@@ -62,6 +62,7 @@ import {
   ToolbarComponent,
 } from "@syncfusion/ej2-react-navigations";
 import {
+  ActionEventArgs,
   Agenda,
   CellClickEventArgs,
   Day,
@@ -108,6 +109,22 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
   let intl: Internationalization = new Internationalization();
   let contextMenuObj = useRef<ContextMenuComponent>(null);
   let selectedTarget: Element;
+
+  const [eventSchedule, setEventSchedule] = useState({
+    CalendarId: 1,
+    Description: "",
+    StartTime: new Date(),
+    EndTime: new Date(),
+    Id: 1,
+    IsAllDay: false,
+    Location: "",
+    RecurrenceRule: null,
+    RecurranceID: null,
+    Subject: "",
+    RecurrenceException: null,
+    StartTimezone: null,
+    EndTimezone: null,
+  });
 
   const contextMenuOpen = (args: BeforeOpenCloseMenuEventArgs) => {
     let newEventElement: HTMLElement = document.querySelector(
@@ -676,6 +693,20 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
     }
   };
 
+  const onActionComplete = (args: ActionEventArgs) => {
+    const data = args.data as Record<string, any>[];
+    console.log(args.requestType);
+    if (args.requestType === "eventCreated") {
+      for (let event of data) {
+        console.log(event);
+      }
+    } else if (args.requestType === "eventChanged") {
+      for (let event of data) {
+        console.log(event);
+      }
+    }
+  };
+
   return (
     <div className="">
       <div className="schedule-control-section">
@@ -841,6 +872,7 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
                       timezone="Asia/Saigon"
                       eventSettings={{ dataSource: generateEvents() }}
                       dateHeaderTemplate={dateHeaderTemplate}
+                      actionComplete={onActionComplete}
                     >
                       <ResourcesDirective>
                         <ResourceDirective

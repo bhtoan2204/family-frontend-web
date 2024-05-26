@@ -41,10 +41,11 @@ const SigninForm = () => {
     startTransition(() => {
       SignIn(data)
         .then((response) => {
-          if (response.error) {
+          if ("error" in response) {
             setError(response.error);
+          } else {
+            setSuccess(response.success);
           }
-          setSuccess(response.success);
         })
         .catch((error) => {
           return;
