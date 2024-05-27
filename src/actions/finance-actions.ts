@@ -26,7 +26,8 @@ export const GetFinanceSummary = async (token: string, familyId: number) => {
     const data = await response.json();
     return data.data as FinanceSummary;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
+    // return { error: "Internal Error!" };
   }
 };
 

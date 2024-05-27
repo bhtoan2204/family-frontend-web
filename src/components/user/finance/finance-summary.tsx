@@ -1,7 +1,4 @@
-'use client'
-import { auth } from '@/auth';
 import { FinanceSummary } from '@/types/finance-summary';
-import { redirect } from 'next/navigation';
 import React, { useEffect } from 'react'
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 interface FinanceSummaryProps {
@@ -11,7 +8,7 @@ interface FinanceSummaryProps {
 
 const FinanceSummaryScreen = ({ familyId, summaryData }: FinanceSummaryProps) => {
     const isIncomePositive = parseFloat(summaryData.total_income) > 0;
-    const isExpenditurePositive = parseFloat(summaryData.total_expenditure) < 0;
+    const isExpenditurePositive = parseFloat(summaryData.total_expenditure) * -1 < 0;
     const isCurrentIncomePositive = parseFloat(summaryData.current_balance) > 0;
     return (
         <div className="h-full flex items-center justify-center p-6 w-full ">
