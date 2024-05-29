@@ -24,6 +24,10 @@ const financeCategories = [
         id: 3,
         name: "Income",
     },
+    {
+        id:4,
+        name: "Chart"
+    }
 ]
 
 const FinanceSidebar = async ({ familyId }: FinanceSidebarProps) => {

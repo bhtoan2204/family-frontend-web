@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select"
 
 const FinanceExpenditureMonthPicker = ({ month, setMonth, yearOfMonth, setYearOfMonth }: { month: number, setMonth: React.Dispatch<React.SetStateAction<number>>, yearOfMonth: number, setYearOfMonth: React.Dispatch<React.SetStateAction<number>> }) => {
+    const a: number[] = Array.from({ length: 10 }, (_, i) => yearOfMonth - 5 + i)
     return (
         <div className='flex space-x-4 items-center '>
             <Select defaultValue={month.toString()} onValueChange={(value) => {
@@ -46,8 +47,8 @@ const FinanceExpenditureMonthPicker = ({ month, setMonth, yearOfMonth, setYearOf
                     <SelectGroup>
                         <SelectLabel>Year:</SelectLabel>
                         {
-                            Array.from({ length: 10 }, (_, i) => {
-                                return <SelectItem key={i} value={(yearOfMonth + i).toString()}>{yearOfMonth - 5 + i}</SelectItem>
+                            a.map((item, i) => {
+                                return <SelectItem key={i} value={item.toString()}>{item}</SelectItem>
                             })
                         }
                     </SelectGroup>

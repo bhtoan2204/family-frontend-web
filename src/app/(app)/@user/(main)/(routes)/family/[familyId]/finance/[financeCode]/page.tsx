@@ -1,7 +1,10 @@
+import { GetAllMember } from "@/actions/family-actions";
 import { GetFinanceSummary } from "@/actions/finance-actions";
 import { auth } from "@/auth";
+import FinanceChartScreen from "@/components/user/finance/finance-chart";
 import FinanceExpenditureScreen from "@/components/user/finance/finance-expenditure";
 import FinanceHeader from "@/components/user/finance/finance-header";
+import FinanceIncomeScreen from "@/components/user/finance/finance-income";
 import FinanceSummary from "@/components/user/finance/finance-summary";
 import GuidelineHeader from "@/components/user/guideline/guideline-header";
 import GuidelineStepCard from "@/components/user/guideline/guideline-step-card";
@@ -88,8 +91,8 @@ const FinancePage = async ({ params }: FinancePageProps) => {
   }
 
   const summaryData = await GetFinanceSummary(session.accessToken, parseInt(params.familyId));
-
-  if (!summaryData) {
+  const familyMembers = await GetAllMember(session.accessToken, params.familyId);
+  if (!summaryData || !familyMembers) {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="w-7 h-7 tex-zinc-500 animate-spin my-4" />
@@ -105,21 +108,17 @@ const FinancePage = async ({ params }: FinancePageProps) => {
 
       <div className="container space-y-3 mt-5">
         {params.financeCode === "1" &&
-          <FinanceSummary familyId={params.familyId} summaryData={summaryData} />
+          <FinanceSummary familyId={params.familyId} summaryData={summaryData} token={session.accessToken} />
         }
         {params.financeCode === "2" &&
-          <FinanceExpenditureScreen familyId={params.familyId} token={session.accessToken} />
+          <FinanceExpenditureScreen familyId={params.familyId} token={session.accessToken} familyMembers={familyMembers} />
         }
         {params.financeCode === "3" &&
-          Refrigerator.map((step, index) => (
-            <GuidelineStepCard
-              step={index + 1}
-              title={step.title}
-              description={step.description}
-              image={step.image}
-              key={step.id}
-            />
-          ))}
+          <FinanceIncomeScreen familyId={params.familyId} token={session.accessToken} familyMembers={familyMembers} />
+        }
+        {params.financeCode === "4" &&
+          <FinanceChartScreen familyId={params.familyId} token={session.accessToken} />
+        }
       </div>
     </div>
   );

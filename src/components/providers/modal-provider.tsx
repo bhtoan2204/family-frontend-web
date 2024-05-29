@@ -12,6 +12,10 @@ import MessageFileModal from "@/components/modals/message-file-modal";
 import ModifyCalendarModal from "@/components/modals/modify-calendar.modal";
 import OpenImageModal from "@/components/modals/open-image-modal";
 import { useEffect, useState } from "react";
+import CreateExpenditureModal from "../modals/add-expenditure-modal";
+import CreateExpenditureTypeModal from "../modals/add-expenditure-type-modal";
+import CreateIncomeModal from "../modals/add-income-modal";
+import CreateIncomeTypeModal from "../modals/add-income-type-modal";
 
 export const ModalProvider = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -35,6 +39,10 @@ export const ModalProvider = () => {
       <ModifyCalendarModal />
       <CreateCalendarModal />
       <OpenImageModal />
+      <CreateExpenditureModal />
+      <CreateExpenditureTypeModal />
+      <CreateIncomeModal />
+      <CreateIncomeTypeModal />
     </>
   );
 };

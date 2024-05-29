@@ -29,7 +29,10 @@ const FormSchema = z.object({
         required_error: "A date is required.",
     }),
 })
-const FinanceExpenditureCalenderPicker = ({ date, setDate }: { date: string, setDate: React.Dispatch<React.SetStateAction<string>> }) => {
+
+const yesterday = new Date(new Date().setDate(new Date().getDate() - 1))
+
+const FinanceIncomeCalenderPicker = ({ date, setDate }: { date: string, setDate: React.Dispatch<React.SetStateAction<string>> }) => {
     const form = useForm<z.infer<typeof FormSchema>>({
         resolver: zodResolver(FormSchema),
         defaultValues: {
@@ -77,9 +80,9 @@ const FinanceExpenditureCalenderPicker = ({ date, setDate }: { date: string, set
                                             setDate(date!.toISOString().split("T")[0])
                                         }}
 
-                                        disabled={(date) =>
-                                            date > new Date() || date < new Date("1900-01-01")
-                                        }
+                                        // disabled={(date) =>
+                                        //     date < yesterday
+                                        // }
                                         initialFocus
                                         className='dark:bg-[#313338] dark:border-gray-600'
 
@@ -96,4 +99,4 @@ const FinanceExpenditureCalenderPicker = ({ date, setDate }: { date: string, set
     )
 }
 
-export default FinanceExpenditureCalenderPicker
+export default FinanceIncomeCalenderPicker

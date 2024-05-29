@@ -19,6 +19,12 @@ import FinanceExpenditureYearData from './finance-expenditure/finance-expenditur
 import { motion } from 'framer-motion';
 import theme from 'tailwindcss/defaultTheme';
 import { useTheme } from 'next-themes';
+import FinanceIncomeCalenderPicker from './finance-income/finance-income-date';
+import FinanceIncomeMonthPicker from './finance-income/finance-income-month-picker';
+import FinanceIncomeYearPicker from './finance-income/finance-income-year-picker';
+import FinanceIncomeDateData from './finance-income/finance-income-date-data';
+import FinanceIncomeMonthData from './finance-income/finance-income-month-data';
+import FinanceIncomeYearData from './finance-income/finance-income-year-data';
 import { Member } from '@/types/member';
 
 interface FinanceExpenditureScreenProps {
@@ -29,7 +35,7 @@ interface FinanceExpenditureScreenProps {
 
 
 
-const FinanceExpenditureScreen = ({ familyId, token, familyMembers }: FinanceExpenditureScreenProps) => {
+const FinanceIncomeScreen = ({ familyId, token, familyMembers }: FinanceExpenditureScreenProps) => {
     const params = useParams();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -71,10 +77,10 @@ const FinanceExpenditureScreen = ({ familyId, token, familyMembers }: FinanceExp
                     </Select>
                 </div>
                 {
-                    choosenType === "date" ? <FinanceExpenditureCalenderPicker date={date} setDate={setDate} />
-                        : choosenType === "month" ? <FinanceExpenditureMonthPicker
+                    choosenType === "date" ? <FinanceIncomeCalenderPicker date={date} setDate={setDate} />
+                        : choosenType === "month" ? <FinanceIncomeMonthPicker
                             month={month}
-                            setMonth={setMonth} yearOfMonth={yearOfMonth} setYearOfMonth={setYearOfMonth} /> : <FinanceExpenditureYearPicker year={year} setYear={setYear} />
+                            setMonth={setMonth} yearOfMonth={yearOfMonth} setYearOfMonth={setYearOfMonth} /> : <FinanceIncomeYearPicker year={year} setYear={setYear} />
 
                 }
             </div>
@@ -88,9 +94,9 @@ const FinanceExpenditureScreen = ({ familyId, token, familyMembers }: FinanceExp
                     transition={{ duration: 0.3 }}
                 >
                     {
-                        choosenType === "date" ? <FinanceExpenditureDateData date={date} familyId={familyId} token={token} familyMembers={familyMembers} />
-                            : choosenType === "month" ? <FinanceExpenditureMonthData month={month} yearOfMonth={yearOfMonth} familyId={familyId} token={token} familyMembers={familyMembers} />
-                                : <FinanceExpenditureYearData year={year} familyId={familyId} token={token} familyMembers={familyMembers} />
+                        choosenType === "date" ? <FinanceIncomeDateData date={date} familyId={familyId} token={token} familyMembers={familyMembers} />
+                            : choosenType === "month" ? <FinanceIncomeMonthData month={month} yearOfMonth={yearOfMonth} familyId={familyId} token={token} familyMembers={familyMembers} />
+                                : <FinanceIncomeYearData year={year} familyId={familyId} token={token} familyMembers={familyMembers} />
                     }
                 </motion.div>
             </div>
@@ -99,4 +105,4 @@ const FinanceExpenditureScreen = ({ familyId, token, familyMembers }: FinanceExp
     )
 }
 
-export default FinanceExpenditureScreen
+export default FinanceIncomeScreen
