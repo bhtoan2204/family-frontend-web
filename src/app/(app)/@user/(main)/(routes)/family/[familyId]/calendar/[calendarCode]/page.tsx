@@ -4,8 +4,10 @@ import {
 } from "@/actions/calendar-actions";
 import { auth } from "@/auth";
 import CalendarContent from "@/components/user/calendar/calendar-content";
+import { EventCalendar } from "@/types/calendar";
 import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 interface CalendarPageProps {
   params: {
@@ -15,31 +17,36 @@ interface CalendarPageProps {
 }
 
 const CalendarPage = async ({ params }: CalendarPageProps) => {
+  let responseEvents: EventCalendar[] = [];
+  let calendarCollenctions: Record<string, any>[] = [];
+
   const session = await auth();
   if (!session?.accessToken) {
     return redirect("/signin");
   }
 
-  const responseEvents = await GetAllEventOfFamily(
-    session.accessToken,
-    Number(params.familyId)
-  );
+  const fetchData = async () => {
+    responseEvents = await GetAllEventOfFamily(
+      session.accessToken,
+      Number(params.familyId)
+    );
 
-  const responseCategoryEvents = await GetAllCategoryEvent(
-    session.accessToken,
-    Number(params.familyId)
-  );
-
-  const calendarCollenctions: Record<string, any>[] =
-    responseCategoryEvents.map((item) => {
+    const responseCategoryEvents = await GetAllCategoryEvent(
+      session.accessToken,
+      Number(params.familyId)
+    );
+    calendarCollenctions = responseCategoryEvents.map((item) => {
       return {
         CalendarText: item.title,
         CalendarId: item.id_category_event,
         CalendarColor: item.color,
       };
     });
+  };
 
-  if (responseEvents.length === 0 || responseCategoryEvents.length === 0) {
+  await fetchData();
+
+  if (!responseEvents || !calendarCollenctions) {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="w-7 h-7 tex-zinc-500 animate-spin my-4" />
