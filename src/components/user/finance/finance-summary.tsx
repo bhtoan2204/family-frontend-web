@@ -41,6 +41,12 @@ const FinanceSummaryScreen = ({ familyId, summaryData }: FinanceSummaryProps) =>
     const [incomeData, setIncomeData] = React.useState<StatisticIncome[]>(statisticIncomeData.data);
     return (
         <div>
+
+            <div className="h-full flex items-center justify-center p-6 w-full my-10">
+                <div className="bg-transparent shadow-2xl rounded-2xl w-full p-8">
+                    <IncomeChart data={incomeData} />
+                </div>
+            </div>
             <div className="h-full flex items-center justify-center p-6 w-full ">
                 <div className="bg-transparent shadow-2xl rounded-2xl w-full p-8">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -100,11 +106,6 @@ const FinanceSummaryScreen = ({ familyId, summaryData }: FinanceSummaryProps) =>
                             </p>
                         </div>
                     </div>
-                </div>
-            </div>
-            <div className="h-full flex items-center justify-center p-6 w-full my-10">
-                <div className="bg-transparent shadow-2xl rounded-2xl w-full p-8">
-                    <IncomeChart data={incomeData} />
                 </div>
             </div>
         </div>
