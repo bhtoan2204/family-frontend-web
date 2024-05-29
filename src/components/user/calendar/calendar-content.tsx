@@ -2,7 +2,7 @@
 
 import "./calendar-content.css";
 
-import { tz } from "moment-timezone";
+import moment from "moment-timezone";
 import { Fragment, useCallback, useEffect, useRef } from "react";
 
 import {
@@ -266,7 +266,7 @@ const CalendarContent = ({
 
     if (typeof window !== "undefined" && Browser.isIE) {
       Timezone.prototype.offset = (date: Date, timezone: string): number =>
-        tz.zone(timezone)!.utcOffset(date.getTime());
+        moment.tz.zone(timezone)!.utcOffset(date.getTime());
     }
     let overviewEvents: { [key: string]: Date }[] = extend(
       [],
