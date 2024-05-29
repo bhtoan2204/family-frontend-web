@@ -1,8 +1,86 @@
 "use server";
 
 import CalendarUrl from "@/services/url/calendar-url";
-import { EventCalendar } from "@/types/calendar";
+import { CategoryEvent, EventCalendar } from "@/types/calendar";
 
+export const GetAllCategoryEvent = async (token: string, familyId: number) => {
+  try {
+    const response = await fetch(
+      `${CalendarUrl.getAllCategoryEvent}?id_family=${familyId}`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    return data as CategoryEvent[];
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+}
+export const CreateCategoryEvent = async (token: string, category: CategoryEvent) => { 
+  try {
+    const response = await fetch(CalendarUrl.createCategoryEvent, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        title: category.title,
+        color: category.color,
+        id_family: category.id_family,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { error: "Internal Error!" };
+  }
+
+}
+export const UpdateCategoryEvent = async (token: string, category: CategoryEvent) => {
+  try {
+    const response = await fetch(CalendarUrl.updateCategoryEvent, {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_category_event: category.id_category_event,
+        title: category.title,
+        color: category.color,
+        id_family: category.id_family,
+      }),
+    });
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { error: "Internal Error!" };
+  }
+}
+export const DeleteCategoryEvent = async (token: string, familyId:number, categoryId: number) => {
+  try {
+    const response = await fetch(
+      `${CalendarUrl.deleteCategoryEvent}/${familyId}?id_category_event=${categoryId}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return { error: "Internal Error!" };
+  }
+}
 export const GetAllEventOfFamily = async (token: string, familyId: number) => {
   try {
     const response = await fetch(
@@ -11,6 +89,7 @@ export const GetAllEventOfFamily = async (token: string, familyId: number) => {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );
@@ -30,6 +109,7 @@ export const GetEventsOnDate = async (
       method: "GET",
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({ id_family: familyId, date: date }),
     });
@@ -47,6 +127,7 @@ export const GetCalendarDetail = async (token: string, calendarId: number) => {
         method: "GET",
         headers: {
           Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       }
     );
@@ -56,31 +137,78 @@ export const GetCalendarDetail = async (token: string, calendarId: number) => {
     return { error: "Internal Error!" };
   }
 };
-export const CreateCalendar = async (token: string, calendar: any) => {
+export const CreateCalendar = async (
+  token: string,
+  familyId: number,
+  calendar: any,
+  calendarCollections: Record<string, any>[],
+) => {
   try {
+    const newEvent: EventCalendar = {
+      title: calendar.Subject,
+      description: calendar.Description ?? "",
+      time_start: calendar.StartTime,
+      time_end: calendar.EndTime,
+      color: calendarCollections.find(
+        (item) => item.CalendarId === calendar.CalendarId
+      )?.CalendarColor,
+      is_all_day: calendar.IsAllDay,
+      category: calendar.CalendarId,
+      location: calendar.Location ?? "",
+      recurrence_exception: calendar.RecurrenceException ?? "",
+      recurrence_id: calendar.RecurrenceID ?? null,
+      recurrence_rule: calendar.RecurrenceRule ?? "",
+      start_timezone: calendar.StartTimezone ?? "",
+      end_timezone: calendar.EndTimezone ?? "",
+      id_family: familyId,
+    };
     const response = await fetch(CalendarUrl.createCalendar, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(calendar),
+      body: JSON.stringify(newEvent),
     });
     const data = await response.json();
     return data;
   } catch (error) {
+    console.log("error", error);
     return { error: "Internal Error!" };
   }
 };
-export const UpdateCalendar = async (token: string, calendar: any) => {
+export const UpdateCalendar = async (
+  token: string,
+  familyId: number,
+  calendar: any,
+  calendarCollections: Record<string, any>[]
+) => {
   try {
+    const newEvent: EventCalendar = {
+      id_calendar: calendar.Id,
+      title: calendar.Subject,
+      description: calendar.Description ?? "",
+      time_start: calendar.StartTime,
+      time_end: calendar.EndTime,
+      color: calendarCollections.find(
+        (item) => item.CalendarId === calendar.CalendarId
+      )?.CalendarColor,
+      is_all_day: calendar.IsAllDay,
+      category: calendar.CalendarId,
+      location: calendar.Location ?? "",
+      recurrence_exception: calendar.RecurrenceException ?? "",
+      recurrence_id: calendar.RecurrenceID ?? null,
+      recurrence_rule: calendar.RecurrenceRule ?? "",
+      start_timezone: calendar.StartTimezone ?? "",
+      end_timezone: calendar.EndTimezone ?? "",
+    };
     const response = await fetch(CalendarUrl.updateCalendar, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(calendar),
+      body: JSON.stringify(newEvent),
     });
     const data = await response.json();
     return data;

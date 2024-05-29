@@ -3,11 +3,15 @@
 import "./calendar-content.css";
 
 import { tz } from "moment-timezone";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef } from "react";
 
+import {
+  CreateCalendar,
+  DeleteCalendar,
+  UpdateCalendar,
+} from "@/actions/calendar-actions";
 import { EventCalendar } from "@/types/calendar";
 import {
-  calendarCollections,
   contextMenuItems,
   getWeather,
   majorSlotData,
@@ -26,6 +30,7 @@ import {
   compile,
   extend,
   isNullOrUndefined,
+  registerLicense,
   remove,
   removeClass,
 } from "@syncfusion/ej2-base";
@@ -93,13 +98,21 @@ import {
   MenuEventArgs,
 } from "@syncfusion/ej2-react-splitbuttons";
 
+registerLicense(process.env.SYNCFUSION_LICENSE as string);
+
 interface CalendarContentProps {
   token: string;
   familyId: number;
   events: EventCalendar[];
+  calendarCollections: Record<string, any>[];
 }
 
-const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
+const CalendarContent = ({
+  token,
+  familyId,
+  events,
+  calendarCollections,
+}: CalendarContentProps) => {
   let isTimelineView = useRef<boolean>(false);
   let timeBtn = useRef<HTMLElement>(null);
   let scheduleObj = useRef<ScheduleComponent>(null);
@@ -109,22 +122,6 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
   let intl: Internationalization = new Internationalization();
   let contextMenuObj = useRef<ContextMenuComponent>(null);
   let selectedTarget: Element;
-
-  const [eventSchedule, setEventSchedule] = useState({
-    CalendarId: 1,
-    Description: "",
-    StartTime: new Date(),
-    EndTime: new Date(),
-    Id: 1,
-    IsAllDay: false,
-    Location: "",
-    RecurrenceRule: null,
-    RecurranceID: null,
-    Subject: "",
-    RecurrenceException: null,
-    StartTimezone: null,
-    EndTimezone: null,
-  });
 
   const contextMenuOpen = (args: BeforeOpenCloseMenuEventArgs) => {
     let newEventElement: HTMLElement = document.querySelector(
@@ -248,92 +245,25 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
 
   let generateEvents = (): Record<string, any>[] => {
     let eventData: Record<string, any>[] = [];
-    let eventSubjects: string[] = [
-      "Bering Sea Gold",
-      "Technology",
-      "Maintenance",
-      "Meeting",
-      "Traveling",
-      "Annual Conference",
-      "Birthday Celebration",
-      "Farewell Celebration",
-      "Wedding Anniversary",
-      "Alaska: The Last Frontier",
-      "Deadliest Catch",
-      "Sports Day",
-      "MoonShiners",
-      "Close Encounters",
-      "HighWay Thru Hell",
-      "Daily Planet",
-      "Cash Cab",
-      "Basketball Practice",
-      "Rugby Match",
-      "Guitar Class",
-      "Music Lessons",
-      "Doctor checkup",
-      "Brazil - Mexico",
-      "Opening ceremony",
-      "Final presentation",
-    ];
-    let weekDate: Date = new Date(
-      new Date().setDate(new Date().getDate() - new Date().getDay())
-    );
-    let startDate: Date = new Date(
-      weekDate.getFullYear(),
-      weekDate.getMonth(),
-      weekDate.getDate(),
-      10,
-      0
-    );
-    let endDate: Date = new Date(
-      weekDate.getFullYear(),
-      weekDate.getMonth(),
-      weekDate.getDate(),
-      11,
-      30
-    );
-    eventData.push({
-      Id: 1,
-      Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
-      StartTime: startDate,
-      EndTime: endDate,
-      Location: "",
-      Description: "Event Scheduled",
-      RecurrenceRule: "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=1;COUNT=10;",
-      IsAllDay: false,
-      IsReadonly: false,
-      CalendarId: 1,
-    });
-    for (let a: number = 0, id: number = 2; a < 500; a++) {
-      let month: number = Math.floor(Math.random() * (11 - 0 + 1) + 0);
-      let date: number = Math.floor(Math.random() * (28 - 1 + 1) + 1);
-      let hour: number = Math.floor(Math.random() * (23 - 0 + 1) + 0);
-      let minutes: number = Math.floor(Math.random() * (59 - 0 + 1) + 0);
-      let start: Date = new Date(
-        new Date().getFullYear(),
-        month,
-        date,
-        hour,
-        minutes,
-        0
-      );
-      let end: Date = new Date(start.getTime());
-      end.setHours(end.getHours() + 2);
-      let startDate: Date = new Date(start.getTime());
-      let endDate: Date = new Date(end.getTime());
+
+    for (let event of events) {
       eventData.push({
-        Id: id,
-        Subject: eventSubjects[Math.floor(Math.random() * (24 - 0 + 1) + 0)],
-        StartTime: startDate,
-        EndTime: endDate,
-        Location: "",
-        Description: "Event Scheduled",
-        IsAllDay: id % 10 === 0,
-        IsReadonly: endDate < new Date(),
-        CalendarId: (a % 4) + 1,
+        Id: event.id_calendar,
+        Subject: event.title,
+        StartTime: new Date(event.time_start),
+        EndTime: new Date(event.time_end),
+        Location: event.location,
+        Description: event.description,
+        IsAllDay: event.is_all_day,
+        CalendarId: event.category,
+        RecurrenceException: event.recurrence_exception,
+        RecurrenceID: event.recurrence_id,
+        RecurrenceRule: event.recurrence_rule,
+        StartTimezone: event.start_timezone,
+        EndTimezone: event.end_timezone,
       });
-      id++;
     }
+
     if (typeof window !== "undefined" && Browser.isIE) {
       Timezone.prototype.offset = (date: Date, timezone: string): number =>
         tz.zone(timezone)!.utcOffset(date.getTime());
@@ -693,16 +623,41 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
     }
   };
 
-  const onActionComplete = (args: ActionEventArgs) => {
+  const onActionComplete = async (args: ActionEventArgs) => {
     const data = args.data as Record<string, any>[];
-    console.log(args.requestType);
+    console.log(args);
     if (args.requestType === "eventCreated") {
       for (let event of data) {
-        console.log(event);
+        try {
+          await CreateCalendar(token, familyId, event, calendarCollections);
+        } catch (error) {
+          console.log(error);
+        }
       }
     } else if (args.requestType === "eventChanged") {
       for (let event of data) {
-        console.log(event);
+        try {
+          await UpdateCalendar(token, familyId, event, calendarCollections);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    } else if (args.requestType === "eventRemoved") {
+      if (args.deletedRecords) {
+        for (let event of args.deletedRecords) {
+          try {
+            await DeleteCalendar(token, event.Id);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      for (let event of data) {
+        try {
+          await DeleteCalendar(token, event.Id);
+        } catch (error) {
+          console.log(error);
+        }
       }
     }
   };
@@ -880,7 +835,11 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
                           title="Calendars"
                           name="Calendars"
                           dataSource={calendarCollections}
-                          query={new Query().where("CalendarId", "equal", 1)}
+                          query={new Query().where(
+                            "CalendarId",
+                            "equal",
+                            calendarCollections[0].CalendarId
+                          )}
                           textField="CalendarText"
                           idField="CalendarId"
                           colorField="CalendarColor"
@@ -943,16 +902,14 @@ const CalendarContent = ({ token, familyId, events }: CalendarContentProps) => {
                           id="resources"
                           cssClass="schedule-resource"
                           ref={resourceObj}
-                          dataSource={
-                            calendarCollections as Record<string, any>[]
-                          }
+                          dataSource={calendarCollections}
                           mode="CheckBox"
                           fields={{ text: "CalendarText", value: "CalendarId" }}
                           enableSelectionOrder={false}
                           showClearButton={false}
                           showDropDownIcon={true}
                           popupHeight={300}
-                          value={[1]}
+                          value={[calendarCollections[0].CalendarId]}
                           change={onResourceChange}
                         >
                           <Inject services={[CheckBoxSelection]} />

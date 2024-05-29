@@ -1,4 +1,7 @@
-import { GetAllEventOfFamily } from "@/actions/calendar-actions";
+import {
+  GetAllCategoryEvent,
+  GetAllEventOfFamily,
+} from "@/actions/calendar-actions";
 import { auth } from "@/auth";
 import CalendarContent from "@/components/user/calendar/calendar-content";
 import { Loader2 } from "lucide-react";
@@ -22,7 +25,21 @@ const CalendarPage = async ({ params }: CalendarPageProps) => {
     Number(params.familyId)
   );
 
-  if (responseEvents.length === 0) {
+  const responseCategoryEvents = await GetAllCategoryEvent(
+    session.accessToken,
+    Number(params.familyId)
+  );
+
+  const calendarCollenctions: Record<string, any>[] =
+    responseCategoryEvents.map((item) => {
+      return {
+        CalendarText: item.title,
+        CalendarId: item.id_category_event,
+        CalendarColor: item.color,
+      };
+    });
+
+  if (responseEvents.length === 0 || responseCategoryEvents.length === 0) {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
         <Loader2 className="w-7 h-7 tex-zinc-500 animate-spin my-4" />
@@ -39,6 +56,7 @@ const CalendarPage = async ({ params }: CalendarPageProps) => {
           token={session.accessToken}
           familyId={Number(params.familyId)}
           events={responseEvents}
+          calendarCollections={calendarCollenctions}
         />
       </div>
     );

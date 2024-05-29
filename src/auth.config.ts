@@ -33,10 +33,13 @@ export default {
             body: JSON.stringify({ email, password }),
           });
           const data = await res.json();
-          if (data.statusCode === 401 || data.statusCode === 400) {
+          if (
+            data.statusCode &&
+            (data.statusCode === 401 || data.statusCode === 400)
+          ) {
             throw new Error(data.message);
           }
-          return await res.json();
+          return data;
         }
         return null;
       },

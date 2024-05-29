@@ -14,19 +14,14 @@ const SetupPage = () => {
   const [families, setFamilies] = useState<Family[]>([]);
 
   useEffect(() => {
-    if (!session?.accessToken) {
-      return redirect("/signin");
-    }
-
     const getFamilies = async () => {
-      if (session?.accessToken) {
-        const family: Family[] = await GetAllFamilies(session.accessToken);
-        setFamilies(family);
-        setIsLoading(false);
-      }
+      const family: Family[] = await GetAllFamilies(session!.accessToken);
+      setFamilies(family);
+      setIsLoading(false);
     };
+
     getFamilies();
-  }, [session?.accessToken]);
+  }, [session]);
 
   if (families.length > 0 && !isLoading) {
     return redirect(`/family/${families[0].id_family}`);
