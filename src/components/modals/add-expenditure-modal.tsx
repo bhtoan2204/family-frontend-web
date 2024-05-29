@@ -67,7 +67,7 @@ const CreateExpenditureModal = () => {
             description: values.description,
         }
         await CreateExpensediture(data.createExpenditure?.token!, body)
-        data.createExpenditure?.setReload(true);
+        data.createExpenditure?.setReload((prev) => !prev);
         onClose();
     };
 

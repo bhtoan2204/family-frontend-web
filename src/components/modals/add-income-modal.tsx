@@ -69,7 +69,7 @@ const CreateIncomeModal = () => {
             description: values.description,
         }
         await CreateIncome(data.createIncome?.token!, body)
-        data.createIncome?.setReload(true);
+        data.createIncome?.setReload((prev) => !prev);
         onClose();
     };
 
@@ -139,9 +139,6 @@ const CreateIncomeModal = () => {
                                                             return <SelectItem value={item.id_income_source.toString()} key={index}>{item.category}</SelectItem>
                                                         })
                                                     }
-                                                    <SelectItem value="1">Type 1</SelectItem>
-                                                    <SelectItem value="2">Type 2</SelectItem>
-                                                    {/* Add more expense types here */}
                                                 </SelectContent>
                                             </Select>
                                         </FormControl>
