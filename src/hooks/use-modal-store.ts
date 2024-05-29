@@ -1,5 +1,10 @@
 import { EventCalendar } from "@/types/calendar";
 import { Family } from "@/types/family";
+import {
+  CreateExpenditureType,
+  CreateExpenditure,
+} from "@/types/finance-expenditure";
+import { CreateIncome, CreateIncomeType } from "@/types/finance-income";
 import { create } from "zustand";
 
 export type ModalType =
@@ -15,7 +20,12 @@ export type ModalType =
   | "createCalendar"
   | "modifyCalendar"
   | "createGuideline"
-  | "openImage";
+  | "openImage"
+  | "createExpenditure"
+  | "createExpenditureType"
+  | "createIncome"
+  | "createIncomeType"
+  ;
 
 interface ModalData {
   family?: Family;
@@ -23,6 +33,10 @@ interface ModalData {
   query?: Record<string, any>;
   event?: EventCalendar;
   imageUrl?: string;
+  createExpenditure?: CreateExpenditure;
+  createExpenditureType?: CreateExpenditureType;
+  createIncome?: CreateIncome;
+  createIncomeType?: CreateIncomeType;
 }
 
 interface ModalStore {

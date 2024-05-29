@@ -17,12 +17,25 @@ import FamilySection from "@/components/user/family/family-section";
 import { GuidelineItemType } from "@/types/guideline";
 import { roleIconMapRight } from "@/util/rol-icon-map";
 import { redirect } from "next/navigation";
+import { useState } from "react";
 
 interface FamilySidebarProps {
   familyId: string;
 }
 
 const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
+  // const [isExpanded, setIsExpanded] = useState(localStorage.getItem('isExpanded') === 'true');
+
+  // const handleToggle = () => {
+  //   const newValue = !isExpanded;
+  //   setIsExpanded(newValue);
+  //   localStorage.setItem('isExpanded', newValue.toString()); // Lưu trạng thái vào localStorage
+  // };
+
+  // useEffect(() => {
+  //   setIsExpanded(localStorage.getItem('isExpanded') === 'true');
+  // }, []);
+
   const session = await auth();
   if (!session?.accessToken) {
     return redirect("/setup");

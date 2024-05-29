@@ -84,6 +84,7 @@ const GuidelinePage = async ({ params }: GuidelinePageProps) => {
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <GuidelineHeader familyId={params.familyId} />
+      
       <div className="container space-y-3 mt-5">
         {params.itemId === "1" &&
           TV.map((step, index) => (

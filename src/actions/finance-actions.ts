@@ -8,6 +8,19 @@ import FinanceUrl, {
   LoanUrl,
   SavingUrl,
 } from "@/services/url/finance-url";
+import {
+  ExpenditureType,
+  FinanceExpenditureDate,
+  FinanceExpenditureMonth,
+  FinanceExpenditureYear,
+} from "@/types/finance-expenditure";
+import {
+  FinanceIncomeDate,
+  FinanceIncomeMonth,
+  FinanceIncomeYear,
+  IncomeType,
+} from "@/types/finance-income";
+import { FinanceSummary } from "@/types/finance-summary";
 
 // Finance Actions
 export const GetFinanceSummary = async (token: string, familyId: number) => {
@@ -23,9 +36,10 @@ export const GetFinanceSummary = async (token: string, familyId: number) => {
       }
     );
     const data = await response.json();
-    return data;
+    return data.data as FinanceSummary;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
+    // return { error: "Internal Error!" };
   }
 };
 
@@ -100,19 +114,25 @@ export const DeleteAsset = async (
 };
 
 // Expensediture Actions
-export const GetExpenseditures = async (token: string) => {
+export const GetExpenseditures = async (token: string, familyId: string) => {
   try {
-    const response = await fetch(ExpenseditureUrl.getExpenseditures, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      ExpenseditureUrl.getExpenseditures + "/" + familyId,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     const data = await response.json();
-    return data;
+    if (!data) {
+      return [] as ExpenditureType[];
+    }
+    return data.data as ExpenditureType[];
   } catch (error) {
-    return { error: "Internal Error!" };
+    return [] as ExpenditureType[];
   }
 };
 export const GetExpensediture = async (token: string) => {
@@ -132,7 +152,7 @@ export const GetExpensediture = async (token: string) => {
 };
 export const CreateExpensediture = async (token: string, data: any) => {
   try {
-    await fetch(ExpenseditureUrl.createExpensedituree, {
+    await fetch(ExpenseditureUrl.createExpensediture, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -180,9 +200,9 @@ export const DeleteExpensediture = async (
 };
 
 // Income Actions
-export const GetIncomeSource = async (token: string) => {
+export const GetIncomeSource = async (token: string, familyId: string) => {
   try {
-    const response = await fetch(IncomeUrl.getIncomeSource, {
+    const response = await fetch(IncomeUrl.getIncomeSource + "/" + familyId, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -190,9 +210,12 @@ export const GetIncomeSource = async (token: string) => {
       },
     });
     const data = await response.json();
-    return data;
+    if (!data) {
+      return [] as IncomeType[];
+    }
+    return data.data as IncomeType[];
   } catch (error) {
-    return { error: "Internal Error!" };
+    return [] as IncomeType[];
   }
 };
 export const GetIncome = async (
@@ -510,5 +533,183 @@ export const DeleteSaving = async (
     });
   } catch (error) {
     return { error: "Internal Error!" };
+  }
+};
+export const GetExpenditureByDate = async (
+  token: string,
+  familyId: string,
+  date: string
+) => {
+  try {
+    console.log(
+      ExpenseditureUrl.getExpenditureByDate + "/" + familyId + "?date=" + date
+    );
+    const response = await fetch(
+      ExpenseditureUrl.getExpenditureByDate + "/" + familyId + "?date=" + date,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!data) {
+      return [] as FinanceExpenditureDate[];
+    }
+    return data.data as FinanceExpenditureDate[];
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+export const GetExpenditureByMonth = async (
+  token: string,
+  familyId: string,
+  month: string,
+  year: string
+) => {
+  try {
+    console.log(
+      ExpenseditureUrl.getExpenditureByMonth +
+        "/" +
+        familyId +
+        "?year=" +
+        year +
+        "&month=" +
+        month
+    );
+    const response = await fetch(
+      ExpenseditureUrl.getExpenditureByMonth +
+        "/" +
+        familyId +
+        "?year=" +
+        year +
+        "&month=" +
+        month,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!data) {
+      return [] as FinanceExpenditureMonth[];
+    }
+    return data.data as FinanceExpenditureMonth[];
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+export const GetExpenditureByYear = async (
+  token: string,
+  familyId: string,
+  year: string
+) => {
+  try {
+    const response = await fetch(
+      ExpenseditureUrl.getExpenditureByYear + "/" + familyId + "?year=" + year,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!data) {
+      return [] as FinanceExpenditureYear[];
+    }
+    return data.data as FinanceExpenditureYear[];
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+export const GetIncomeByDate = async (
+  date: string,
+  familyId: string,
+  token: string
+) => {
+  try {
+    console.log(
+      ExpenseditureUrl.getExpenditureByDate + "/" + familyId + "?date=" + date
+    );
+    const response = await fetch(
+      IncomeUrl.getIncomeByDate + "/" + familyId + "?date=" + date,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!data) {
+      return [] as FinanceIncomeDate[];
+    }
+    return data.data as FinanceIncomeDate[];
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+export const GetIncomeByMonth = async (
+  token: string,
+  familyId: string,
+  month: string,
+  year: string
+) => {
+  try {
+    const response = await fetch(
+      IncomeUrl.getIncomeByMonth +
+        "/" +
+        familyId +
+        "?year=" +
+        year +
+        "&month=" +
+        month,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!data) {
+      return [] as FinanceIncomeMonth[];
+    }
+    return data.data as FinanceIncomeMonth[];
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+export const GetIncomeByYear = async (
+  token: string,
+  familyId: string,
+  year: string
+) => {
+  try {
+    const response = await fetch(
+      IncomeUrl.getIncomeByYear + "/" + familyId + "?year=" + year,
+      {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await response.json();
+    if (!data) {
+      return [] as FinanceIncomeYear[];
+    }
+    return data.data as FinanceIncomeYear[];
+  } catch (error) {
+    throw new Error("Internal Error!");
   }
 };

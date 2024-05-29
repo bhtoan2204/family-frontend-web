@@ -25,6 +25,7 @@ const FamilySection = ({
   role,
   sectionType,
   family,
+  
 }: FamilySectionProps) => {
   const { onOpen } = useModal();
   return (
