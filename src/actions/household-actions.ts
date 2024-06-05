@@ -1,6 +1,7 @@
 "use server";
 
 import HouseholdUrl from "@/services/url/household-url";
+import { HouseholdCategory, HouseholdItem } from "@/types/household";
 
 export const GetHouseholdCategory = async (token: string) => {
   try {
@@ -12,9 +13,9 @@ export const GetHouseholdCategory = async (token: string) => {
       },
     });
     const data = await response.json();
-    return data;
+    return data as HouseholdCategory[];
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetHouseholdItem = async (
@@ -25,7 +26,7 @@ export const GetHouseholdItem = async (
 ) => {
   try {
     const response = await fetch(
-      `${HouseholdUrl.getHouseholdItem}/${familyId}&page=${page}&itemsPerPage=${itemsPerPage}`,
+      `${HouseholdUrl.getHouseholdItem}/${familyId}?page=${page}&itemsPerPage=${itemsPerPage}`,
       {
         method: "GET",
         headers: {
@@ -35,9 +36,9 @@ export const GetHouseholdItem = async (
       }
     );
     const data = await response.json();
-    return data;
+    return data as HouseholdItem[];
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetHouseholdItemDetail = async (

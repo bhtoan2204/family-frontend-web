@@ -97,6 +97,7 @@ import {
   ItemModel,
   MenuEventArgs,
 } from "@syncfusion/ej2-react-splitbuttons";
+import { useRouter } from "next/navigation";
 
 registerLicense(process.env.SYNCFUSION_LICENSE as string);
 
@@ -122,6 +123,7 @@ const CalendarContent = ({
   let intl: Internationalization = new Internationalization();
   let contextMenuObj = useRef<ContextMenuComponent>(null);
   let selectedTarget: Element;
+  const router = useRouter();
 
   const contextMenuOpen = (args: BeforeOpenCloseMenuEventArgs) => {
     let newEventElement: HTMLElement = document.querySelector(
@@ -624,10 +626,9 @@ const CalendarContent = ({
   };
 
   const onActionComplete = async (args: ActionEventArgs) => {
-    const data = args.data as Record<string, any>[];
     console.log(args);
     if (args.requestType === "eventCreated") {
-      for (let event of data) {
+      for (let event of args.data as Record<string, any>[]) {
         try {
           await CreateCalendar(token, familyId, event, calendarCollections);
         } catch (error) {
@@ -635,16 +636,26 @@ const CalendarContent = ({
         }
       }
     } else if (args.requestType === "eventChanged") {
-      for (let event of data) {
-        try {
-          await UpdateCalendar(token, familyId, event, calendarCollections);
-        } catch (error) {
-          console.log(error);
+      if (args.addedRecords!.length > 0) {
+        for (let event of args.addedRecords!) {
+          try {
+            await CreateCalendar(token, familyId, event, calendarCollections);
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
-    } else if (args.requestType === "eventRemoved") {
-      if (args.deletedRecords) {
-        for (let event of args.deletedRecords) {
+      if (args.changedRecords!.length > 0) {
+        for (let event of args.changedRecords!) {
+          try {
+            await UpdateCalendar(token, familyId, event, calendarCollections);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      if (args.deletedRecords!.length > 0) {
+        for (let event of args.deletedRecords!) {
           try {
             await DeleteCalendar(token, event.Id);
           } catch (error) {
@@ -652,14 +663,40 @@ const CalendarContent = ({
           }
         }
       }
-      for (let event of data) {
-        try {
-          await DeleteCalendar(token, event.Id);
-        } catch (error) {
-          console.log(error);
+    } else if (args.requestType === "eventRemoved") {
+      if (
+        args.data!.length > 0 &&
+        args.deletedRecords!.length === 0 &&
+        args.changedRecords!.length === 0
+      ) {
+        for (let event of args.data! as Record<string, any>[]) {
+          try {
+            await DeleteCalendar(token, event.Id);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      if (args.deletedRecords!.length > 0) {
+        for (let event of args.deletedRecords!) {
+          try {
+            await DeleteCalendar(token, event.Id);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      if (args.changedRecords!.length > 0) {
+        for (let event of args.changedRecords!) {
+          try {
+            await UpdateCalendar(token, familyId, event, calendarCollections);
+          } catch (error) {
+            console.log(error);
+          }
         }
       }
     }
+    router.refresh();
   };
 
   return (

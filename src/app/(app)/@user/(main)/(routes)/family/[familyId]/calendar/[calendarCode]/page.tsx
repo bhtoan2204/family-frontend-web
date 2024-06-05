@@ -7,7 +7,6 @@ import CalendarContent from "@/components/user/calendar/calendar-content";
 import { EventCalendar } from "@/types/calendar";
 import { Loader2 } from "lucide-react";
 import { redirect } from "next/navigation";
-import { useState } from "react";
 
 interface CalendarPageProps {
   params: {

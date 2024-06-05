@@ -1,6 +1,7 @@
 "use server";
 
 import EducationUrl from "@/services/url/education-url";
+import { EducationProgress, EducationProgressDetail } from "@/types/education";
 
 export const GetAllEducation = async (
   token: string,
@@ -20,9 +21,9 @@ export const GetAllEducation = async (
       }
     );
     const data = await response.json();
-    return data;
+    return data.data as EducationProgress[];
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetEducationDetail = async (
@@ -42,9 +43,9 @@ export const GetEducationDetail = async (
       }
     );
     const data = await response.json();
-    return data;
+    return data.data[0] as EducationProgressDetail;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const CreateEducation = async (
