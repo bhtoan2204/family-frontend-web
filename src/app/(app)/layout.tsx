@@ -1,38 +1,33 @@
-"use client";
+import { ModalProvider } from "@/components/providers/modal-provider";
+import QueryProvider from "@/components/providers/query-provider";
+import { ThemeProvider } from "@/components/providers/theme-provider";
+import { cn } from "@/lib/utils";
+import { Open_Sans } from "next/font/google";
+import { ReactNode } from "react";
+import "../globals-dark.css";
 
-import Loader from "@/components/loader";
-import { useSession } from "next-auth/react";
-import { ReactNode, useEffect, useState } from "react";
+const font = Open_Sans({ subsets: ["latin"] });
 
-const AppLayout = ({
-  user,
-  admin,
+const UserLayout = ({
+  children,
 }: Readonly<{
-  user: ReactNode;
-  admin: ReactNode;
+  children: ReactNode;
 }>) => {
-  const { data: session } = useSession();
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const getAccessToken = async () => {
-      if (session?.accessToken) {
-        setAccessToken(session.accessToken);
-        setLoading(false);
-      }
-    };
-    getAccessToken();
-  }, [session?.accessToken]);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  if (!accessToken) {
-    return <>{admin}</>;
-  } else {
-    return <>{user}</>;
-  }
+  return (
+    <html lang="en" suppressHydrationWarning>
+      <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem={false}
+          storageKey="user-default-theme"
+        >
+          <ModalProvider />
+          <QueryProvider>{children}</QueryProvider>
+        </ThemeProvider>
+      </body>
+    </html>
+  );
 };
 
-export default AppLayout;
+export default UserLayout;
