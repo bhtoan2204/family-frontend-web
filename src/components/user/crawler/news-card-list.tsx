@@ -28,13 +28,15 @@ const NewsCardList = ({ page, cat, token }: NewsCardListProps) => {
   }
 
   useEffect(() => {
-    const fetchNews = async () => {
-      setIsLoading(true);
-      const news = await GetNews(token, cat, page.toString(), "5");
-      setNewsRes(news);
-      setIsLoading(false);
-    };
-    fetchNews();
+    if (token && cat && page) {
+      const fetchNews = async () => {
+        setIsLoading(true);
+        const news = await GetNews(token, cat, page.toString(), "5");
+        setNewsRes(news);
+        setIsLoading(false);
+      };
+      fetchNews();
+    }
   }, [cat, page, token]);
 
   const POST_PER_PAGE = 5;
