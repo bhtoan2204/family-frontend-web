@@ -104,16 +104,16 @@ const FinancePage = async ({ params }: FinancePageProps) => {
 
       <div className="container space-y-3 mt-5">
         {params.financeCode === "1" &&
-          <FinanceSummary familyId={params.familyId} summaryData={summaryData} token={session.accessToken} />
+          <FinanceSummary familyId={params.familyId} summaryData={summaryData} token={session!.accessToken} />
         }
         {params.financeCode === "2" &&
-          <FinanceExpenditureScreen familyId={params.familyId} token={session.accessToken} familyMembers={familyMembers} />
+          <FinanceExpenditureScreen familyId={params.familyId} token={session!.accessToken} familyMembers={familyMembers} />
         }
         {params.financeCode === "3" &&
-          <FinanceIncomeScreen familyId={params.familyId} token={session.accessToken} familyMembers={familyMembers} />
+          <FinanceIncomeScreen familyId={params.familyId} token={session!.accessToken} familyMembers={familyMembers} />
         }
         {params.financeCode === "4" &&
-          <FinanceChartScreen familyId={params.familyId} token={session.accessToken} />
+          <FinanceChartScreen familyId={params.familyId} token={session!.accessToken} />
         }
       </div>
     </div>
