@@ -14,7 +14,6 @@ import FamilyMember from "@/components/user/family/family-member";
 import FamilyNews from "@/components/user/family/family-news";
 import FamilySearch from "@/components/user/family/family-search";
 import FamilySection from "@/components/user/family/family-section";
-import { GuidelineItemType } from "@/types/guideline";
 import { roleIconMapRight } from "@/util/rol-icon-map";
 import { redirect } from "next/navigation";
 
@@ -48,15 +47,12 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
     return redirect("/family");
   });
 
-  const allGuidelines: GuidelineItemType[] = await GetAllGuideline(
+  const { guidelines: allGuidelines, total } = await GetAllGuideline(
     session.accessToken,
     Number(familyId),
     1,
     10
-  ).catch((error) => {
-    console.log(error);
-    return [];
-  });
+  );
 
   if (family.members.length === 0 || !family) {
     return redirect("/family");
