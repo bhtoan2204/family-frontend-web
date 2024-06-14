@@ -11,14 +11,19 @@ declare module "next-auth" {
       id: string;
       email: string;
       phone: string;
-      firstname: string;
-      lastname: string;
-      avatar: string;
-      created_at: string;
-      updated_at: string;
-      isEmailVerified: boolean;
+      language: string;
+      twofa: boolean;
+      createdAt: string;
+      updatedAt: string;
       isPhoneVerified: boolean;
       isAdmin: boolean;
+      firstname: string;
+      lastname: string;
+      isEmailVerified: boolean;
+      avatar: string;
+      loginType: string;
+      birthdate: string | null;
+      genre: string | null;
     };
   }
 }
@@ -30,17 +35,22 @@ declare module "next-auth/jwt" {
     accessTokenExpiresIn: number;
     refreshTokenExpiresIn: number;
     user: {
-      id: string;
+      id_user: string;
       email: string;
       phone: string;
-      firstname: string;
-      lastname: string;
-      avatar: string;
+      language: string;
+      twofa: boolean;
       created_at: string;
       updated_at: string;
-      isEmailVerified: boolean;
-      isPhoneVerified: boolean;
-      isAdmin: boolean;
+      isphoneverified: boolean;
+      isadmin: boolean;
+      firstname: string;
+      lastname: string;
+      isemailverified: boolean;
+      avatar: string;
+      login_type: string;
+      birthdate: string | null;
+      genre: string | null;
     };
   }
 }

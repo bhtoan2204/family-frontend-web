@@ -72,7 +72,7 @@ const SignupForm = () => {
       headerTitle="Signup"
       headerLabel="Welcome Back"
       backButtonLabel="Already have an account?"
-      backButtonHref="/login"
+      backButtonHref="/signin"
       showSocial
     >
       <Form {...form}>

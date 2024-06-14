@@ -27,7 +27,7 @@ const NavigationItem = ({ id, name, imageUrl }: NavigationItemProps) => {
       >
         <div
           className={cn(
-            "absolute left-0 bg-primary rounded-r-full transition-all w-[4px]",
+            "absolute right-0 bg-primary rounded-l-full transition-all w-[4px]",
             params?.familyId !== id && "group-hover:h-[20px]",
             params?.familyId === id ? "h-[36px]" : "h-[8px]"
           )}

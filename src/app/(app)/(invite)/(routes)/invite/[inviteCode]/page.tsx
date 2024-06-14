@@ -16,7 +16,7 @@ const InviteCodePage = async ({ params }: InviteCodePageProps) => {
   }
 
   if (!params.inviteCode) {
-    return redirect("/setup");
+    return redirect("/family");
   }
 
 

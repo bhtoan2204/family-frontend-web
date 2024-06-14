@@ -1,3 +1,5 @@
+"use server";
+
 import RoomUrl from "@/services/url/room-url";
 import { Room } from "@/types/household";
 

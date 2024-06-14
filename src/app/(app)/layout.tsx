@@ -4,7 +4,6 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { cn } from "@/lib/utils";
 import { Open_Sans } from "next/font/google";
 import { ReactNode } from "react";
-import "../globals-dark.css";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -14,7 +13,7 @@ const UserLayout = ({
   children: ReactNode;
 }>) => {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body className={cn(font.className, "bg-white dark:bg-[#313338]")}>
         <ThemeProvider
           attribute="class"

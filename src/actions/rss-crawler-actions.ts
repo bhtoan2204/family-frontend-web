@@ -21,7 +21,10 @@ export const GetNews = async (
       }
     );
     const data = await response.json();
-    return data.items as News[];
+    return {
+      news: data.items as News[],
+      total: data.totalItems as number,
+    };
   } catch (error) {
     throw new Error("Internal Error!");
   }

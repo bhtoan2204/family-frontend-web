@@ -27,7 +27,7 @@ const LeaveFamilyModel = () => {
       // To Do: Call the API to leave the family
       onClose();
       router.refresh();
-      router.push("/setup");
+      router.push("/family");
     } catch (error) {
     } finally {
       setIsLoading(false);

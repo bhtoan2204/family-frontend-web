@@ -20,26 +20,22 @@ interface ChatPageProps {
 const ChatPage = async ({ params }: ChatPageProps) => {
   const session = await auth();
 
-  if (!session?.accessToken) {
-    return redirect("/login");
-  }
-
   const family: Family = await GetFamilyDetail(
-    session.accessToken,
+    session!.accessToken,
     params.familyId
   );
 
   const isMember = await CheckIfUserIsInFamily(
-    session.accessToken,
-    session.user.id,
+    session!.accessToken,
+    session!.user.id,
     params.familyId
   );
 
   if (!isMember) {
-    return redirect("/setup");
+    return redirect("/family");
   }
 
-  const member = await GetMemberDetail(session.accessToken, session.user.id);
+  const member = await GetMemberDetail(session!.accessToken, session!.user.id);
 
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
@@ -54,7 +50,7 @@ const ChatPage = async ({ params }: ChatPageProps) => {
           familyId: params.familyId,
           chatCode: params.chatCode,
           memberId: member.id_user,
-          token: session.accessToken,
+          token: session!.accessToken,
         }}
         paramKey="chatId"
         paramValue={params.familyId}
@@ -66,7 +62,7 @@ const ChatPage = async ({ params }: ChatPageProps) => {
         query={{
           familyId: params.familyId,
           chatCode: params.chatCode,
-          token: session.accessToken,
+          token: session!.accessToken,
         }}
         type="chat"
       />

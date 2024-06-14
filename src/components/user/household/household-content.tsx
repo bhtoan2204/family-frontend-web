@@ -1,63 +1,64 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { HouseholdCategory, HouseholdItem, Room } from "@/types/household";
-import { useState } from "react";
+import { GetHouseholdItem } from "@/actions/household-actions";
+import Loader from "@/components/loader";
+import { HouseholdItem } from "@/types/household";
+import { useEffect, useState } from "react";
+import HouseholdHoverCard from "./hover-card/household-hover-card";
 
 interface HouseholdContentProps {
-  rooms: Room[];
-  householdCategory: HouseholdCategory[];
-  householdItems: HouseholdItem[];
+  page: string;
+  token: string;
+  familyId: number;
 }
 
-const HouseholdContent = ({
-  rooms,
-  householdCategory,
-  householdItems,
-}: HouseholdContentProps) => {
-  const [selectedRoom, setSelectedRoom] = useState<Room>();
-  const [loading, setLoading] = useState<boolean>(false);
-  return (
-    <div className="flex-1 flex flex-col p-4 overflow-y-auto">
-      <div className="grid grid-cols-6 h-full">
-        <div className="col-span-2">
-          <ScrollArea>
-            {rooms.map((room, index) => (
-              <button
-                onClick={() => setSelectedRoom(room)}
-                key={room.room_name}
-                className="group flex w-full"
-              >
-                <div className="flex items-center gap-x-2">
-                  <p className="text-sm font-medium text-black dark:text-white">
-                    {room.room_name}
-                  </p>
-                </div>
-              </button>
-            ))}
-          </ScrollArea>
-        </div>
-        <div className="col-span-4">
-          <ScrollArea>
-            {householdItems.map((item, index) => (
-              <div key={item.id_household_item} className="group flex w-full">
-                <div className="flex items-center gap-x-2">
-                  <p className="text-sm font-medium text-black dark:text-white">
-                    {item.item_name}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-black dark:text-white">
-                    {item.item_description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </ScrollArea>
+const HouseholdContent = ({ page, token, familyId }: HouseholdContentProps) => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [householdItems, setHouseholdItems] = useState<HouseholdItem[]>([]);
+
+  useEffect(() => {
+    if (familyId && token) {
+      const fetchHouseholdItems = async () => {
+        setIsLoading(true);
+        const householdItemsRes = await GetHouseholdItem(
+          token,
+          familyId,
+
+          page,
+          "9"
+        );
+        setHouseholdItems(householdItemsRes);
+        setIsLoading(false);
+      };
+      fetchHouseholdItems();
+    }
+  }, [familyId, token, page]);
+
+  if (!isLoading && householdItems && householdItems.length === 0) {
+    return (
+      <div className="flex-[5]">
+        <h1 className="my-12.5 mx-0 text-3xl">Household Items</h1>
+        <div>
+          <h1 className="text-2xl mb-12.5">No items found</h1>
         </div>
       </div>
-    </div>
-  );
+    );
+  } else if (!isLoading && householdItems && householdItems.length > 0) {
+    <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
+      {householdItems.map((item) => (
+        <HouseholdHoverCard
+          key={item.id_household_item}
+          item_id={item.id_household_item}
+          name={item.item_name}
+          image={item.item_imageurl}
+          familyId={familyId}
+          token={token}
+        />
+      ))}
+    </div>;
+  } else {
+    return <Loader />;
+  }
 };
 
 export default HouseholdContent;

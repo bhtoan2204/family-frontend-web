@@ -6,7 +6,7 @@ const ChatLayout = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  return <SocketProvider>{children}</SocketProvider>;
+  return <SocketProvider>{children};</SocketProvider>;
 };
 
 export default ChatLayout;

@@ -1,8 +1,8 @@
 import { EventCalendar } from "@/types/calendar";
 import { Family } from "@/types/family";
 import {
-  CreateExpenditureType,
   CreateExpenditure,
+  CreateExpenditureType,
 } from "@/types/finance-expenditure";
 import { CreateIncome, CreateIncomeType } from "@/types/finance-income";
 import { create } from "zustand";
@@ -20,15 +20,38 @@ export type ModalType =
   | "createCalendar"
   | "modifyCalendar"
   | "createGuideline"
+  | "editGuideline"
+  | "deleteGuideline"
+  | "createStep"
+  | "editStep"
+  | "deleteStep"
   | "openImage"
   | "createExpenditure"
   | "createExpenditureType"
   | "createIncome"
   | "createIncomeType"
-  ;
+  | "createRoom"
+  | "editRoom"
+  | "deleteRoom"
+  | "createHouseholdItem"
+  | "editHouseholdItem"
+  | "deleteHouseholdItem";
 
 interface ModalData {
+  token?: string;
   family?: Family;
+  familyId?: string;
+  guidelineId?: string;
+  guideline?: any;
+  step?: any;
+  roomId?: string;
+  room?: any;
+  householdItemId?: string;
+  householdItem?: any;
+  addStepOption?: boolean;
+  maxStepIndex?: number;
+  isUsingIndex?: boolean;
+  index?: number;
   apiUrl?: string;
   query?: Record<string, any>;
   event?: EventCalendar;

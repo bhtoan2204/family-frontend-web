@@ -1,7 +1,7 @@
 import { SignOut } from "@/actions/auth-actions";
 import { GetFamilyDetail } from "@/actions/family-actions";
 import { auth } from "@/auth";
-import FamilySidebar from "@/components/user/family/family-sidebar";
+import FamilyNavigationSidebar from "@/components/user/family/navigation/family-navigation-sidebar";
 import { Family } from "@/types/family";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
@@ -24,18 +24,21 @@ const FamilyIdLayout = async ({
   );
 
   if (!family) {
-    return redirect("/setup");
+    return redirect("/family");
   }
 
   return (
     <div className="h-full">
-      <div
-        className="hidden md:flex h-full w-60 z-20 flex-col fixed
-      inset-y-0"
-      >
-        <FamilySidebar familyId={params.familyId} />
+      <div className="flex h-full w-20 z-20 flex-col fixed inset-y-0">
+        <FamilyNavigationSidebar
+          familyId={params.familyId}
+          session={session}
+          familyName={family.name}
+        />
       </div>
-      <main className="h-full md:pl-60">{children}</main>
+      <main className="h-full pl-20 dark:bg-neutral-900 bg-white">
+        {children}
+      </main>
     </div>
   );
 };

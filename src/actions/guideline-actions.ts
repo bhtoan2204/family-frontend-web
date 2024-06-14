@@ -1,6 +1,7 @@
 "use server";
 
 import GuideLineUrl from "@/services/url/guideline-url";
+import { GuidelineItemDetail, GuidelineItemInList } from "@/types/guideline";
 
 export const GetAllGuideline = async (
   token: string,
@@ -20,7 +21,10 @@ export const GetAllGuideline = async (
       }
     );
     const data = await response.json();
-    return data.data.items;
+    return {
+      guidelines: data.data.items as GuidelineItemInList[],
+      total: data.data.total as number,
+    };
   } catch (error) {
     throw new Error("Internal Error!");
   }
@@ -42,9 +46,14 @@ export const GetGuidelineDetail = async (
       }
     );
     const data = await response.json();
-    return data;
+    if (data.message == "Success") {
+      return data.data[0] as GuidelineItemDetail;
+    } else {
+      throw new Error("Internal Error!");
+    }
   } catch (error) {
-    return { error: "Internal Error!" };
+    console.log(error);
+    throw new Error("Internal Error!");
   }
 };
 export const CreateGuideline = async (
@@ -53,6 +62,7 @@ export const CreateGuideline = async (
   guideline: any
 ) => {
   try {
+    console.log(token, familyId, guideline);
     const response = await fetch(`${GuideLineUrl.createGuideline}`, {
       method: "POST",
       headers: {
@@ -61,13 +71,13 @@ export const CreateGuideline = async (
       },
       body: JSON.stringify({
         id_family: familyId,
-        guideline,
+        ...guideline,
       }),
     });
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const UpdateGuideline = async (
@@ -86,13 +96,13 @@ export const UpdateGuideline = async (
       body: JSON.stringify({
         id_family: familyId,
         id_guideline: guidelineId,
-        guideline,
+        ...guideline,
       }),
     });
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const DeleteGuideline = async (
@@ -114,7 +124,7 @@ export const DeleteGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetStep = async (
@@ -136,14 +146,14 @@ export const GetStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const AddStep = async (
   token: string,
   familyId: number,
   guidelineId: number,
-  stepImage: string,
+  stepImage: string | null,
   name: string,
   description: string
 ) => {
@@ -165,14 +175,14 @@ export const AddStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
-export const InsetStep = async (
+export const InsertStep = async (
   token: string,
   familyId: number,
   guidelineId: number,
-  stepImage: string,
+  stepImage: string | null,
   name: string,
   description: string,
   index: string
@@ -196,7 +206,7 @@ export const InsetStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const UpdateStep = async (
@@ -204,10 +214,19 @@ export const UpdateStep = async (
   familyId: number,
   guidelineId: number,
   index: string,
-  stepImage: string,
+  stepImage: string | null,
   name: string,
   description: string
 ) => {
+  console.log(
+    token,
+    familyId,
+    guidelineId,
+    index,
+    stepImage,
+    name,
+    description
+  );
   try {
     const response = await fetch(`${GuideLineUrl.updateStep}`, {
       method: "PUT",
@@ -227,7 +246,7 @@ export const UpdateStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const DeleteStep = async (
@@ -250,7 +269,7 @@ export const DeleteStep = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const MarkShared = async (
@@ -272,7 +291,7 @@ export const MarkShared = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const GetSharedGuideline = async (
@@ -295,6 +314,6 @@ export const GetSharedGuideline = async (
     const data = await response.json();
     return data;
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };

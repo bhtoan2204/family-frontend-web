@@ -86,12 +86,8 @@ interface FinancePageProps {
 const FinancePage = async ({ params }: FinancePageProps) => {
   const session = await auth();
 
-  if (!session?.accessToken) {
-    return redirect("/login");
-  }
-
-  const summaryData = await GetFinanceSummary(session.accessToken, parseInt(params.familyId));
-  const familyMembers = await GetAllMember(session.accessToken, params.familyId);
+  const summaryData = await GetFinanceSummary(session!.accessToken, parseInt(params.familyId));
+  const familyMembers = await GetAllMember(session!.accessToken, params.familyId);
   if (!summaryData || !familyMembers) {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">

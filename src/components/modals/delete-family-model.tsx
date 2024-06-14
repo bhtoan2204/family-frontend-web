@@ -24,10 +24,9 @@ const DeleteFamilyModel = () => {
   const onClick = async () => {
     try {
       setIsLoading(true);
-      // To Do: Call the API to delete the family
       onClose();
       router.refresh();
-      router.push("/setup");
+      router.push("/family");
     } catch (error) {
     } finally {
       setIsLoading(false);
@@ -44,7 +43,10 @@ const DeleteFamilyModel = () => {
           </DialogTitle>
           <DialogDescription className="text-center text-zinc-500">
             Are you sure you want to do this? <br />
-            <span className="text-indigo-500 font-semibold">{family?.name}</span> will be permanently deleted
+            <span className="text-indigo-500 font-semibold">
+              {family?.name}
+            </span>{" "}
+            will be permanently deleted
           </DialogDescription>
         </DialogHeader>
         <DialogFooter className="bg-gray-100 px-6 py-4">

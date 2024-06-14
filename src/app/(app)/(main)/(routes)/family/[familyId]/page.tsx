@@ -11,7 +11,7 @@ interface FamilyPageProps {
 const FamilyPage = async ({ params }: FamilyPageProps) => {
   const session = await auth();
   if (!session?.accessToken) {
-    return redirect("/login");
+    return redirect("/signin");
   }
 
   const isMember = await CheckIfUserIsInFamily(
@@ -19,11 +19,11 @@ const FamilyPage = async ({ params }: FamilyPageProps) => {
     session.user.id,
     params.familyId
   ).catch((error) => { 
-    return redirect("/setup");
+    return redirect("/family");
   });
 
   if (!isMember) {
-    return redirect("/setup");
+    return redirect("/family");
   }
 
   return redirect(`/family/${params.familyId}/chat`);

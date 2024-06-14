@@ -15,11 +15,7 @@ export const GetUserProfile = async (token: string) => {
     });
 
     const data = await response.json();
-    if (data.message === "ok") {
-      return data.data;
-    } else {
-      return { error: data.message };
-    }
+    return data;
   } catch (error: any) {
     return { error: "Internal Error!" };
   }

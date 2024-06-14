@@ -14,11 +14,8 @@ interface MemberChatProps {
 
 const MemberChat = async ({ params }: MemberChatProps) => {
   const session = await auth();
-  if (!session?.accessToken) {
-    return redirect("/login");
-  }
   const conversation = await GetMessages(
-    session.accessToken,
+    session!.accessToken,
     params.memberId,
     0
   );
@@ -28,7 +25,7 @@ const MemberChat = async ({ params }: MemberChatProps) => {
   }
 
   const memberOne = await GetMemberDetail(
-    session.accessToken,
+    session!.accessToken,
     conversation[0].receiverId
   );
 

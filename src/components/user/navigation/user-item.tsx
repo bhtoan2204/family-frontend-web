@@ -16,7 +16,7 @@ const UserItem = (session: Session) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <button className=" group relative flex items-center">
-          <div className="shadow-1 relative group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden">
+          <div className="shadow-1 relative bg-neutral-400 dark:bg-slate-300 group flex mx-3 h-[48px] w-[48px] rounded-[24px] group-hover:rounded-[16px] transition-all overflow-hidden">
             <Avatar className="h-full w-full">
               <AvatarImage src={session.user.avatar} />
             </Avatar>

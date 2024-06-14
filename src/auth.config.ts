@@ -1,3 +1,4 @@
+import { GetUserProfile } from "@/actions/user-actions";
 import { LoginSchema } from "@/schemas";
 import { AuthUrl } from "@/services/url";
 import type { NextAuthConfig } from "next-auth";
@@ -39,7 +40,12 @@ export default {
           ) {
             throw new Error(data.message);
           }
-          return data;
+          const userData = await GetUserProfile(data.accessToken);
+          const info = {
+            ...data,
+            user: userData,
+          };
+          return info;
         }
         return null;
       },

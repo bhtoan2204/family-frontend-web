@@ -17,7 +17,6 @@ import FamilySection from "@/components/user/family/family-section";
 import { GuidelineItemType } from "@/types/guideline";
 import { roleIconMapRight } from "@/util/rol-icon-map";
 import { redirect } from "next/navigation";
-import { useState } from "react";
 
 interface FamilySidebarProps {
   familyId: string;
@@ -38,7 +37,7 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
 
   const session = await auth();
   if (!session?.accessToken) {
-    return redirect("/setup");
+    return redirect("/family");
   }
 
   const family = await GetFamilyWithMember(
@@ -46,7 +45,7 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
     session.user.id,
     familyId
   ).catch((error) => {
-    return redirect("/setup");
+    return redirect("/family");
   });
 
   const allGuidelines: GuidelineItemType[] = await GetAllGuideline(
@@ -60,7 +59,7 @@ const FamilySidebar = async ({ familyId }: FamilySidebarProps) => {
   });
 
   if (family.members.length === 0 || !family) {
-    return redirect("/setup");
+    return redirect("/family");
   }
 
   const memberWithoutSelf = family.members.filter(

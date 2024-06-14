@@ -23,6 +23,11 @@ const config = {
       xsm: "425px",
       "3xl": "2000px",
       ...defaultTheme.screens,
+      "max-2xl": { max: "1536px" },
+      "max-xl": { max: "1280px" },
+      "max-lg": { max: "1024px" },
+      "max-md": { max: "768px" },
+      "max-sm": { max: "640px" },
     },
     extend: {
       fontFamily: {

@@ -3,12 +3,10 @@
 import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { buttonVariants } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const LandingPage = () => {
-  const { data: session } = useSession();
   return (
     <>
       <MaxWidthWrapper className="mb-12 mt-28 sm:mt-40 flex flex-col items-center justify-center text-center">
@@ -27,8 +25,7 @@ const LandingPage = () => {
           financial future.
         </p>
         <Link
-          href="/dashboard"
-          target="_blank"
+          href="/news"
           className={buttonVariants({
             size: "lg",
             className: "mt-5",
