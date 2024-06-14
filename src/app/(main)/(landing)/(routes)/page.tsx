@@ -55,9 +55,9 @@ const LandingPage = () => {
                 <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
                   <Image
                     alt="Product preview"
-                    src="/dashboard-preview.jpg"
-                    width={1364}
-                    height={866}
+                    src="/app-preview-01.png"
+                    width={1777}
+                    height={925}
                     quality={100}
                     className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
                   />
@@ -142,10 +142,10 @@ const LandingPage = () => {
           <div className="mt-16 flow-root sm:mt-24">
             <div className="-m-2 rounded-xl bg-gray-900/5 p-2 ring-1 ring-inset ring-gray-900/10 lg:-m-4 lg:rounded-2xl lg:p-4">
               <Image
-                src="/file-upload-preview.jpg"
+                src="/app-preview-02.png"
                 alt="uploading preview"
-                width={1419}
-                height={732}
+                width={1777}
+                height={917}
                 quality={100}
                 className="rounded-md bg-white p-2 sm:p-8 md:p-20 shadow-2xl ring-1 ring-gray-900/10"
               />
