@@ -31,7 +31,7 @@ const NewsCardList = ({ page, cat, token }: NewsCardListProps) => {
     if (token && cat && page) {
       const fetchNews = async () => {
         setIsLoading(true);
-        const news = await GetNews(token, cat, page.toString(), "5");
+        const news = await GetNews(token, cat!, page.toString(), "5");
         setNewsRes(news);
         setIsLoading(false);
       };
