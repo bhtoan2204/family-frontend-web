@@ -142,7 +142,7 @@ const FamilyNavigationSidebar = ({
           </FamilyProjectLink>
           <FamilyNavigationLink
             name="Finance"
-            href={`/family/${familyId}/finance`}
+            href={`/family/${familyId}/finance/1`}
           >
             <ArrowTrendingUpIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyNavigationLink>
