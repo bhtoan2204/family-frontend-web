@@ -585,12 +585,17 @@ const CalendarContent = ({
   const onResourceChange = (args: MultiSelectChangeEventArgs): void => {
     let resourcePredicate: Predicate & any;
     for (let value of args.value) {
+      const predicateValue = value as any;
       if (resourcePredicate) {
         resourcePredicate = resourcePredicate.or(
-          new Predicate("CalendarId", "equal", value)
+          new Predicate("CalendarId", "equal", predicateValue)
         );
       } else {
-        resourcePredicate = new Predicate("CalendarId", "equal", value);
+        resourcePredicate = new Predicate(
+          "CalendarId",
+          "equal",
+          predicateValue
+        );
       }
     }
     scheduleObj.current!.resources[0].query = resourcePredicate
