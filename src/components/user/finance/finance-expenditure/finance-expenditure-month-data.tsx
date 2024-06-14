@@ -150,15 +150,15 @@ const FinanceExpenditureMonthData = ({ month, yearOfMonth, familyId, token, fami
                     </> : <>
                         {
                             filteredExpenditures.map((item, index) => {
-                                const date = new Date(item.date).toLocaleDateString();
+                                const date = new Date(item!.date).toLocaleDateString();
                                 return (
                                     <>
                                         <div className='mb-4 flex justify-between mr-4'>
                                             <p>{date} </p>
-                                            <p className={`${theme == 'dark' ? 'text-rose-200' : 'text-rose-500'} font-medium`}> - {item.total} </p>
+                                            <p className={`${theme == 'dark' ? 'text-rose-200' : 'text-rose-500'} font-medium`}> - {item!.total} </p>
                                         </div>
                                         {
-                                            item.categories.map((category, index) => {
+                                            item!.categories.map((category, index) => {
                                                 const type = expenditureType.find((type) => type.category === category.name)?.id_expense_type;
                                                 const color = colors[type!];
 
