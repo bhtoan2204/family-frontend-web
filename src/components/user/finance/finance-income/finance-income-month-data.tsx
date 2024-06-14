@@ -147,20 +147,20 @@ const FinanceIncomeMonthData = ({ month, yearOfMonth, familyId, token, familyMem
                     </> : <>
                         {
                             filteredIncomeData.map((item, index) => {
-                                const date = new Date(item.date).toLocaleDateString();
+                                const date = new Date(item!.date).toLocaleDateString();
                                 return (
                                     <div key={index} className=''>
                                         <div className='mb-4 flex justify-between mr-4'>
                                             <p>{date} </p>
-                                            <p className={`${theme == 'dark' ? 'text-green-200' : 'text-green-700'} font-medium`}> + {item.total} </p>
+                                            <p className={`${theme == 'dark' ? 'text-green-200' : 'text-green-700'} font-medium`}> + {item!.total} </p>
                                         </div>
                                         {
-                                            item.categories.map((category, index) => {
+                                            item!.categories.map((category, index) => {
                                                 // const type = expenditureType.find((type) => type.category === category.name)?.id_expense_type;
                                                 // const color = colors[type!];
 
                                                 return <>
-                                                    <div className={`p-4 rounded-lg shadow-md mb-4   hover:cursor-pointer dark:bg-[#397097] bg-[#4D7FA2] text-white flex justify-between ${index == item.categories.length - 1 ? 'mb-12' : ''}`}
+                                                    <div className={`p-4 rounded-lg shadow-md mb-4   hover:cursor-pointer dark:bg-[#397097] bg-[#4D7FA2] text-white flex justify-between ${index == item!.categories.length - 1 ? 'mb-12' : ''}`}
                                                     // style={{
                                                     //     backgroundColor: theme === 'dark' ? color.darkModeBackgroundColor : color.backgroundColor,
                                                     //     color: color.textColor

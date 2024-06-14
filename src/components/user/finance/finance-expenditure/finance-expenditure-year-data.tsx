@@ -130,11 +130,11 @@ const FinanceExpenditureYearData = ({ year, familyId, token, familyMembers }: { 
                         return (
                             <div key={index} className='mb-4'>
                                 <div className='mb-4 flex justify-between mr-4'>
-                                    <p className='font-medium'>Tháng {item.month} </p>
-                                    <p className={`${theme == 'dark' ? 'text-rose-200' : 'text-rose-500'} font-medium`}>- {item.total}</p>
+                                    <p className='font-medium'>Tháng {item!.month} </p>
+                                    <p className={`${theme == 'dark' ? 'text-rose-200' : 'text-rose-500'} font-medium`}>- {item!.total}</p>
                                 </div>
                                 {
-                                    item.categories.map((category, index) => {
+                                    item!.categories.map((category, index) => {
                                         const type = expenditureType.find((type) => type.category === category.name)?.id_expense_type;
                                         const color = colors[type!];
 
