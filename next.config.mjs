@@ -14,17 +14,29 @@ const nextConfig = {
   // },
   // reactStrictMode: false,
   images: {
-    domains: [
-      "cdn-new.topcv.vn",
-      "cdn.haitrieu.com",
-      "www.w3schools.com",
-      "storage.googleapis.com",
-      "vnexpress.net",
-    ],
+    // domains: [
+    //   "cdn-new.topcv.vn",
+    //   "cdn.haitrieu.com",
+    //   "www.w3schools.com",
+    //   "storage.googleapis.com",
+    //   "vnexpress.net",
+    // ],
     remotePatterns: [
       {
         protocol: "https",
         hostname: "*",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "vnexpress.net",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "storage.googleapis.com",
         port: "",
         pathname: "/**",
       },
