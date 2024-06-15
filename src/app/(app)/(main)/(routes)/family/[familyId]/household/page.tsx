@@ -1,5 +1,6 @@
 "use client";
 
+import { ScrollArea } from "@/components/ui/scroll-area";
 import HouseholdContent from "@/components/user/household/household-content";
 import HouseholdPagination from "@/components/user/household/household-pagination";
 import RoomSidebar from "@/components/user/household/sidebar/room-sidebar";
@@ -39,13 +40,15 @@ const HouseholdPage = () => {
             <p className="text-white">Add household</p>
           </button>
         </div>
-        <div className="m-5 h-full">
-          <HouseholdContent
-            familyId={Number(params!.familyId)}
-            page={page.toString()}
-            token={session?.accessToken!}
-          />
-        </div>
+        <ScrollArea>
+          <div className="m-5 h-full">
+            <HouseholdContent
+              familyId={Number(params!.familyId)}
+              page={page.toString()}
+              token={session?.accessToken!}
+            />
+          </div>
+        </ScrollArea>
       </div>
       <div className="flex h-full w-70 flex-col fixed right-[72px]">
         <RoomSidebar familyId={params!.familyId as string} />
