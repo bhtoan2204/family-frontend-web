@@ -1,6 +1,5 @@
 /** @type {import('next').NextConfig} */
 import { dirname } from "path";
-import React from "react";
 import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -14,7 +13,7 @@ const nextConfig = {
   //   return config;
   // },
   // reactStrictMode: false,
-  ReactStrictMode: false,
+  reactStrictMode: true,
   output: "standalone",
   images: {
     remotePatterns: [
