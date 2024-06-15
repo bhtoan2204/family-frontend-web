@@ -19,7 +19,7 @@ const nextConfig = {
       "cdn.haitrieu.com",
       "www.w3schools.com",
       "storage.googleapis.com",
-      "https://vnexpress.net",
+      "vnexpress.net",
     ],
     remotePatterns: [
       {
