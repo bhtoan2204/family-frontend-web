@@ -4,6 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import HouseholdContent from "@/components/user/household/household-content";
 import HouseholdPagination from "@/components/user/household/household-pagination";
 import RoomSidebar from "@/components/user/household/sidebar/room-sidebar";
+import { useModal } from "@/hooks/use-modal-store";
 import { useSession } from "next-auth/react";
 import { useParams, useSearchParams } from "next/navigation";
 import { useState } from "react";
@@ -21,6 +22,7 @@ const HouseholdPage = () => {
   const params = useParams();
   const searchParams = useSearchParams();
   const { data: session } = useSession();
+  const { onOpen } = useModal();
   const [hasPrev, setHasPrev] = useState<boolean>(false);
   const [hasNext, setHasNext] = useState<boolean>(false);
   const page = Number(searchParams!.get("page")) || 1;
@@ -36,7 +38,12 @@ const HouseholdPage = () => {
             hasPrev={hasPrev}
             hasNext={hasNext}
           />
-          <button className="flex items-center justify-center my-4 p-3 rounded-md hover:bg-green-600 bg-green-400">
+          <button
+            className="flex items-center justify-center my-4 p-3 rounded-md hover:bg-green-600 bg-green-400"
+            onClick={() => {
+              onOpen("createHouseholdItem");
+            }}
+          >
             <p className="text-white">Add household</p>
           </button>
         </div>

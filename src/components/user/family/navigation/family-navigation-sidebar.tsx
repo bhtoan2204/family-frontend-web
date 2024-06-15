@@ -59,7 +59,7 @@ const FamilyNavigationSidebar = ({
 
   const containerControls = useAnimationControls();
   const svgControls = useAnimationControls();
-  
+
   useEffect(() => {
     if (isOpen) {
       containerControls.start("open");
@@ -113,36 +113,42 @@ const FamilyNavigationSidebar = ({
           <FamilyNavigationLink
             name="Family Chat"
             href={`/family/${familyId}/chat`}
+            isOpen={isOpen}
           >
             <ChatBubbleLeftRightIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyNavigationLink>
           <FamilyNavigationLink
             name="Calendar"
             href={`/family/${familyId}/calendar/main`}
+            isOpen={isOpen}
           >
             <CalendarDaysIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyNavigationLink>
           <FamilyProjectLink
             name="Guideline"
             setSelectedProject={setSelectedProject}
+            isOpen={isOpen}
           >
             <ClipboardDocumentListIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyProjectLink>
           <FamilyNavigationLink
             name="Household"
             href={`/family/${familyId}/household`}
+            isOpen={isOpen}
           >
             <HomeModernIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyNavigationLink>
           <FamilyProjectLink
             name="Education"
             setSelectedProject={setSelectedProject}
+            isOpen={isOpen}
           >
             <AcademicCapIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyProjectLink>
           <FamilyNavigationLink
             name="Finance"
             href={`/family/${familyId}/finance/1`}
+            isOpen={isOpen}
           >
             <ArrowTrendingUpIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyNavigationLink>
@@ -151,24 +157,28 @@ const FamilyNavigationSidebar = ({
           <FamilyProjectLink
             name="Members"
             setSelectedProject={setSelectedProject}
+            isOpen={isOpen}
           >
             <div className="min-w-4 mx-2 border-pink-600 border rounded-full aspect-square bg-pink-700" />
           </FamilyProjectLink>
           <FamilyProjectLink
             name="Members"
             setSelectedProject={setSelectedProject}
+            isOpen={isOpen}
           >
             <div className="min-w-4 mx-2 border-indigo-600 border rounded-full aspect-square bg-indigo-700" />
           </FamilyProjectLink>
           <FamilyProjectLink
             name="Members"
             setSelectedProject={setSelectedProject}
+            isOpen={isOpen}
           >
             <div className="min-w-4 mx-2 border-cyan-600 border rounded-full aspect-square bg-cyan-700" />
           </FamilyProjectLink>
           <FamilyProjectLink
             name="Members"
             setSelectedProject={setSelectedProject}
+            isOpen={isOpen}
           >
             <div className="min-w-4 mx-2 border-yellow-600 border rounded-full aspect-square bg-yellow-700" />
           </FamilyProjectLink>

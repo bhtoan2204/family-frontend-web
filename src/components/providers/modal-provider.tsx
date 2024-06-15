@@ -7,6 +7,7 @@ import CreateIncomeTypeModal from "@/components/modals/add-income-type-modal";
 import CreateCalendarModal from "@/components/modals/create-calendar-modal";
 import CreateFamilyModal from "@/components/modals/create-family-modal";
 import CreateGuidelineModal from "@/components/modals/create-guideline-modal";
+import CreateHouseholdModal from "@/components/modals/create-household-modal";
 import CreateRoomModal from "@/components/modals/create-room-modal";
 import CreateStepModal from "@/components/modals/create-step-modal";
 import DeleteFamilyModel from "@/components/modals/delete-family-model";
@@ -61,6 +62,7 @@ export const ModalProvider = () => {
       <CreateRoomModal />
       <EditRoomModal />
       <DeleteRoomModel />
+      <CreateHouseholdModal />
     </>
   );
 };
