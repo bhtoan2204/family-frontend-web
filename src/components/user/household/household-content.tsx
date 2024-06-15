@@ -53,6 +53,7 @@ const HouseholdContent = ({ page, token, familyId }: HouseholdContentProps) => {
             image={item.item_imageurl}
             familyId={familyId}
             token={token}
+            description={item.item_description}
           />
         ))}
       </div>
