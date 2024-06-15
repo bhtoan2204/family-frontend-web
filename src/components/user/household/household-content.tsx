@@ -2,6 +2,7 @@
 
 import { GetHouseholdItem } from "@/actions/household-actions";
 import Loader from "@/components/loader";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { HouseholdItem } from "@/types/household";
 import { useEffect, useState } from "react";
 import HouseholdHoverCard from "./hover-card/household-hover-card";
@@ -44,18 +45,22 @@ const HouseholdContent = ({ page, token, familyId }: HouseholdContentProps) => {
       </div>
     );
   } else if (!isLoading && householdItems && householdItems.length > 0) {
-    <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
-      {householdItems.map((item) => (
-        <HouseholdHoverCard
-          key={item.id_household_item}
-          item_id={item.id_household_item}
-          name={item.item_name}
-          image={item.item_imageurl}
-          familyId={familyId}
-          token={token}
-        />
-      ))}
-    </div>;
+    return (
+      <ScrollArea>
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
+          {householdItems.map((item) => (
+            <HouseholdHoverCard
+              key={item.id_household_item}
+              item_id={item.id_household_item}
+              name={item.item_name}
+              image={item.item_imageurl}
+              familyId={familyId}
+              token={token}
+            />
+          ))}
+        </div>
+      </ScrollArea>
+    );
   } else {
     return <Loader />;
   }

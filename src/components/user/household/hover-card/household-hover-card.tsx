@@ -29,7 +29,11 @@ const HouseholdHoverCard = ({
         className="bg-white dark:bg-[#313338] rounded-lg shadow-lg p-5 relative cursor-pointer hover:shadow-xl "
       >
         <div className="">
-          <div className="flex flex-col items-center">
+          <div
+            className={`flex items-center justify-center place-items-center h-full ${
+              image && "flex-col"
+            }`}
+          >
             {image && (
               <Image
                 src={image}
@@ -39,13 +43,13 @@ const HouseholdHoverCard = ({
                 className="rounded-full"
               />
             )}
-            <div className="flex items-center justify-center">
+            <div className="flex items-center justify-center text-center">
               <p className="text-lg">{name}</p>
             </div>
           </div>
         </div>
       </HoverCardTrigger>
-      <HoverCardContent></HoverCardContent>
+      <HoverCardContent side="right"></HoverCardContent>
     </HoverCard>
   );
 };
