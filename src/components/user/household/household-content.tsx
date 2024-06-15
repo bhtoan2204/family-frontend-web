@@ -23,7 +23,6 @@ const HouseholdContent = ({ page, token, familyId }: HouseholdContentProps) => {
         const householdItemsRes = await GetHouseholdItem(
           token,
           familyId,
-
           page,
           "9"
         );

@@ -14,12 +14,13 @@ const nextConfig = {
   // },
   // reactStrictMode: false,
   images: {
-    // domains: [
-    //   "cdn-new.topcv.vn",
-    //   "cdn.haitrieu.com",
-    //   "www.w3schools.com",
-    //   "storage.googleapis.com",
-    // ],
+    domains: [
+      "cdn-new.topcv.vn",
+      "cdn.haitrieu.com",
+      "www.w3schools.com",
+      "storage.googleapis.com",
+      "https://vnexpress.net",
+    ],
     remotePatterns: [
       {
         protocol: "https",
