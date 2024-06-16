@@ -21,7 +21,7 @@ const MobileNavbar = ({ isAuth, session }: MobileNavbarProps) => {
 
   useEffect(() => {
     if (isOpen) toggleOpen();
-  }, [pathname]);
+  }, [pathname, isOpen]);
 
   const closeOnCurrent = (href: string) => {
     if (pathname === href) {

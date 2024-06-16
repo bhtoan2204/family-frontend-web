@@ -11,8 +11,8 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { motion } from "framer-motion";
-import FamilyNavigationLink from "./family-navigation-link";
 import Link from "next/link";
+import FamilyNavigationLink from "./family-navigation-link";
 
 const variants = {
   close: {
@@ -36,7 +36,6 @@ const FamilyProjectNavigation = ({
   isOpen,
   setSelectedProject,
 }: FamilyProjectNavigationProps) => {
-
   return (
     <motion.nav
       variants={variants}
@@ -65,22 +64,22 @@ const FamilyProjectNavigation = ({
         className="px-3 py-2 tracking-wide rounded-lg bg-neutral-400/40 dark:bg-neutral-600/40 dark:text-neutral-100"
       />
       <div className="flex flex-col gap-3">
-        <FamilyNavigationLink name="Progress" href="#">
+        <FamilyNavigationLink name="Progress" href="#" isOpen={isOpen}>
           <ArrowTrendingUpIcon className="stroke-[0.75] stroke-inherit min-w-8 w-8" />
         </FamilyNavigationLink>
-        <FamilyNavigationLink href="#" name="Team Members">
+        <FamilyNavigationLink href="#" name="Team Members" isOpen={isOpen}>
           <UserGroupIcon className="stroke-[0.75] stroke-inherit min-w-8 w-8" />
         </FamilyNavigationLink>
-        <FamilyNavigationLink href="#" name="In Review">
+        <FamilyNavigationLink href="#" name="In Review" isOpen={isOpen}>
           <PencilIcon className="stroke-[0.75] stroke-inherit min-w-8 w-8" />
         </FamilyNavigationLink>
-        <FamilyNavigationLink href="#" name="In Progress">
+        <FamilyNavigationLink href="#" name="In Progress" isOpen={isOpen}>
           <BoltIcon className="stroke-[0.75] stroke-inherit min-w-8 w-8" />
         </FamilyNavigationLink>
-        <FamilyNavigationLink href="#" name="Up Next">
+        <FamilyNavigationLink href="#" name="Up Next" isOpen={isOpen}>
           <CursorArrowRaysIcon className="stroke-[0.75] stroke-inherit min-w-8 w-8" />
         </FamilyNavigationLink>
-        <FamilyNavigationLink href="#" name="Project Settings">
+        <FamilyNavigationLink href="#" name="Project Settings" isOpen={isOpen}>
           <AdjustmentsHorizontalIcon className="stroke-[0.75] stroke-inherit min-w-8 w-8" />
         </FamilyNavigationLink>
       </div>
