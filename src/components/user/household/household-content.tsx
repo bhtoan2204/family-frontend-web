@@ -44,18 +44,20 @@ const HouseholdContent = ({ page, token, familyId }: HouseholdContentProps) => {
     );
   } else if (!isLoading && householdItems && householdItems.length > 0) {
     return (
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-10">
-        {householdItems.map((item) => (
-          <HouseholdHoverCard
-            key={item.id_household_item}
-            item_id={item.id_household_item}
-            name={item.item_name}
-            image={item.item_imageurl}
-            familyId={familyId}
-            token={token}
-            description={item.item_description}
-          />
-        ))}
+      <div className="flex flex-col w-full flex-grow h-full">
+        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
+          {householdItems.map((item) => (
+            <HouseholdHoverCard
+              key={item.id_household_item}
+              item_id={item.id_household_item}
+              name={item.item_name}
+              image={item.item_imageurl}
+              familyId={familyId}
+              token={token}
+              description={item.item_description}
+            />
+          ))}
+        </div>
       </div>
     );
   } else {

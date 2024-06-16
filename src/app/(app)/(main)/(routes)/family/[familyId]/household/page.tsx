@@ -1,6 +1,5 @@
 "use client";
 
-import { ScrollArea } from "@/components/ui/scroll-area";
 import HouseholdContent from "@/components/user/household/household-content";
 import HouseholdPagination from "@/components/user/household/household-pagination";
 import RoomSidebar from "@/components/user/household/sidebar/room-sidebar";
@@ -32,30 +31,30 @@ const HouseholdPage = () => {
   return (
     <div className="bg-white dark:bg-[#313338] flex flex-col h-full">
       <div className="h-full pr-70">
-        <div className="h-15 flex flex-row gap-4 shadow shadow-neutral-600">
-          <HouseholdPagination
-            page={page}
-            hasPrev={hasPrev}
-            hasNext={hasNext}
-          />
-          <button
-            className="flex items-center justify-center my-4 p-3 rounded-md hover:bg-green-600 bg-green-400"
-            onClick={() => {
-              onOpen("createHouseholdItem");
-            }}
-          >
-            <p className="text-white">Add household</p>
-          </button>
-        </div>
-        <ScrollArea>
-          <div className="m-5 h-full">
-            <HouseholdContent
-              familyId={Number(params!.familyId)}
-              page={page.toString()}
-              token={session?.accessToken!}
+        <div className="fixed w-full z-20">
+          <div className="h-15 flex flex-row gap-4 bg-white dark:bg-[#313338] shadow shadow-neutral-600">
+            <HouseholdPagination
+              page={page}
+              hasPrev={hasPrev}
+              hasNext={hasNext}
             />
+            <button
+              className="flex items-center justify-center my-4 p-3 rounded-md hover:bg-green-600 bg-green-400"
+              onClick={() => {
+                onOpen("createHouseholdItem");
+              }}
+            >
+              <p className="text-white">Add household</p>
+            </button>
           </div>
-        </ScrollArea>
+        </div>
+        <div className="flex flex-1 m-5 pt-15 items-center justify-center">
+          <HouseholdContent
+            familyId={Number(params!.familyId)}
+            page={page.toString()}
+            token={session?.accessToken!}
+          />
+        </div>
       </div>
       <div className="flex h-full w-70 flex-col fixed right-[72px]">
         <RoomSidebar familyId={params!.familyId as string} />

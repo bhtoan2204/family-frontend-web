@@ -29,7 +29,7 @@ const FamilyIdLayout = async ({
 
   return (
     <div className="h-full">
-      <div className="flex h-full w-20 z-20 flex-col fixed inset-y-0">
+      <div className="flex h-full w-20 z-30 flex-col fixed inset-y-0">
         <FamilyNavigationSidebar
           familyId={params.familyId}
           session={session}
