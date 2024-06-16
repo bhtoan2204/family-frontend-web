@@ -19,25 +19,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useModal } from "@/hooks/use-modal-store";
-import { FamilySchema } from "@/schemas";
+import { HouseholdSchema } from "@/schemas/household-schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-const CreateFamilyModal = () => {
+const CreateHouseholdModal = () => {
   const { isOpen, onClose, type } = useModal();
-  const isModalOpen = isOpen && type === "createFamily";
+  const isModalOpen = isOpen && type === "createHouseholdItem";
   const form = useForm({
-    resolver: zodResolver(FamilySchema),
+    resolver: zodResolver(HouseholdSchema),
     defaultValues: {
+      image: "",
       name: "",
       description: "",
+      idCategory: "",
+      itemType: "",
+      idRoom: "",
     },
   });
 
   const isLoading = form.formState.isSubmitting;
 
-  const onSubmit = async (values: z.infer<typeof FamilySchema>) => {
+  const onSubmit = async (values: z.infer<typeof HouseholdSchema>) => {
     console.log(values);
     onClose();
   };
@@ -115,4 +119,4 @@ const CreateFamilyModal = () => {
   );
 };
 
-export default CreateFamilyModal;
+export default CreateHouseholdModal;
