@@ -96,7 +96,7 @@ const EducationPage = () => {
   const [isEducationLoaded, setIsEducationLoaded] = useState(false);
   const [isMemberLoaded, setIsMemberLoaded] = useState(false);
   const [searchOption, setSearchOption] = useState<string>("");
-  const [sortType, setSortType] = useState<string>("");
+  const [sortProgressType, setSortProgressType] = useState<string>("");
 
   useEffect(() => {
     if (session?.accessToken && params!.familyId) {
@@ -137,7 +137,7 @@ const EducationPage = () => {
     setSearchProgressText("");
     setSearchMemberText("");
     setSearchOption("");
-    setSortType("");
+    setSortProgressType("");
     setSelectedMember(null);
   };
 
@@ -199,9 +199,11 @@ const EducationPage = () => {
             <SearchSelect setSearchOption={handleSearchOption} />
             <Button
               variant="outline"
-              onClick={() => setSortType(sortType === "asc" ? "desc" : "asc")}
+              onClick={() =>
+                setSortProgressType(sortProgressType === "asc" ? "desc" : "asc")
+              }
             >
-              {sortType === "asc" ? (
+              {sortProgressType === "asc" ? (
                 <ArrowUpAZ className="w-6 h-6" />
               ) : (
                 <ArrowDownAZ className="w-6 h-6" />
@@ -250,9 +252,9 @@ const EducationPage = () => {
                       .includes(searchProgressText.toLowerCase());
                   })
                   .sort((a, b) => {
-                    if (sortType === "asc") {
+                    if (sortProgressType === "asc") {
                       return a.title.localeCompare(b.title);
-                    } else if (sortType === "desc") {
+                    } else if (sortProgressType === "desc") {
                       return b.title.localeCompare(a.title);
                     } else {
                       return 0;

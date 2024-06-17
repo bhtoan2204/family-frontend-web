@@ -140,7 +140,7 @@ const FamilyNavigationSidebar = ({
           </FamilyNavigationLink>
           <FamilyNavigationLink
             name="Education"
-            href="/family/education"
+            href={`/family/${familyId}/education`}
             isOpen={isOpen}
           >
             <AcademicCapIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
