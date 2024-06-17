@@ -21,7 +21,11 @@ export const GetAllEducation = async (
       }
     );
     const data = await response.json();
-    return data.data as EducationProgress[];
+    if (data.message === "Success") {
+      return data.data as EducationProgress[];
+    } else {
+      throw new Error("Internal Error!");
+    }
   } catch (error) {
     throw new Error("Internal Error!");
   }

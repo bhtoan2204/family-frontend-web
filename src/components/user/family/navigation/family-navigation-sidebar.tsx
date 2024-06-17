@@ -138,13 +138,13 @@ const FamilyNavigationSidebar = ({
           >
             <HomeModernIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
           </FamilyNavigationLink>
-          <FamilyProjectLink
+          <FamilyNavigationLink
             name="Education"
-            setSelectedProject={setSelectedProject}
+            href="/family/education"
             isOpen={isOpen}
           >
             <AcademicCapIcon className="stroke-inherit stroke-[0.75] min-w-8 w-8" />
-          </FamilyProjectLink>
+          </FamilyNavigationLink>
           <FamilyNavigationLink
             name="Finance"
             href={`/family/${familyId}/finance/1`}

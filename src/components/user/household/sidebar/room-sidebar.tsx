@@ -144,7 +144,7 @@ const RoomSidebar = ({ familyId }: RoomSidebarProps) => {
         duration: 0.25,
         ease: "easeInOut",
       }}
-      className="h-full flex flex-col gap-8 w-64 absolute dark:bg-neutral-900 bg-white ml-0 border-r border-neutral-800 p-5 shadow shadow-neutral-600"
+      className="h-full flex flex-col gap-8 w-64 absolute dark:bg-neutral-900 bg-white ml-0 border-r border-neutral-600 p-5 shadow shadow-neutral-600"
     >
       <div className="flex flex-row w-full justify-between place-content-center">
         <h1 className="tracking-wide dark:text-neutral-100 text-lg">
