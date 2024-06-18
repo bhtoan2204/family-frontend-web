@@ -1,7 +1,12 @@
 "use client";
 
-import { CreateEducation, GetAllEducation } from "@/actions/education-actions";
+import {
+  CreateEducation,
+  GetAllEducation,
+  GetEducationDetail,
+} from "@/actions/education-actions";
 import { GetAllMember } from "@/actions/family-actions";
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   ResizableHandle,
@@ -9,16 +14,14 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import AddEducationSheet from "@/components/user/education/add-education-sheet";
-import styles from "./color-string.module.css";
-
-import { Button } from "@/components/ui/button";
 import IndexString from "@/components/user/education/color/index-string";
 import MemberCard from "@/components/user/education/member-card";
 import EducationPagination from "@/components/user/education/pagination";
 import ProgressCard from "@/components/user/education/progress-card";
+import ProgressDetail from "@/components/user/education/progress-detail";
 import SearchSelect from "@/components/user/education/search-select";
 import { EducationProgressSchema } from "@/schemas/education-schema";
-import { EducationProgress } from "@/types/education";
+import { EducationProgress, EducationProgressDetail } from "@/types/education";
 import { Member } from "@/types/member";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDownAZ, ArrowUpAZ, Loader, RefreshCw } from "lucide-react";
@@ -27,6 +30,7 @@ import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import styles from "./color-string.module.css";
 
 const fetchEducationProgress = async (
   token: string,
@@ -78,6 +82,19 @@ const addEducation = async (
   }
 };
 
+const fetchEducationDetail = async (
+  token: string,
+  familyId: number,
+  educationProgressId: number
+) => {
+  try {
+    const res = await GetEducationDetail(token, familyId, educationProgressId);
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
 const EducationPage = () => {
   // Constants
   const ITEMS_PER_PAGE = 9;
@@ -97,6 +114,15 @@ const EducationPage = () => {
   const [isMemberLoaded, setIsMemberLoaded] = useState(false);
   const [searchOption, setSearchOption] = useState<string>("");
   const [sortProgressType, setSortProgressType] = useState<string>("");
+  const [sortMemberType, setSortMemberType] = useState<string>("");
+
+  const [selectedProgress, setSelectedProgress] =
+    useState<EducationProgress | null>(null);
+  const [educationProgressDetail, setEducationProgressDetail] =
+    useState<EducationProgressDetail | null>(null);
+  const [isProgressDetailLoaded, setIsProgressDetailLoaded] = useState(false);
+  const [searchSubjectText, setSearchSubjectText] = useState<string>("");
+  const [sortSubjectType, setSortSubjectType] = useState<string>("");
 
   useEffect(() => {
     if (session?.accessToken && params!.familyId) {
@@ -138,7 +164,26 @@ const EducationPage = () => {
     setSearchMemberText("");
     setSearchOption("");
     setSortProgressType("");
+    setSortMemberType("");
     setSelectedMember(null);
+  };
+
+  const handleSelectedProgress = (progress: EducationProgress) => {
+    setIsDetailMode(true);
+    setSelectedProgress(progress);
+    setIsProgressDetailLoaded(false);
+    if (progress.id_education_progress && session?.accessToken && params) {
+      fetchEducationDetail(
+        session.accessToken,
+        Number(params.familyId),
+        progress.id_education_progress
+      ).then((res) => {
+        setEducationProgressDetail(res);
+        setIsProgressDetailLoaded(true);
+      });
+    } else {
+      setIsProgressDetailLoaded(true);
+    }
   };
 
   // Forms
@@ -173,6 +218,7 @@ const EducationPage = () => {
       ITEMS_PER_PAGE.toString()
     ).then((res) => {
       setEducationProgress(res);
+      educationProgressForm.reset();
     });
   };
 
@@ -182,7 +228,7 @@ const EducationPage = () => {
 
   if (!isDetailMode) {
     return (
-      <ResizablePanelGroup direction="horizontal">
+      <ResizablePanelGroup key="group1" direction="horizontal">
         <ResizablePanel
           defaultSize={70}
           minSize={30}
@@ -267,6 +313,7 @@ const EducationPage = () => {
                       color={
                         styles[IndexString[index % IndexString.length].name]
                       }
+                      onSwitchMode={handleSelectedProgress}
                     />
                   ))}
               </div>
@@ -281,10 +328,24 @@ const EducationPage = () => {
           maxSize={40}
           className="bg-white dark:bg-[#313338] flex flex-col p-4 gap-4"
         >
-          <Input
-            placeholder="Search"
-            onChange={(event) => setSearchMemberText(event.target.value)}
-          />
+          <div className="flex flex-row gap-4">
+            <Input
+              placeholder="Search"
+              onChange={(event) => setSearchMemberText(event.target.value)}
+            />
+            <Button
+              variant="outline"
+              onClick={() =>
+                setSortMemberType(sortMemberType === "asc" ? "desc" : "asc")
+              }
+            >
+              {sortMemberType === "asc" ? (
+                <ArrowUpAZ className="w-6 h-6" />
+              ) : (
+                <ArrowDownAZ className="w-6 h-6" />
+              )}
+            </Button>
+          </div>
           <div className="flex flex-1 flex-col overflow-y-auto">
             {!isMemberLoaded && (
               <div className="flex flex-1 items-center justify-center">
@@ -310,6 +371,15 @@ const EducationPage = () => {
                       email.includes(searchMemberText.toLowerCase())
                     );
                   })
+                  .sort((a, b) => {
+                    if (sortMemberType === "asc") {
+                      return a.firstname.localeCompare(b.firstname);
+                    } else if (sortMemberType === "desc") {
+                      return b.firstname.localeCompare(a.firstname);
+                    } else {
+                      return 0;
+                    }
+                  })
                   .map((member) => (
                     <MemberCard
                       key={member.id_user}
@@ -325,7 +395,76 @@ const EducationPage = () => {
       </ResizablePanelGroup>
     );
   } else {
-    return <div>Education</div>;
+    return (
+      <ResizablePanelGroup key="group2" direction="horizontal">
+        <ResizablePanel
+          defaultSize={50}
+          maxSize={60}
+          minSize={40}
+          className="bg-white dark:bg-[#313338] flex flex-col p-4 gap-4"
+        >
+          <div className="flex flex-row gap-4">
+            <Button variant="primary" onClick={() => setIsDetailMode(false)}>
+              Back
+            </Button>
+            <Input
+              type="text"
+              onChange={(event) => setSearchSubjectText(event.target.value)}
+              value={searchSubjectText}
+              placeholder="Search"
+            />
+            <Button
+              variant="outline"
+              onClick={() =>
+                setSortSubjectType(sortSubjectType === "asc" ? "desc" : "asc")
+              }
+            >
+              {sortSubjectType === "asc" ? (
+                <ArrowUpAZ className="w-6 h-6" />
+              ) : (
+                <ArrowDownAZ className="w-6 h-6" />
+              )}
+            </Button>
+          </div>
+          {!isProgressDetailLoaded && (
+            <div className="flex flex-1 items-center justify-center">
+              <Loader className="w-10 h-10 animate-spin" />
+            </div>
+          )}
+          {isProgressDetailLoaded && !educationProgressDetail && (
+            <div className="flex flex-1 items-center justify-center">
+              <p className="text-lg">No data available</p>
+            </div>
+          )}
+          {isProgressDetailLoaded && educationProgressDetail && (
+            <ProgressDetail
+              educationProgressDetail={educationProgressDetail}
+              familyMember={
+                familyMembers[
+                  familyMembers.findIndex(
+                    (member) => member.id_user === selectedProgress?.id_user
+                  )
+                ]
+              }
+              searchSubjectText={searchSubjectText}
+              styles={styles}
+              sortSubjectType={sortSubjectType}
+            />
+          )}
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel
+          defaultSize={50}
+          maxSize={60}
+          minSize={40}
+          className="bg-white dark:bg-[#313338] flex flex-col p-4 gap-4"
+        >
+          <div className="flex flex-1 items-center justify-center">
+            <p className="text-lg">Detail Mode</p>
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+    );
   }
 };
 

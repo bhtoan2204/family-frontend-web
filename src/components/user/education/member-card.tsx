@@ -29,11 +29,11 @@ const MemberCard = ({
             <Avatar className="bg-gray-300 dark:bg-slate-200">
               <AvatarImage src={member.avatar} alt={member.firstname} />
             </Avatar>
-            <div className="flex flex-col gap-1 items-start">
-              <p className="text-nowrap">
+            <div className="group flex flex-col gap-1 items-start overflow-clip">
+              <p className="truncate whitespace-nowrap">
                 {member.firstname} {member.lastname}
               </p>
-              <h4 className="text-xs text-nowrap text-gray-500">
+              <h4 className="text-xs truncate whitespace-nowrap text-gray-500 dark:text-gray-300">
                 {member.email}
               </h4>
             </div>

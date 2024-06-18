@@ -14,7 +14,7 @@ interface SearchSelectProps {
 
 const SearchSelect = ({ setSearchOption }: SearchSelectProps) => {
   return (
-    <Select onValueChange={(value) => setSearchOption(value)}>
+    <Select onValueChange={(value) => setSearchOption(value)} defaultValue="progress">
       <SelectTrigger className="w-75">
         <SelectValue placeholder="Search Option" />
       </SelectTrigger>

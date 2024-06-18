@@ -16,13 +16,14 @@ export type EducationProgressDetail = {
   education_progress_info: {
     id_education_progress: number;
     id_user: string;
+    id_family: number;
     title: string;
     progress_notes: string;
     school_info: string;
     created_at: string;
     updated_at: string;
   };
-  subjects_info: SubjectInfo[];
+  subjects_info: SubjectInfo[] | null;
 };
 
 export type SubjectInfo = {

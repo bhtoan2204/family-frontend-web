@@ -7,11 +7,19 @@ import { NotebookPen, School } from "lucide-react";
 interface ProgressCardProps {
   progressDetail: EducationProgress;
   color: string;
+  onSwitchMode: (progress: EducationProgress) => void;
 }
 
-const ProgressCard = ({ progressDetail, color }: ProgressCardProps) => {
+const ProgressCard = ({
+  progressDetail,
+  color,
+  onSwitchMode,
+}: ProgressCardProps) => {
   return (
-    <button className="rounded-lg shadow-lg p-5 relative cursor-pointer hover:shadow-xl flex items-center justify-center hover:bg-black/5 dark:hover:bg-black dark:bg-neutral-700">
+    <button
+      onClick={() => onSwitchMode(progressDetail)}
+      className="rounded-lg shadow-lg p-5 relative cursor-pointer hover:shadow-xl flex items-center justify-center hover:bg-black/5 dark:hover:bg-black dark:bg-neutral-700"
+    >
       <div className="group flex items-center transition w-full">
         <div className="flex flex-col w-full gap-4">
           <div className="flex flex-row gap-4 items-center">
