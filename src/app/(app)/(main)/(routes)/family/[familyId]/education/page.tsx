@@ -9,15 +9,27 @@ import {
 } from "@/actions/education-actions";
 import { GetAllMember } from "@/actions/family-actions";
 import {
+  AddComponentScore,
   ChangeStatus,
   CreateSubject,
+  DeleteComponentScore,
   DeleteSubject,
   GetSubjectDetail,
+  InsertComponentScore,
   ModifyScore,
+  UpdateComponentScore,
   UpdateSubject,
 } from "@/actions/subject-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination";
 import {
   ResizableHandle,
   ResizablePanel,
@@ -30,6 +42,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import AddComponentLast from "@/components/user/education/add-component-last";
 import AddEducationSheet from "@/components/user/education/add-education-sheet";
 import AddSubjectSheet from "@/components/user/education/add-subject-sheet";
 import IndexString from "@/components/user/education/color/index-string";
@@ -41,10 +54,15 @@ import EducationPagination from "@/components/user/education/pagination";
 import ProgressCard from "@/components/user/education/progress-card";
 import ProgressDetail from "@/components/user/education/progress-detail";
 import SearchSelect from "@/components/user/education/search-select";
+import SubjectComponentsTable from "@/components/user/education/subject-components-table";
 import SubjectForm from "@/components/user/education/subject-form";
 import SubjectTestsTable from "@/components/user/education/subject-tests-table";
 import { EducationProgressSchema } from "@/schemas/education-schema";
-import { SubjectSchema, SubjectTestSchema } from "@/schemas/subject-schema";
+import {
+  ComponentSchema,
+  SubjectSchema,
+  SubjectTestSchema,
+} from "@/schemas/subject-schema";
 import {
   EducationProgress,
   EducationProgressDetail,
@@ -309,6 +327,100 @@ const changeStatus = async (
   }
 };
 
+const addComponent = async (
+  token: string,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number,
+  componentName: string,
+  score: number
+) => {
+  try {
+    const res = await AddComponentScore(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      componentName,
+      score
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const insertComponent = async (
+  token: string,
+  index: number,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number,
+  componentName: string,
+  score: number
+) => {
+  try {
+    const res = await InsertComponentScore(
+      token,
+      index,
+      subjectId,
+      educationProgressId,
+      familyId,
+      componentName,
+      score
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const updateComponent = async (
+  token: string,
+  index: number,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number,
+  componentName: string,
+  score: number
+) => {
+  try {
+    const res = await UpdateComponentScore(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      index,
+      componentName,
+      score
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const deleteComponent = async (
+  token: string,
+  index: number,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number
+) => {
+  try {
+    const res = await DeleteComponentScore(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      index
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
 const EducationPage = () => {
   // Constants
   const ITEMS_PER_PAGE = 9;
@@ -350,6 +462,7 @@ const EducationPage = () => {
     useState(false);
   const [onDeleteTestsScoreDialog, setOnDeleteTestsScoreDialog] =
     useState(false);
+  const [onDeleteComponentDialog, setOnDeleteComponentDialog] = useState(false);
 
   useEffect(() => {
     if (session?.accessToken && params!.familyId) {
@@ -684,6 +797,165 @@ const EducationPage = () => {
     });
   };
 
+  const addComponentSubmit = async (
+    values: z.infer<typeof ComponentSchema>
+  ) => {
+    await addComponent(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.score
+    );
+    addComponent(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.score
+    ).then((res) => {
+      if (!subjectDetail?.component_scores.component_scores) {
+        setSubjectDetail(
+          (prev) =>
+            prev && {
+              ...prev,
+              component_scores: {
+                component_scores: [
+                  { component_name: values.name, score: values.score },
+                ],
+              },
+            }
+        );
+      } else {
+        setSubjectDetail(
+          (prev) =>
+            prev && {
+              ...prev,
+              component_scores: {
+                component_scores: [
+                  ...prev.component_scores.component_scores,
+                  { component_name: values.name, score: values.score },
+                ],
+              },
+            }
+        );
+      }
+      componentForm.reset();
+    });
+  };
+
+  const deleteComponentSubmit = async (index: number) => {
+    await deleteComponent(
+      session!.accessToken,
+      index,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId)
+    );
+    deleteComponent(
+      session!.accessToken,
+      index,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId)
+    ).then(() => {
+      setSubjectDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            component_scores: {
+              component_scores: prev.component_scores.component_scores.filter(
+                (_, i) => i !== index
+              ),
+            },
+          }
+      );
+    });
+  };
+
+  const addComponentIndexSubmit = async (
+    values: z.infer<typeof ComponentSchema>,
+    index: number
+  ) => {
+    await insertComponent(
+      session!.accessToken,
+      index,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.score
+    );
+    insertComponent(
+      session!.accessToken,
+      index,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.score
+    ).then((res) => {
+      setSubjectDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            component_scores: {
+              component_scores: [
+                ...prev.component_scores.component_scores.slice(0, index),
+                { component_name: values.name, score: values.score },
+                ...prev.component_scores.component_scores.slice(index),
+              ],
+            },
+          }
+      );
+      componentForm.reset();
+    });
+  };
+
+  const editComponentSubmit = async (
+    values: z.infer<typeof ComponentSchema>,
+    index: number,
+    oldIndex: number
+  ) => {
+    await updateComponent(
+      session!.accessToken,
+      index,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.score
+    );
+    updateComponent(
+      session!.accessToken,
+      index,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.score
+    ).then(() => {
+      setSubjectDetail((prevSubjectDetail) => {
+        if (prevSubjectDetail) {
+          const newComponentScores = [...prevSubjectDetail.component_scores.component_scores];
+          newComponentScores[index] = {
+            component_name: values.name,
+            score: values.score,
+          };
+          return {
+            ...prevSubjectDetail,
+            component_scores: {
+              component_scores: newComponentScores,
+            },
+          };
+        }
+        return prevSubjectDetail;
+      });
+    });
+  };
+
   // Forms
   const educationProgressForm = useForm({
     resolver: zodResolver(EducationProgressSchema),
@@ -712,12 +984,22 @@ const EducationPage = () => {
     },
   });
 
+  const componentForm = useForm({
+    resolver: zodResolver(ComponentSchema),
+    defaultValues: {
+      name: "",
+      score: 0,
+    },
+  });
+
   const isSubjectTestsloading = subjectTestsForm.formState.isSubmitting;
 
   const isEducationProgressLoading =
     educationProgressForm.formState.isSubmitting;
 
   const isSubjectLoading = subjectForm.formState.isSubmitting;
+
+  const isComponentLoading = componentForm.formState.isSubmitting;
 
   if (!educationProgress || !familyMembers) {
     return null;
@@ -1004,7 +1286,7 @@ const EducationPage = () => {
                 isEditSubject={isEditSubject}
                 setIsEditSubject={setIsEditSubject}
               />
-              <div className="flex flex-1 flex-col">
+              <div className="flex flex-1 flex-col gap-5">
                 <SubjectTestsTable
                   subjectDetail={subjectDetail}
                   isSubjectTestsLoading={isSubjectTestsloading}
@@ -1015,6 +1297,29 @@ const EducationPage = () => {
                   onClose={() => setOnDeleteTestsScoreDialog(false)}
                   isOpen={onDeleteTestsScoreDialog}
                 />
+                <div className="flex flex-col gap-2 p-2 border">
+                  <div className="flex flex-row gap-4">
+                    <Input placeholder="Search" />
+                    <AddComponentLast
+                      componentForm={componentForm}
+                      isComponentLoading={isComponentLoading}
+                      onSubmit={addComponentSubmit}
+                    />
+                  </div>
+                  <SubjectComponentsTable
+                    componentScores={
+                      subjectDetail.component_scores.component_scores
+                    }
+                    onOpen={() => setOnDeleteComponentDialog(true)}
+                    onClose={() => setOnDeleteComponentDialog(false)}
+                    isOpen={onDeleteComponentDialog}
+                    onDelete={deleteComponentSubmit}
+                    onAddSubmit={addComponentIndexSubmit}
+                    componentForm={componentForm}
+                    isComponentLoading={isComponentLoading}
+                    onEditSubmit={editComponentSubmit}
+                  />
+                </div>
               </div>
               <div className="flex flex-row items-end">
                 <div className="flex flex-row gap-5">
@@ -1038,6 +1343,19 @@ const EducationPage = () => {
                     </SelectContent>
                   </Select>
                 </div>
+                <Pagination>
+                  <PaginationContent>
+                    <PaginationItem>
+                      <PaginationPrevious />
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationLink isActive>1</PaginationLink>
+                    </PaginationItem>
+                    <PaginationItem>
+                      <PaginationNext />
+                    </PaginationItem>
+                  </PaginationContent>
+                </Pagination>
               </div>
             </>
           )}

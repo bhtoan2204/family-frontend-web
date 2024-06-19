@@ -91,7 +91,7 @@ export const UpdateSubject = async (
       throw new Error(data.message);
     }
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const DeleteSubject = async (
@@ -112,9 +112,9 @@ export const DeleteSubject = async (
       }
     );
 
-    return response.json();
+    return await response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const AddComponentScore = async (
@@ -141,12 +141,20 @@ export const AddComponentScore = async (
       }),
     });
 
-    return response.json();
+    return await response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
-export const InsertComponentScore = async (token: string, index: number) => {
+export const InsertComponentScore = async (
+  token: string,
+  index: number,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number,
+  componentName: string,
+  score: number
+) => {
   try {
     const response = await fetch(
       `${SubjectUrl.insertComponentScore}/${index}`,
@@ -156,12 +164,19 @@ export const InsertComponentScore = async (token: string, index: number) => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        body: JSON.stringify({
+          id_subject: subjectId,
+          id_education_progress: educationProgressId,
+          id_family: familyId,
+          component_name: componentName,
+          score,
+        }),
       }
     );
 
-    return response.json();
+    return await response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const UpdateComponentScore = async (
@@ -169,6 +184,7 @@ export const UpdateComponentScore = async (
   subjectId: number,
   educationProgressId: number,
   familyId: number,
+  index: number,
   componentName: string,
   score: number
 ) => {
@@ -183,14 +199,15 @@ export const UpdateComponentScore = async (
         id_subject: subjectId,
         id_education_progress: educationProgressId,
         id_family: familyId,
+        index,
         component_name: componentName,
         score,
       }),
     });
 
-    return response.json();
+    return await response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const DeleteComponentScore = async (
@@ -215,9 +232,9 @@ export const DeleteComponentScore = async (
       }),
     });
 
-    return response.json();
+    return await response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const ModifyScore = async (
@@ -248,7 +265,7 @@ export const ModifyScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const RemoveScore = async (
@@ -275,7 +292,7 @@ export const RemoveScore = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const ChangeStatus = async (
@@ -302,6 +319,6 @@ export const ChangeStatus = async (
 
     return response.json();
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };

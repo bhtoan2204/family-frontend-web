@@ -14,3 +14,10 @@ export const SubjectTestSchema = z.object({
   finalScore: z.string().transform(parseFloat).nullable(),
   bonusScore: z.string().transform(parseFloat).nullable(),
 });
+
+export const ComponentSchema = z.object({
+  name: z.string().min(1, {
+    message: "Component name is required",
+  }),
+  score: z.string().transform(parseFloat),
+});

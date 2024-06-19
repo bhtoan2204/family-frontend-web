@@ -15,7 +15,7 @@ const EducationPagination = () => {
     <Pagination className="mb-4">
       <PaginationContent>
         <PaginationItem>
-          <PaginationPrevious href="#" />
+          <PaginationPrevious />
         </PaginationItem>
         <PaginationItem>
           <PaginationLink href="#">1</PaginationLink>
@@ -37,6 +37,6 @@ const EducationPagination = () => {
       </PaginationContent>
     </Pagination>
   );
-}
- 
+};
+
 export default EducationPagination;
