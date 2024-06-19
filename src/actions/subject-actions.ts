@@ -1,6 +1,7 @@
 "use server";
 
 import SubjectUrl from "@/services/url/subject-url";
+import { SubjectDetail } from "@/types/education";
 
 export const CreateSubject = async (
   token: string,
@@ -23,8 +24,12 @@ export const CreateSubject = async (
         description,
       }),
     });
-
-    return response.json();
+    const data = await response.json();
+    if (data.message === "Success") {
+      return data.data[0];
+    } else {
+      throw new Error(data.message);
+    }
   } catch (error) {
     return { error: "Internal Error!" };
   }
@@ -46,10 +51,14 @@ export const GetSubjectDetail = async (
         },
       }
     );
-
-    return response.json();
+    const data = await response.json();
+    if (data.message === "Success") {
+      return data.data[0] as SubjectDetail;
+    } else {
+      throw new Error(data.message);
+    }
   } catch (error) {
-    return { error: "Internal Error!" };
+    throw new Error("Internal Error!");
   }
 };
 export const UpdateSubject = async (
@@ -75,8 +84,12 @@ export const UpdateSubject = async (
         description,
       }),
     });
-
-    return response.json();
+    const data = await response.json();
+    if (data.message === "Success") {
+      return data.data[0];
+    } else {
+      throw new Error(data.message);
+    }
   } catch (error) {
     return { error: "Internal Error!" };
   }
@@ -212,7 +225,9 @@ export const ModifyScore = async (
   subjectId: number,
   educationProgressId: number,
   familyId: number,
-  scoreName: string
+  midtermScores: number | null,
+  finalScores: number | null,
+  bonusScores: number | null
 ) => {
   try {
     const response = await fetch(SubjectUrl.modifyScore, {
@@ -225,7 +240,9 @@ export const ModifyScore = async (
         id_subject: subjectId,
         id_education_progress: educationProgressId,
         id_family: familyId,
-        score_name: scoreName,
+        midterm_score: midtermScores,
+        final_score: finalScores,
+        bonus_score: bonusScores,
       }),
     });
 

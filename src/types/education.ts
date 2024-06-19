@@ -40,12 +40,12 @@ export type SubjectDetail = {
   component_scores: {
     component_scores: ComponentScore[];
   };
-  midterm_scores: number;
-  final_scores: number;
-  bonus_score: number;
+  midterm_score: number | null;
+  final_score: number | null;
+  bonus_score: number | null;
   status: string;
-}
+};
 export type ComponentScore = {
   component_name: string;
   score: number;
-}
+};

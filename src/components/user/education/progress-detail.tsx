@@ -18,6 +18,9 @@ interface ProgressDetailProps {
   familyMember: Member;
   styles: any;
   sortSubjectType: string;
+  progressBar: number;
+  onSubjectClick: (subjectId: number) => void;
+  selectedSubject: number | null;
 }
 
 const ProgressDetail = ({
@@ -26,10 +29,13 @@ const ProgressDetail = ({
   familyMember,
   styles,
   sortSubjectType,
+  progressBar,
+  onSubjectClick,
+  selectedSubject,
 }: ProgressDetailProps) => {
   return (
     <>
-      <div className="flex flex-row p-5 shadow shadow-neutral-300 gap-10 hover:bg-black/5 dark:hover:bg-black dark:bg-neutral-700">
+      <button className="flex flex-col lg:flex-row p-5 relative shadow-md hover:shadow-xl rounded-md cursor-pointer gap-10 hover:bg-black/5 dark:hover:bg-black dark:bg-neutral-700">
         <div className="flex flex-col items-start justify-center gap-3">
           <div className="flex flex-row gap-4 items-center">
             <Avatar className="bg-gray-300 dark:bg-slate-200">
@@ -58,7 +64,7 @@ const ProgressDetail = ({
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-start justify-center gap-3 ">
+        <div className="flex flex-col items-start justify-center gap-3">
           <div className="">
             <h1 className="p-1 font-bold text-lg">
               {educationProgressDetail.education_progress_info.title}
@@ -74,9 +80,12 @@ const ProgressDetail = ({
               {educationProgressDetail.education_progress_info.progress_notes}
             </p>
           </div>
-          
+          {/* <div className="flex flex-row gap-2 items-center h-6">
+            <p>{progressBar}%</p>
+            <Progress value={50} max={100} className="flex flex-1" />
+          </div> */}
         </div>
-      </div>
+      </button>
       <div className="flex flex-1 flex-col overflow-y-auto">
         {!educationProgressDetail.subjects_info && (
           <div className="flex flex-1 items-center justify-center">
@@ -84,7 +93,7 @@ const ProgressDetail = ({
           </div>
         )}
         {educationProgressDetail.subjects_info && (
-          <div className="grid lg:grid-cols-3 grid-cols-1 gap-5">
+          <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
             {educationProgressDetail.subjects_info
               .filter((value) =>
                 value.subject_name
@@ -105,6 +114,8 @@ const ProgressDetail = ({
                   key={subject.id_subject}
                   color={styles[IndexString[index % IndexString.length].name]}
                   subject={subject}
+                  onClick={onSubjectClick}
+                  selectedSubject={selectedSubject}
                 />
               ))}
           </div>

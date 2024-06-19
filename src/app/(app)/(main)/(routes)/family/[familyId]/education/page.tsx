@@ -2,10 +2,20 @@
 
 import {
   CreateEducation,
+  DeleteEducation,
   GetAllEducation,
   GetEducationDetail,
+  UpdateEducation,
 } from "@/actions/education-actions";
 import { GetAllMember } from "@/actions/family-actions";
+import {
+  ChangeStatus,
+  CreateSubject,
+  DeleteSubject,
+  GetSubjectDetail,
+  ModifyScore,
+  UpdateSubject,
+} from "@/actions/subject-actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,15 +23,33 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import AddEducationSheet from "@/components/user/education/add-education-sheet";
+import AddSubjectSheet from "@/components/user/education/add-subject-sheet";
 import IndexString from "@/components/user/education/color/index-string";
+import DeleteEducationDialog from "@/components/user/education/delete-education-dialog";
+import DeleteSubjectDialog from "@/components/user/education/delete-subject-dialog";
+import EditEducationSheet from "@/components/user/education/edit-education-sheet";
 import MemberCard from "@/components/user/education/member-card";
 import EducationPagination from "@/components/user/education/pagination";
 import ProgressCard from "@/components/user/education/progress-card";
 import ProgressDetail from "@/components/user/education/progress-detail";
 import SearchSelect from "@/components/user/education/search-select";
+import SubjectForm from "@/components/user/education/subject-form";
+import SubjectTestsTable from "@/components/user/education/subject-tests-table";
 import { EducationProgressSchema } from "@/schemas/education-schema";
-import { EducationProgress, EducationProgressDetail } from "@/types/education";
+import { SubjectSchema, SubjectTestSchema } from "@/schemas/subject-schema";
+import {
+  EducationProgress,
+  EducationProgressDetail,
+  SubjectDetail,
+} from "@/types/education";
 import { Member } from "@/types/member";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDownAZ, ArrowUpAZ, Loader, RefreshCw } from "lucide-react";
@@ -82,6 +110,42 @@ const addEducation = async (
   }
 };
 
+const editEducation = async (
+  token: string,
+  familyId: number,
+  educationProgressId: number,
+  title: string,
+  progressNotes: string,
+  schoolInfo: string
+) => {
+  try {
+    const res = await UpdateEducation(
+      token,
+      educationProgressId,
+      familyId,
+      title,
+      progressNotes,
+      schoolInfo
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const deleteEducation = async (
+  token: string,
+  educationProgressId: number,
+  familyId: number
+) => {
+  try {
+    const res = await DeleteEducation(token, educationProgressId, familyId);
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
 const fetchEducationDetail = async (
   token: string,
   familyId: number,
@@ -89,6 +153,156 @@ const fetchEducationDetail = async (
 ) => {
   try {
     const res = await GetEducationDetail(token, familyId, educationProgressId);
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const fetchSubjectDetail = async (
+  token: string,
+  subjectId: number,
+  educationProgressId: string,
+  familyId: number
+) => {
+  try {
+    const res = await GetSubjectDetail(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const addSubject = async (
+  token: string,
+  educationProgressId: number,
+  familyId: number,
+  subjectName: string,
+  description: string
+) => {
+  try {
+    const res = await CreateSubject(
+      token,
+      educationProgressId,
+      familyId,
+      subjectName,
+      description
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const editSubject = async (
+  token: string,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number,
+  subjectName: string,
+  description: string
+) => {
+  try {
+    const res = await UpdateSubject(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      subjectName,
+      description
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const deleteSubject = async (
+  token: string,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number
+) => {
+  try {
+    const res = await DeleteSubject(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const modifyScore = async (
+  token: string,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number,
+  midtermScore: number,
+  finalScore: number,
+  bonusScore: number
+) => {
+  try {
+    const res = await ModifyScore(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      midtermScore,
+      finalScore,
+      bonusScore
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const removeScore = async (
+  token: string,
+  subjectId: number,
+  educationProgressId: number,
+  familyId: number
+) => {
+  try {
+    const res = await ModifyScore(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      null,
+      null,
+      null
+    );
+    return res;
+  } catch (error) {
+    throw new Error("Internal Error!");
+  }
+};
+
+const changeStatus = async (
+  token: string,
+  subjectId: number,
+  familyId: number,
+  educationProgressId: number,
+  status: string
+) => {
+  try {
+    const res = await ChangeStatus(
+      token,
+      subjectId,
+      educationProgressId,
+      familyId,
+      status
+    );
     return res;
   } catch (error) {
     throw new Error("Internal Error!");
@@ -123,6 +337,19 @@ const EducationPage = () => {
   const [isProgressDetailLoaded, setIsProgressDetailLoaded] = useState(false);
   const [searchSubjectText, setSearchSubjectText] = useState<string>("");
   const [sortSubjectType, setSortSubjectType] = useState<string>("");
+  const [progressBar, setProgressBar] = useState<number>(0);
+  const [selectedSubject, setSelectedSubject] = useState<number | null>(null);
+  const [isDeleteEducationDialogOpen, setIsDeleteEducationDialogOpen] =
+    useState(false);
+  const [subjectDetail, setSubjectDetail] = useState<SubjectDetail | null>(
+    null
+  );
+  const [isSubjectDetailLoaded, setIsSubjectDetailLoaded] = useState(false);
+  const [isEditSubject, setIsEditSubject] = useState(false);
+  const [isDeleteSubjectDialogOpen, setIsDeleteSubjectDialogOpen] =
+    useState(false);
+  const [onDeleteTestsScoreDialog, setOnDeleteTestsScoreDialog] =
+    useState(false);
 
   useEffect(() => {
     if (session?.accessToken && params!.familyId) {
@@ -155,6 +382,23 @@ const EducationPage = () => {
     }
   };
 
+  const handleSubjectClick = (subjectId: number) => {
+    if (selectedSubject && selectedSubject === subjectId) {
+      setSelectedSubject(null);
+    } else {
+      setSelectedSubject(subjectId);
+      fetchSubjectDetail(
+        session!.accessToken,
+        subjectId,
+        selectedProgress!.id_education_progress.toString(),
+        Number(params!.familyId)
+      ).then((res) => {
+        setSubjectDetail(res);
+        setIsSubjectDetailLoaded(true);
+      });
+    }
+  };
+
   const handleSearchOption = (value: string) => {
     setSearchOption(value);
   };
@@ -178,6 +422,14 @@ const EducationPage = () => {
         Number(params.familyId),
         progress.id_education_progress
       ).then((res) => {
+        if (res.subjects_info) {
+          const totalSubject = res.subjects_info.length;
+          const finishedSubject = res.subjects_info.filter(
+            (subject) => subject.status !== "in_progress"
+          ).length;
+          const progress = (finishedSubject / totalSubject) * 100;
+          setProgressBar(progress);
+        }
         setEducationProgressDetail(res);
         setIsProgressDetailLoaded(true);
       });
@@ -185,20 +437,6 @@ const EducationPage = () => {
       setIsProgressDetailLoaded(true);
     }
   };
-
-  // Forms
-  const educationProgressForm = useForm({
-    resolver: zodResolver(EducationProgressSchema),
-    defaultValues: {
-      idMember: "",
-      title: "",
-      progressNotes: "",
-      schoolInfo: "",
-    },
-  });
-
-  const isEducationProgressLoading =
-    educationProgressForm.formState.isSubmitting;
 
   const addEducationProgress = async (
     values: z.infer<typeof EducationProgressSchema>
@@ -221,6 +459,265 @@ const EducationPage = () => {
       educationProgressForm.reset();
     });
   };
+
+  const editEducationProgress = async (
+    values: z.infer<typeof EducationProgressSchema>
+  ) => {
+    await editEducation(
+      session!.accessToken,
+      Number(params!.familyId),
+      selectedProgress!.id_education_progress,
+      values.title,
+      values.progressNotes,
+      values.schoolInfo
+    );
+    fetchEducationProgress(
+      session!.accessToken,
+      Number(params!.familyId),
+      "1",
+      ITEMS_PER_PAGE.toString()
+    ).then((res) => {
+      setEducationProgress(res);
+      setEducationProgressDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            education_progress_info: {
+              ...prev.education_progress_info,
+              title: values.title,
+              progress_notes: values.progressNotes,
+              school_info: values.schoolInfo,
+            },
+          }
+      );
+    });
+  };
+
+  const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {
+    await addSubject(
+      session!.accessToken,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.description
+    );
+    addSubject(
+      session!.accessToken,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.description
+    ).then((res) => {
+      setEducationProgressDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            subjects_info: [
+              ...prev.subjects_info!,
+              {
+                id_subject: res.id_subject,
+                subject_name: values.name,
+                description: values.description,
+                status: res.status,
+              },
+            ],
+          }
+      );
+      subjectForm.reset();
+    });
+  };
+
+  const editSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {
+    await editSubject(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.description
+    );
+    editSubject(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.name,
+      values.description
+    ).then((res) => {
+      setEducationProgressDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            subjects_info: prev.subjects_info!.map((subject) =>
+              subject.id_subject === selectedSubject
+                ? {
+                    ...subject,
+                    subject_name: values.name,
+                    description: values.description,
+                  }
+                : subject
+            ),
+          }
+      );
+      setSubjectDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            subject_name: values.name,
+            description: values.description,
+          }
+      );
+      setIsEditSubject(false);
+    });
+  };
+
+  const editTestsSubmit = (values: z.infer<typeof SubjectTestSchema>) => {
+    modifyScore(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId),
+      values.midtermScore!,
+      values.finalScore!,
+      values.bonusScore!
+    ).then(() => {
+      setSubjectDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            midterm_score: values.midtermScore!,
+            final_score: values.finalScore!,
+            bonus_score: values.bonusScore!,
+          }
+      );
+    });
+  };
+
+  const removeTestSubmit = () => {
+    removeScore(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId)
+    ).then(() => {
+      setSubjectDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            midterm_score: null,
+            final_score: null,
+            bonus_score: null,
+          }
+      );
+      setOnDeleteTestsScoreDialog(false);
+    });
+  };
+
+  const deleteEducationProgress = async () => {
+    setIsDeleteEducationDialogOpen(false);
+    setIsEducationLoaded(false);
+    await deleteEducation(
+      session!.accessToken,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId)
+    );
+    fetchEducationProgress(
+      session!.accessToken,
+      Number(params!.familyId),
+      "1",
+      ITEMS_PER_PAGE.toString()
+    ).then((res) => {
+      setEducationProgress(res);
+      setIsDetailMode(false);
+      setIsEducationLoaded(true);
+    });
+  };
+
+  const deleteSubjectSubmit = async () => {
+    setIsDeleteSubjectDialogOpen(false);
+    await deleteSubject(
+      session!.accessToken,
+      selectedSubject!,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId)
+    ).then(() => {
+      setEducationProgressDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            subjects_info: prev.subjects_info!.filter(
+              (subject) => subject.id_subject !== selectedSubject
+            ),
+          }
+      );
+      setSelectedSubject(null);
+      setSubjectDetail(null);
+    });
+  };
+
+  const handleChangeSubjectStatus = async (status: string) => {
+    changeStatus(
+      session!.accessToken,
+      selectedSubject!,
+      Number(params!.familyId),
+      selectedProgress!.id_education_progress,
+      status
+    ).then((res) => {
+      setEducationProgressDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            subjects_info: prev.subjects_info!.map((subject) =>
+              subject.id_subject === selectedSubject
+                ? { ...subject, status: status }
+                : subject
+            ),
+          }
+      );
+      setSubjectDetail(
+        (prev) =>
+          prev && {
+            ...prev,
+            status: status,
+          }
+      );
+    });
+  };
+
+  // Forms
+  const educationProgressForm = useForm({
+    resolver: zodResolver(EducationProgressSchema),
+    defaultValues: {
+      idMember: "",
+      title: "",
+      progressNotes: "",
+      schoolInfo: "",
+    },
+  });
+
+  const subjectForm = useForm({
+    resolver: zodResolver(SubjectSchema),
+    defaultValues: {
+      name: "",
+      description: "",
+    },
+  });
+
+  const subjectTestsForm = useForm({
+    resolver: zodResolver(SubjectTestSchema),
+    defaultValues: {
+      midtermScore: 0,
+      finalScore: 0,
+      bonusScore: 0,
+    },
+  });
+
+  const isSubjectTestsloading = subjectTestsForm.formState.isSubmitting;
+
+  const isEducationProgressLoading =
+    educationProgressForm.formState.isSubmitting;
+
+  const isSubjectLoading = subjectForm.formState.isSubmitting;
 
   if (!educationProgress || !familyMembers) {
     return null;
@@ -398,13 +895,13 @@ const EducationPage = () => {
     return (
       <ResizablePanelGroup key="group2" direction="horizontal">
         <ResizablePanel
-          defaultSize={50}
-          maxSize={60}
+          defaultSize={60}
+          maxSize={70}
           minSize={40}
           className="bg-white dark:bg-[#313338] flex flex-col p-4 gap-4"
         >
           <div className="flex flex-row gap-4">
-            <Button variant="primary" onClick={() => setIsDetailMode(false)}>
+            <Button variant="outline" onClick={() => setIsDetailMode(false)}>
               Back
             </Button>
             <Input
@@ -425,6 +922,24 @@ const EducationPage = () => {
                 <ArrowDownAZ className="w-6 h-6" />
               )}
             </Button>
+            <AddSubjectSheet
+              subjectForm={subjectForm}
+              isSubjectLoading={isSubjectLoading}
+              onSubmit={addSubjectSubmit}
+            />
+            <EditEducationSheet
+              educationProgressForm={educationProgressForm}
+              isEducationProgressLoading={isEducationProgressLoading}
+              familyMembers={familyMembers}
+              onSubmit={editEducationProgress}
+              educationProgress={selectedProgress!}
+            />
+            <DeleteEducationDialog
+              onDelete={deleteEducationProgress}
+              onOpen={() => setIsDeleteEducationDialogOpen(true)}
+              onClose={() => setIsDeleteEducationDialogOpen(false)}
+              isOpen={isDeleteEducationDialogOpen}
+            />
           </div>
           {!isProgressDetailLoaded && (
             <div className="flex flex-1 items-center justify-center">
@@ -449,19 +964,83 @@ const EducationPage = () => {
               searchSubjectText={searchSubjectText}
               styles={styles}
               sortSubjectType={sortSubjectType}
+              progressBar={progressBar}
+              onSubjectClick={handleSubjectClick}
+              selectedSubject={selectedSubject}
             />
           )}
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
-          defaultSize={50}
+          defaultSize={40}
           maxSize={60}
-          minSize={40}
+          minSize={30}
           className="bg-white dark:bg-[#313338] flex flex-col p-4 gap-4"
         >
-          <div className="flex flex-1 items-center justify-center">
-            <p className="text-lg">Detail Mode</p>
-          </div>
+          {!selectedSubject && (
+            <div className="flex flex-1 items-center justify-center">
+              <p className="text-lg">
+                Please select a subject to view the details
+              </p>
+            </div>
+          )}
+          {!isSubjectDetailLoaded && selectedSubject && (
+            <div className="flex flex-1 items-center justify-center">
+              <Loader className="w-10 h-10 animate-spin" />
+            </div>
+          )}
+          {isSubjectDetailLoaded && selectedSubject && !subjectDetail && (
+            <div className="flex flex-1 items-center justify-center">
+              <p className="text-lg">No data available</p>
+            </div>
+          )}
+          {isSubjectDetailLoaded && selectedSubject && subjectDetail && (
+            <>
+              <SubjectForm
+                isSubjectLoading={isSubjectLoading}
+                subjectForm={subjectForm}
+                onSubmit={editSubjectSubmit}
+                subjectDetail={subjectDetail}
+                isEditSubject={isEditSubject}
+                setIsEditSubject={setIsEditSubject}
+              />
+              <div className="flex flex-1 flex-col">
+                <SubjectTestsTable
+                  subjectDetail={subjectDetail}
+                  isSubjectTestsLoading={isSubjectTestsloading}
+                  subjectTestsForm={subjectTestsForm}
+                  onSubmit={editTestsSubmit}
+                  onDelete={removeTestSubmit}
+                  onOpen={() => setOnDeleteTestsScoreDialog(true)}
+                  onClose={() => setOnDeleteTestsScoreDialog(false)}
+                  isOpen={onDeleteTestsScoreDialog}
+                />
+              </div>
+              <div className="flex flex-row items-end">
+                <div className="flex flex-row gap-5">
+                  <DeleteSubjectDialog
+                    onDelete={deleteSubjectSubmit}
+                    onOpen={() => setIsDeleteSubjectDialogOpen(true)}
+                    onClose={() => setIsDeleteSubjectDialogOpen(false)}
+                    isOpen={isDeleteSubjectDialogOpen}
+                  />
+                  <Select
+                    key={subjectDetail.id_subject}
+                    defaultValue={subjectDetail.status}
+                    onValueChange={(value) => handleChangeSubjectStatus(value)}
+                  >
+                    <SelectTrigger defaultValue={subjectDetail.status}>
+                      <SelectValue placeholder="Select status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="in_progress">In Progress</SelectItem>
+                      <SelectItem value="done">Completed</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+            </>
+          )}
         </ResizablePanel>
       </ResizablePanelGroup>
     );
