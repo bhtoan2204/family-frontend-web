@@ -101,7 +101,7 @@ export const DeleteSubject = async (
   familyId: number
 ) => {
   try {
-    const response = await fetch(
+    await fetch(
       `${SubjectUrl.deleteSubject}/${familyId}/${educationProgressId}/${subjectId}`,
       {
         method: "DELETE",
@@ -111,8 +111,6 @@ export const DeleteSubject = async (
         },
       }
     );
-
-    return await response.json();
   } catch (error) {
     throw new Error("Internal Error!");
   }
@@ -218,7 +216,7 @@ export const DeleteComponentScore = async (
   index: number
 ) => {
   try {
-    const response = await fetch(SubjectUrl.deleteComponentScore, {
+    await fetch(SubjectUrl.deleteComponentScore, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -231,8 +229,6 @@ export const DeleteComponentScore = async (
         index,
       }),
     });
-
-    return await response.json();
   } catch (error) {
     throw new Error("Internal Error!");
   }
@@ -276,7 +272,7 @@ export const RemoveScore = async (
   scoreName: string
 ) => {
   try {
-    const response = await fetch(SubjectUrl.removeScore, {
+    await fetch(SubjectUrl.removeScore, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -289,8 +285,6 @@ export const RemoveScore = async (
         score_name: scoreName,
       }),
     });
-
-    return response.json();
   } catch (error) {
     throw new Error("Internal Error!");
   }

@@ -157,8 +157,7 @@ const deleteEducation = async (
   familyId: number
 ) => {
   try {
-    const res = await DeleteEducation(token, educationProgressId, familyId);
-    return res;
+    await DeleteEducation(token, educationProgressId, familyId);
   } catch (error) {
     throw new Error("Internal Error!");
   }
@@ -246,14 +245,12 @@ const deleteSubject = async (
   educationProgressId: number,
   familyId: number
 ) => {
-  try {
-    const res = await DeleteSubject(
+  try {await DeleteSubject(
       token,
       subjectId,
       educationProgressId,
       familyId
     );
-    return res;
   } catch (error) {
     throw new Error("Internal Error!");
   }
@@ -407,15 +404,13 @@ const deleteComponent = async (
   educationProgressId: number,
   familyId: number
 ) => {
-  try {
-    const res = await DeleteComponentScore(
+  try {await DeleteComponentScore(
       token,
       subjectId,
       educationProgressId,
       familyId,
       index
     );
-    return res;
   } catch (error) {
     throw new Error("Internal Error!");
   }

@@ -116,7 +116,7 @@ export const DeleteEducation = async (
   familyId: number
 ) => {
   try {
-    const response = await fetch(
+    await fetch(
       `${EducationUrl.deleteEducation}/${educationProgressId}/${familyId}`,
       {
         method: "DELETE",
@@ -126,8 +126,6 @@ export const DeleteEducation = async (
         },
       }
     );
-    const data = await response.json();
-    return data;
   } catch (error) {
     return { error: "Internal Error!" };
   }
