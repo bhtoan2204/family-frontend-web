@@ -607,13 +607,6 @@ const EducationPage = () => {
   };
 
   const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {
-    await addSubject(
-      session!.accessToken,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.description
-    );
     addSubject(
       session!.accessToken,
       selectedProgress!.id_education_progress,
@@ -621,21 +614,38 @@ const EducationPage = () => {
       values.name,
       values.description
     ).then((res) => {
-      setEducationProgressDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            subjects_info: [
-              ...prev.subjects_info!,
-              {
-                id_subject: res.id_subject,
-                subject_name: values.name,
-                description: values.description,
-                status: res.status,
-              },
-            ],
-          }
-      );
+      if (!educationProgressDetail?.subjects_info) {
+        setEducationProgressDetail(
+          (prev) =>
+            prev && {
+              ...prev,
+              subjects_info: [
+                {
+                  id_subject: res.id_subject,
+                  subject_name: values.name,
+                  description: values.description,
+                  status: res.status,
+                },
+              ],
+            }
+        );
+      } else {
+        setEducationProgressDetail(
+          (prev) =>
+            prev && {
+              ...prev,
+              subjects_info: [
+                ...prev.subjects_info!,
+                {
+                  id_subject: res.id_subject,
+                  subject_name: values.name,
+                  description: values.description,
+                  status: res.status,
+                },
+              ],
+            }
+        );
+      }
       subjectForm.reset();
     });
   };
@@ -939,7 +949,9 @@ const EducationPage = () => {
     ).then(() => {
       setSubjectDetail((prevSubjectDetail) => {
         if (prevSubjectDetail) {
-          const newComponentScores = [...prevSubjectDetail.component_scores.component_scores];
+          const newComponentScores = [
+            ...prevSubjectDetail.component_scores.component_scores,
+          ];
           newComponentScores[index] = {
             component_name: values.name,
             score: values.score,
