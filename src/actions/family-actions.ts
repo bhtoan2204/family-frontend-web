@@ -267,6 +267,8 @@ export const CheckIfUserIsInFamily = async (
 
     const isUserInFamily = members.some((member) => member.id_user === userId);
 
+    console.log("Check User Member",isUserInFamily);
+
     return isUserInFamily;
   } catch (error) {
     throw new Error("Internal Error!");

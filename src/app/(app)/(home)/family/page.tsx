@@ -18,19 +18,23 @@ const FamilySetup = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (!session?.accessToken) return;
-    const getFamilies = async () => {
-      setIsLoading(true);
-      const family: Family[] = await GetAllFamilies(session.accessToken);
-      setFamilies(family);
-      setIsLoading(false);
-    };
-    getFamilies();
-  }, [session]);
-  if (families.length > 0 && !isLoading) {
+    if (!session?.accessToken) return router.push("/signin");
+    else {
+      const getFamilies = async () => {
+        setIsLoading(true);
+        const family: Family[] = await GetAllFamilies(session.accessToken);
+        setFamilies(family);
+        setIsLoading(false);
+      };
+      getFamilies();
+    }
+  }, [session, router]);
+
+  if (isLoading) {
+    return <Loader />;
+  } else if (families.length > 0 && !isLoading) {
     return router.push(`/family/${families[0].id_family}`);
-  }
-  if (families.length > 0 && !isLoading) {
+  } else if (families.length === 0 && !isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full gap-10">
         <TriangleAlert className="text-rose-500" size={100} />
@@ -51,7 +55,6 @@ const FamilySetup = () => {
       </div>
     );
   }
-  return <Loader />;
 };
 
 export default FamilySetup;
