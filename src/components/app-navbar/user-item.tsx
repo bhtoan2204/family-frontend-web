@@ -3,10 +3,16 @@
 import { SignOut } from "@/actions/auth-actions";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { User } from "@/ultils/models";
 import { LogOut } from "lucide-react";
-import { Session } from "next-auth";
 
-const UserItem = (session: Session) => {
+
+type TProps = {
+  user: User;
+}
+
+
+const UserItem = ({ user }: TProps) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -14,8 +20,8 @@ const UserItem = (session: Session) => {
           <div className="shadow-1 relative bg-neutral-400 dark:bg-slate-300 group flex mx-3 h-[40px] w-[40px] rounded-[20px] group-hover:rounded-[14px] transition-all overflow-hidden">
             <Avatar className="h-full w-full">
               <AvatarImage
-                src={session.user.avatar}
-                alt={session.user.lastname}
+                src={user.avatar || "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/2118b09e-1d8b-4119-8b2f-c00441a3d9fa/d3065zt-7f94a803-ce36-4048-b865-1a491ba4384c.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzIxMThiMDllLTFkOGItNDExOS04YjJmLWMwMDQ0MWEzZDlmYVwvZDMwNjV6dC03Zjk0YTgwMy1jZTM2LTQwNDgtYjg2NS0xYTQ5MWJhNDM4NGMuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.vs_CL7QX-anVo3oPRm6gN3g0JoVQjMCX0FL14dnPU3U"}
+                alt={user.lastname}
               />
             </Avatar>
           </div>

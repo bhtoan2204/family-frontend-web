@@ -25,7 +25,7 @@ export default function RootLayout({
           font.className
         )}
       >
-        <AuthProvider>{children}</AuthProvider>
+        {children}
       </body>
     </html>
   );

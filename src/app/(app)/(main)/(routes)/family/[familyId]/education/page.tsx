@@ -71,12 +71,12 @@ import {
 import { Member } from "@/types/member";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowDownAZ, ArrowUpAZ, Loader, RefreshCw } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import styles from "./color-string.module.css";
+import { authStation } from "@/ultils/stations";
 
 const fetchEducationProgress = async (
   token: string,
@@ -417,8 +417,7 @@ const EducationPage = () => {
   // Constants
   const ITEMS_PER_PAGE = 9;
 
-  // Hooks
-  const { data: session } = useSession();
+  // Hooks 
   const params = useParams();
   const [isDetailMode, setIsDetailMode] = useState(false);
   const [educationProgress, setEducationProgress] = useState<
@@ -459,11 +458,11 @@ const EducationPage = () => {
   const [onDeleteComponentDialog, setOnDeleteComponentDialog] = useState(false);
 
   useEffect(() => {
-    if (session?.accessToken && params!.familyId) {
+    if (authStation.$state.token && params!.familyId) {
       setIsEducationLoaded(false);
       setIsMemberLoaded(false);
       fetchEducationProgress(
-        session.accessToken,
+        authStation.$state.token,
         Number(params!.familyId),
         "1",
         ITEMS_PER_PAGE.toString()
@@ -471,14 +470,14 @@ const EducationPage = () => {
         setEducationProgress(res);
         setIsEducationLoaded(true);
       });
-      fetchFamilyMembers(session.accessToken, Number(params!.familyId)).then(
+      fetchFamilyMembers(authStation.$state.token, Number(params!.familyId)).then(
         (res) => {
           setFamilyMembers(res);
           setIsMemberLoaded(true);
         }
       );
     }
-  }, [session, params]);
+  }, [params]);
 
   console.log("Education Progress", educationProgress);
 
@@ -517,10 +516,15 @@ const EducationPage = () => {
   const handleSelectedProgress = (
     progress: EducationProgressDetailWithSubject
   ) => {
+    if (!authStation.$state.token) {
+      return;
+    }
+
     setIsDetailMode(true);
     setSelectedProgress(progress);
+
     fetchEducationDetail(
-      session!.accessToken,
+      authStation.$state.token,
       Number(params!.familyId),
       progress.id_education_progress
     ).then((res) => {
@@ -532,9 +536,13 @@ const EducationPage = () => {
   const addEducationProgress = async (
     values: z.infer<typeof EducationProgressSchema>
   ) => {
+    if (!authStation.$state.token) {
+      return;
+    }
+
     const { idMember, title, progressNotes, schoolInfo } = values;
     const data = await addEducation(
-      session!.accessToken,
+      authStation.$state.token,
       Number(params!.familyId),
       idMember,
       title,
@@ -545,7 +553,7 @@ const EducationPage = () => {
       console.error(data.error);
     } else {
       fetchEducationProgress(
-        session!.accessToken,
+        authStation.$state.token,
         Number(params!.familyId),
         "1",
         ITEMS_PER_PAGE.toString()
@@ -558,9 +566,13 @@ const EducationPage = () => {
   const editEducationProgress = async (
     values: z.infer<typeof EducationProgressSchema>
   ) => {
+    if (!authStation.$state.token) {
+      return;
+    }
+
     const { title, progressNotes, schoolInfo } = values;
     const data = await editEducation(
-      session!.accessToken,
+      authStation.$state.token,
       Number(params!.familyId),
       selectedProgress!.id_education_progress,
       title,
@@ -583,13 +595,16 @@ const EducationPage = () => {
   };
 
   const deleteEducationProgress = async () => {
+    if (!authStation.$state.token) {
+      return;
+    }
     await deleteEducation(
-      session!.accessToken,
+      authStation.$state.token,
       selectedProgress!.id_education_progress,
       Number(params!.familyId)
     );
     fetchEducationProgress(
-      session!.accessToken,
+      authStation.$state.token,
       Number(params!.familyId),
       "1",
       ITEMS_PER_PAGE.toString()
@@ -598,34 +613,34 @@ const EducationPage = () => {
     });
   };
 
-  const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {};
+  const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => { };
 
-  const editSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {};
+  const editSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => { };
 
-  const editTestsSubmit = (values: z.infer<typeof SubjectTestSchema>) => {};
+  const editTestsSubmit = (values: z.infer<typeof SubjectTestSchema>) => { };
 
-  const removeTestSubmit = () => {};
+  const removeTestSubmit = () => { };
 
-  const deleteSubjectSubmit = async () => {};
+  const deleteSubjectSubmit = async () => { };
 
-  const handleChangeSubjectStatus = async (status: string) => {};
+  const handleChangeSubjectStatus = async (status: string) => { };
 
   const addComponentSubmit = async (
     values: z.infer<typeof ComponentSchema>
-  ) => {};
+  ) => { };
 
-  const deleteComponentSubmit = async (index: number) => {};
+  const deleteComponentSubmit = async (index: number) => { };
 
   const addComponentIndexSubmit = async (
     values: z.infer<typeof ComponentSchema>,
     index: number
-  ) => {};
+  ) => { };
 
   const editComponentSubmit = async (
     values: z.infer<typeof ComponentSchema>,
     index: number,
     oldIndex: number
-  ) => {};
+  ) => { };
 
   // Forms
   const educationProgressForm = useForm({
@@ -909,9 +924,9 @@ const EducationPage = () => {
               educationProgressDetail={selectedProgress}
               familyMember={
                 familyMembers[
-                  familyMembers.findIndex(
-                    (member) => member.id_user === selectedProgress?.id_user
-                  )
+                familyMembers.findIndex(
+                  (member) => member.id_user === selectedProgress?.id_user
+                )
                 ]
               }
               searchSubjectText={searchSubjectText}

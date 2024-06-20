@@ -1,18 +1,15 @@
 "use client";
 
 import { SignOut } from "@/actions/auth-actions";
+import { authStation } from "@/ultils/stations";
 import { ArrowRight, Menu } from "lucide-react";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-interface MobileNavbarProps {
-  session: Session;
-  isAuth: boolean;
-}
 
-const MobileNavbar = ({ isAuth, session }: MobileNavbarProps) => {
+const MobileNavbar = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const toggleOpen = () => setIsOpen((prev) => !prev);
@@ -39,7 +36,7 @@ const MobileNavbar = ({ isAuth, session }: MobileNavbarProps) => {
       {isOpen ? (
         <div className="fixed animate-in slide-in-from-top-5 fade-in-20 inset-0 z-0 w-full">
           <ul className="absolute bg-white border-b border-zinc-200 shadow-xl grid w-full gap-3 px-10 pt-20 pb-8">
-            {!isAuth ? (
+            {authStation.$state.status !== "USER" ? (
               <>
                 <li>
                   <Link

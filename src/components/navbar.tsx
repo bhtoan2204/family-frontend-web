@@ -1,14 +1,15 @@
 "use client";
 
 import { SignOut } from "@/actions/auth-actions";
-import MaxWidthWrapper from "@/components/max-width-wrapper";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
-import { useSession } from "next-auth/react";
+import { authStation } from "../ultils/stations";
+
 import Link from "next/link";
+import MaxWidthWrapper from "@/components/max-width-wrapper";
+
 
 const Navbar = () => {
-  const { data: session } = useSession();
   const handleSignOut = async () => {
     await SignOut();
   };
@@ -30,8 +31,8 @@ const Navbar = () => {
             >
               Pricing
             </Link>
-            {session?.accessToken ? (
-              <Button variant="ghost" size="sm" onClick={handleSignOut}>
+            {authStation.$state.status === "USER" ? (
+              <Button variant="ghost" size="sm" onClick={() => authStation.signout()}>
                 Sign out
               </Button>
             ) : (

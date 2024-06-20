@@ -6,29 +6,27 @@ import { buttonVariants } from "@/components/ui/button";
 import { useModal } from "@/hooks/use-modal-store";
 import { Family } from "@/types/family";
 import { TriangleAlert } from "lucide-react";
-import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const FamilySetup = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { onOpen } = useModal();
-  const { data: session } = useSession();
   const [families, setFamilies] = useState<Family[]>([]);
   const router = useRouter();
 
-  useEffect(() => {
-    if (!session?.accessToken) return router.push("/signin");
-    else {
-      const getFamilies = async () => {
-        setIsLoading(true);
-        const family: Family[] = await GetAllFamilies(session.accessToken);
-        setFamilies(family);
-        setIsLoading(false);
-      };
-      getFamilies();
-    }
-  }, [session, router]);
+  // useEffect(() => {
+  //   if (!session?.accessToken) return router.push("/signin");
+  //   else {
+  //     const getFamilies = async () => {
+  //       setIsLoading(true);
+  //       const family: Family[] = await GetAllFamilies(session.accessToken);
+  //       setFamilies(family);
+  //       setIsLoading(false);
+  //     };
+  //     getFamilies();
+  //   }
+  // }, [session, router]);
 
   if (isLoading) {
     return <Loader />;

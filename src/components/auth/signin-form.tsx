@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { LoginSchema } from "@/schemas";
+import { ModelError } from "@/ultils/models/@ultilities";
+import { authStation } from "@/ultils/stations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
@@ -38,19 +40,23 @@ const SigninForm = () => {
     setError("");
     setSuccess("");
 
-    startTransition(() => {
-      SignIn(data)
-        .then((response) => {
-          if ("error" in response) {
-            setError(response.error);
-          } else {
-            setSuccess(response.success);
-          }
-        })
-        .catch((error) => {
-          return;
-        });
-    });
+    try {
+      const loginResult = await authStation.login(data);
+
+      if (loginResult === false || loginResult instanceof ModelError) {
+        throw loginResult;
+      }
+
+      setSuccess("Login successfully!!");
+      router.push("/");
+    }
+    catch (error) {
+      console.error(error);
+
+      if (error instanceof ModelError) {
+        setError(error.message);
+      }
+    }
   };
 
   return (
