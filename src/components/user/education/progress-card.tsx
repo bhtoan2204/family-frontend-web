@@ -1,13 +1,13 @@
 "use client";
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { EducationProgress } from "@/types/education";
+import { EducationProgressDetailWithSubject } from "@/types/education";
 import { NotebookPen, School } from "lucide-react";
 
 interface ProgressCardProps {
-  progressDetail: EducationProgress;
+  progressDetail: EducationProgressDetailWithSubject;
   color: string;
-  onSwitchMode: (progress: EducationProgress) => void;
+  onSwitchMode: (progress: EducationProgressDetailWithSubject) => void;
 }
 
 const ProgressCard = ({
@@ -25,12 +25,12 @@ const ProgressCard = ({
           <div className="flex flex-row gap-4 items-center">
             <Avatar className="bg-gray-300 dark:bg-slate-200">
               <AvatarImage
-                src={progressDetail.avatar}
-                alt={progressDetail.firstname}
+                src={progressDetail.user.avatar}
+                alt={progressDetail.user.firstname}
               />
             </Avatar>
             <p>
-              {progressDetail.firstname} {progressDetail.lastname}
+              {progressDetail.user.firstname} {progressDetail.user.lastname}
             </p>
           </div>
           <div className="flex flex-col items-start justify-center gap-4">

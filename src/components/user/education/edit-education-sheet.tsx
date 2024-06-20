@@ -27,7 +27,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { EducationProgress } from "@/types/education";
+import { EducationProgressDetailWithSubject } from "@/types/education";
 import { Member } from "@/types/member";
 import { useEffect } from "react";
 
@@ -36,7 +36,7 @@ interface EditEducationSheetProps {
   onSubmit: (data: any) => void;
   isEducationProgressLoading: boolean;
   educationProgressForm: any;
-  educationProgress: EducationProgress;
+  educationProgress: EducationProgressDetailWithSubject;
 }
 
 const EditEducationSheet = ({
@@ -47,18 +47,9 @@ const EditEducationSheet = ({
   educationProgress,
 }: EditEducationSheetProps) => {
   useEffect(() => {
-    educationProgressForm.setValue(
-      "idMember",
-      educationProgress.id_user
-    );
-    educationProgressForm.setValue(
-      "title",
-      educationProgress.title
-    );
-    educationProgressForm.setValue(
-      "schoolInfo",
-      educationProgress.school_info
-    );
+    educationProgressForm.setValue("idMember", educationProgress.id_user);
+    educationProgressForm.setValue("title", educationProgress.title);
+    educationProgressForm.setValue("schoolInfo", educationProgress.school_info);
     educationProgressForm.setValue(
       "progressNotes",
       educationProgress.progress_notes
@@ -96,10 +87,7 @@ const EditEducationSheet = ({
                       defaultValue={field.value}
                     >
                       <FormControl>
-                        <SelectTrigger
-                          className="h-15"
-                          disabled
-                        >
+                        <SelectTrigger className="h-15" disabled>
                           <SelectValue placeholder="Select member" />
                         </SelectTrigger>
                       </FormControl>

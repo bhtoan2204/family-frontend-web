@@ -1,13 +1,13 @@
 "use client";
 
-import { SubjectInfo } from "@/types/education";
+import { SubjectDetail } from "@/types/education";
 import { BarChartHorizontalBig, BookA } from "lucide-react";
 
 interface SubjectCardProps {
   color: string;
-  subject: SubjectInfo;
-  onClick: (subjectId: number) => void;
-  selectedSubject: number | null;
+  subject: SubjectDetail;
+  onClick: (subjectId: SubjectDetail) => void;
+  selectedSubject: SubjectDetail | null;
 }
 
 const SubjectCard = ({
@@ -20,11 +20,11 @@ const SubjectCard = ({
     <button
       key={subject.id_subject}
       className={`flex items-center justify-center relative shadow-lg hover:shadow-xl rounded-md cursor-pointer hover:bg-black/5 dark:hover:bg-black p-5 ${
-        selectedSubject === subject.id_subject
+        selectedSubject?.id_subject === subject.id_subject
           ? "bg-black/5 dark:bg-black"
           : "dark:bg-neutral-700"
       }`}
-      onClick={() => onClick(subject.id_subject)}
+      onClick={() => onClick(subject)}
     >
       <div className="group flex items-center transition w-full">
         <div className="flex flex-col w-full gap-4">

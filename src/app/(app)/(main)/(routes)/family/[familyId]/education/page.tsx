@@ -64,8 +64,8 @@ import {
   SubjectTestSchema,
 } from "@/schemas/subject-schema";
 import {
-  EducationProgress,
   EducationProgressDetail,
+  EducationProgressDetailWithSubject,
   SubjectDetail,
 } from "@/types/education";
 import { Member } from "@/types/member";
@@ -245,12 +245,8 @@ const deleteSubject = async (
   educationProgressId: number,
   familyId: number
 ) => {
-  try {await DeleteSubject(
-      token,
-      subjectId,
-      educationProgressId,
-      familyId
-    );
+  try {
+    await DeleteSubject(token, subjectId, educationProgressId, familyId);
   } catch (error) {
     throw new Error("Internal Error!");
   }
@@ -404,7 +400,8 @@ const deleteComponent = async (
   educationProgressId: number,
   familyId: number
 ) => {
-  try {await DeleteComponentScore(
+  try {
+    await DeleteComponentScore(
       token,
       subjectId,
       educationProgressId,
@@ -425,7 +422,7 @@ const EducationPage = () => {
   const params = useParams();
   const [isDetailMode, setIsDetailMode] = useState(false);
   const [educationProgress, setEducationProgress] = useState<
-    EducationProgress[]
+    EducationProgressDetailWithSubject[]
   >([]);
   const [familyMembers, setFamilyMembers] = useState<Member[]>([]);
   const [selectedMember, setSelectedMember] = useState<string | null>(null);
@@ -438,14 +435,16 @@ const EducationPage = () => {
   const [sortMemberType, setSortMemberType] = useState<string>("");
 
   const [selectedProgress, setSelectedProgress] =
-    useState<EducationProgress | null>(null);
+    useState<EducationProgressDetailWithSubject | null>(null);
   const [educationProgressDetail, setEducationProgressDetail] =
     useState<EducationProgressDetail | null>(null);
   const [isProgressDetailLoaded, setIsProgressDetailLoaded] = useState(false);
   const [searchSubjectText, setSearchSubjectText] = useState<string>("");
   const [sortSubjectType, setSortSubjectType] = useState<string>("");
   const [progressBar, setProgressBar] = useState<number>(0);
-  const [selectedSubject, setSelectedSubject] = useState<number | null>(null);
+  const [selectedSubject, setSelectedSubject] = useState<SubjectDetail | null>(
+    null
+  );
   const [isDeleteEducationDialogOpen, setIsDeleteEducationDialogOpen] =
     useState(false);
   const [subjectDetail, setSubjectDetail] = useState<SubjectDetail | null>(
@@ -481,6 +480,8 @@ const EducationPage = () => {
     }
   }, [session, params]);
 
+  console.log("Education Progress", educationProgress);
+
   // Functions
   const handleMemberClick = (memberId: string) => {
     if (selectedMember && selectedMember === memberId) {
@@ -490,20 +491,13 @@ const EducationPage = () => {
     }
   };
 
-  const handleSubjectClick = (subjectId: number) => {
-    if (selectedSubject && selectedSubject === subjectId) {
+  const handleSubjectClick = (subject: SubjectDetail) => {
+    if (selectedSubject && selectedSubject.id_subject === subject.id_subject) {
       setSelectedSubject(null);
+      setSubjectDetail(null);
     } else {
-      setSelectedSubject(subjectId);
-      fetchSubjectDetail(
-        session!.accessToken,
-        subjectId,
-        selectedProgress!.id_education_progress.toString(),
-        Number(params!.familyId)
-      ).then((res) => {
-        setSubjectDetail(res);
-        setIsSubjectDetailLoaded(true);
-      });
+      setSelectedSubject(subject);
+      setSubjectDetail(subject);
     }
   };
 
@@ -520,448 +514,95 @@ const EducationPage = () => {
     setSelectedMember(null);
   };
 
-  const handleSelectedProgress = (progress: EducationProgress) => {
+  const handleSelectedProgress = (
+    progress: EducationProgressDetailWithSubject
+  ) => {
     setIsDetailMode(true);
     setSelectedProgress(progress);
-    setIsProgressDetailLoaded(false);
-    if (progress.id_education_progress && session?.accessToken && params) {
-      fetchEducationDetail(
-        session.accessToken,
-        Number(params.familyId),
-        progress.id_education_progress
-      ).then((res) => {
-        if (res.subjects_info) {
-          const totalSubject = res.subjects_info.length;
-          const finishedSubject = res.subjects_info.filter(
-            (subject) => subject.status !== "in_progress"
-          ).length;
-          const progress = (finishedSubject / totalSubject) * 100;
-          setProgressBar(progress);
-        }
-        setEducationProgressDetail(res);
-        setIsProgressDetailLoaded(true);
-      });
-    } else {
+    fetchEducationDetail(
+      session!.accessToken,
+      Number(params!.familyId),
+      progress.id_education_progress
+    ).then((res) => {
+      setEducationProgressDetail(res);
       setIsProgressDetailLoaded(true);
-    }
+    });
   };
 
   const addEducationProgress = async (
     values: z.infer<typeof EducationProgressSchema>
   ) => {
-    await addEducation(
+    const { idMember, title, progressNotes, schoolInfo } = values;
+    const data = await addEducation(
       session!.accessToken,
       Number(params!.familyId),
-      values.idMember,
-      values.title,
-      values.progressNotes,
-      values.schoolInfo
+      idMember,
+      title,
+      progressNotes,
+      schoolInfo
     );
-    fetchEducationProgress(
-      session!.accessToken,
-      Number(params!.familyId),
-      "1",
-      ITEMS_PER_PAGE.toString()
-    ).then((res) => {
-      setEducationProgress(res);
-      educationProgressForm.reset();
-    });
+    if (data.error) {
+      console.error(data.error);
+    } else {
+      fetchEducationProgress(
+        session!.accessToken,
+        Number(params!.familyId),
+        "1",
+        ITEMS_PER_PAGE.toString()
+      ).then((res) => {
+        setEducationProgress(res);
+      });
+    }
   };
 
   const editEducationProgress = async (
     values: z.infer<typeof EducationProgressSchema>
   ) => {
-    await editEducation(
+    const { title, progressNotes, schoolInfo } = values;
+    const data = await editEducation(
       session!.accessToken,
       Number(params!.familyId),
       selectedProgress!.id_education_progress,
-      values.title,
-      values.progressNotes,
-      values.schoolInfo
+      title,
+      progressNotes,
+      schoolInfo
     );
-    fetchEducationProgress(
-      session!.accessToken,
-      Number(params!.familyId),
-      "1",
-      ITEMS_PER_PAGE.toString()
-    ).then((res) => {
-      setEducationProgress(res);
-      setEducationProgressDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            education_progress_info: {
-              ...prev.education_progress_info,
-              title: values.title,
-              progress_notes: values.progressNotes,
-              school_info: values.schoolInfo,
-            },
-          }
-      );
-    });
+    if (data.error) {
+      console.error(data.error);
+    } else {
+    }
   };
 
-  const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {
-    addSubject(
-      session!.accessToken,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.description
-    ).then((res) => {
-      if (!educationProgressDetail?.subjects_info) {
-        setEducationProgressDetail(
-          (prev) =>
-            prev && {
-              ...prev,
-              subjects_info: [
-                {
-                  id_subject: res.id_subject,
-                  subject_name: values.name,
-                  description: values.description,
-                  status: res.status,
-                },
-              ],
-            }
-        );
-      } else {
-        setEducationProgressDetail(
-          (prev) =>
-            prev && {
-              ...prev,
-              subjects_info: [
-                ...prev.subjects_info!,
-                {
-                  id_subject: res.id_subject,
-                  subject_name: values.name,
-                  description: values.description,
-                  status: res.status,
-                },
-              ],
-            }
-        );
-      }
-      subjectForm.reset();
-    });
-  };
+  const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {};
 
-  const editSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {
-    await editSubject(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.description
-    );
-    editSubject(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.description
-    ).then((res) => {
-      setEducationProgressDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            subjects_info: prev.subjects_info!.map((subject) =>
-              subject.id_subject === selectedSubject
-                ? {
-                    ...subject,
-                    subject_name: values.name,
-                    description: values.description,
-                  }
-                : subject
-            ),
-          }
-      );
-      setSubjectDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            subject_name: values.name,
-            description: values.description,
-          }
-      );
-      setIsEditSubject(false);
-    });
-  };
+  const editSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {};
 
-  const editTestsSubmit = (values: z.infer<typeof SubjectTestSchema>) => {
-    modifyScore(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.midtermScore!,
-      values.finalScore!,
-      values.bonusScore!
-    ).then(() => {
-      setSubjectDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            midterm_score: values.midtermScore!,
-            final_score: values.finalScore!,
-            bonus_score: values.bonusScore!,
-          }
-      );
-    });
-  };
+  const editTestsSubmit = (values: z.infer<typeof SubjectTestSchema>) => {};
 
-  const removeTestSubmit = () => {
-    removeScore(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId)
-    ).then(() => {
-      setSubjectDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            midterm_score: null,
-            final_score: null,
-            bonus_score: null,
-          }
-      );
-      setOnDeleteTestsScoreDialog(false);
-    });
-  };
+  const removeTestSubmit = () => {};
 
-  const deleteEducationProgress = async () => {
-    setIsDeleteEducationDialogOpen(false);
-    setIsEducationLoaded(false);
-    await deleteEducation(
-      session!.accessToken,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId)
-    );
-    fetchEducationProgress(
-      session!.accessToken,
-      Number(params!.familyId),
-      "1",
-      ITEMS_PER_PAGE.toString()
-    ).then((res) => {
-      setEducationProgress(res);
-      setIsDetailMode(false);
-      setIsEducationLoaded(true);
-    });
-  };
+  const deleteEducationProgress = async () => {};
 
-  const deleteSubjectSubmit = async () => {
-    setIsDeleteSubjectDialogOpen(false);
-    await deleteSubject(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId)
-    ).then(() => {
-      setEducationProgressDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            subjects_info: prev.subjects_info!.filter(
-              (subject) => subject.id_subject !== selectedSubject
-            ),
-          }
-      );
-      setSelectedSubject(null);
-      setSubjectDetail(null);
-    });
-  };
+  const deleteSubjectSubmit = async () => {};
 
-  const handleChangeSubjectStatus = async (status: string) => {
-    changeStatus(
-      session!.accessToken,
-      selectedSubject!,
-      Number(params!.familyId),
-      selectedProgress!.id_education_progress,
-      status
-    ).then((res) => {
-      setEducationProgressDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            subjects_info: prev.subjects_info!.map((subject) =>
-              subject.id_subject === selectedSubject
-                ? { ...subject, status: status }
-                : subject
-            ),
-          }
-      );
-      setSubjectDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            status: status,
-          }
-      );
-    });
-  };
+  const handleChangeSubjectStatus = async (status: string) => {};
 
   const addComponentSubmit = async (
     values: z.infer<typeof ComponentSchema>
-  ) => {
-    await addComponent(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.score
-    );
-    addComponent(
-      session!.accessToken,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.score
-    ).then((res) => {
-      if (!subjectDetail?.component_scores.component_scores) {
-        setSubjectDetail(
-          (prev) =>
-            prev && {
-              ...prev,
-              component_scores: {
-                component_scores: [
-                  { component_name: values.name, score: values.score },
-                ],
-              },
-            }
-        );
-      } else {
-        setSubjectDetail(
-          (prev) =>
-            prev && {
-              ...prev,
-              component_scores: {
-                component_scores: [
-                  ...prev.component_scores.component_scores,
-                  { component_name: values.name, score: values.score },
-                ],
-              },
-            }
-        );
-      }
-      componentForm.reset();
-    });
-  };
+  ) => {};
 
-  const deleteComponentSubmit = async (index: number) => {
-    await deleteComponent(
-      session!.accessToken,
-      index,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId)
-    );
-    deleteComponent(
-      session!.accessToken,
-      index,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId)
-    ).then(() => {
-      setSubjectDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            component_scores: {
-              component_scores: prev.component_scores.component_scores.filter(
-                (_, i) => i !== index
-              ),
-            },
-          }
-      );
-    });
-  };
+  const deleteComponentSubmit = async (index: number) => {};
 
   const addComponentIndexSubmit = async (
     values: z.infer<typeof ComponentSchema>,
     index: number
-  ) => {
-    await insertComponent(
-      session!.accessToken,
-      index,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.score
-    );
-    insertComponent(
-      session!.accessToken,
-      index,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.score
-    ).then((res) => {
-      setSubjectDetail(
-        (prev) =>
-          prev && {
-            ...prev,
-            component_scores: {
-              component_scores: [
-                ...prev.component_scores.component_scores.slice(0, index),
-                { component_name: values.name, score: values.score },
-                ...prev.component_scores.component_scores.slice(index),
-              ],
-            },
-          }
-      );
-      componentForm.reset();
-    });
-  };
+  ) => {};
 
   const editComponentSubmit = async (
     values: z.infer<typeof ComponentSchema>,
     index: number,
     oldIndex: number
-  ) => {
-    await updateComponent(
-      session!.accessToken,
-      index,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.score
-    );
-    updateComponent(
-      session!.accessToken,
-      index,
-      selectedSubject!,
-      selectedProgress!.id_education_progress,
-      Number(params!.familyId),
-      values.name,
-      values.score
-    ).then(() => {
-      setSubjectDetail((prevSubjectDetail) => {
-        if (prevSubjectDetail) {
-          const newComponentScores = [
-            ...prevSubjectDetail.component_scores.component_scores,
-          ];
-          newComponentScores[index] = {
-            component_name: values.name,
-            score: values.score,
-          };
-          return {
-            ...prevSubjectDetail,
-            component_scores: {
-              component_scores: newComponentScores,
-            },
-          };
-        }
-        return prevSubjectDetail;
-      });
-    });
-  };
+  ) => {};
 
   // Forms
   const educationProgressForm = useForm({
@@ -1072,7 +713,7 @@ const EducationPage = () => {
                   )
                   .filter((value) => {
                     const fields = {
-                      member: `${value.firstname} ${value.lastname}`,
+                      member: `${value.user.firstname} ${value.user.lastname}`,
                       progress: value.title,
                       school: value.school_info,
                     };
@@ -1235,14 +876,14 @@ const EducationPage = () => {
               <Loader className="w-10 h-10 animate-spin" />
             </div>
           )}
-          {isProgressDetailLoaded && !educationProgressDetail && (
+          {isProgressDetailLoaded && !selectedProgress && (
             <div className="flex flex-1 items-center justify-center">
               <p className="text-lg">No data available</p>
             </div>
           )}
-          {isProgressDetailLoaded && educationProgressDetail && (
+          {isProgressDetailLoaded && selectedProgress && (
             <ProgressDetail
-              educationProgressDetail={educationProgressDetail}
+              educationProgressDetail={selectedProgress}
               familyMember={
                 familyMembers[
                   familyMembers.findIndex(
@@ -1273,17 +914,12 @@ const EducationPage = () => {
               </p>
             </div>
           )}
-          {!isSubjectDetailLoaded && selectedSubject && (
-            <div className="flex flex-1 items-center justify-center">
-              <Loader className="w-10 h-10 animate-spin" />
-            </div>
-          )}
-          {isSubjectDetailLoaded && selectedSubject && !subjectDetail && (
+          {selectedSubject && !subjectDetail && (
             <div className="flex flex-1 items-center justify-center">
               <p className="text-lg">No data available</p>
             </div>
           )}
-          {isSubjectDetailLoaded && selectedSubject && subjectDetail && (
+          {subjectDetail && (
             <>
               <SubjectForm
                 isSubjectLoading={isSubjectLoading}
@@ -1314,9 +950,7 @@ const EducationPage = () => {
                     />
                   </div>
                   <SubjectComponentsTable
-                    componentScores={
-                      subjectDetail.component_scores.component_scores
-                    }
+                    componentScores={subjectDetail.component_scores}
                     onOpen={() => setOnDeleteComponentDialog(true)}
                     onClose={() => setOnDeleteComponentDialog(false)}
                     isOpen={onDeleteComponentDialog}

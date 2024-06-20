@@ -1,7 +1,10 @@
 "use server";
 
 import EducationUrl from "@/services/url/education-url";
-import { EducationProgress, EducationProgressDetail } from "@/types/education";
+import {
+  EducationProgressDetail,
+  EducationProgressDetailWithSubject,
+} from "@/types/education";
 
 export const GetAllEducation = async (
   token: string,
@@ -22,7 +25,7 @@ export const GetAllEducation = async (
     );
     const data = await response.json();
     if (data.message === "Success") {
-      return data.data as EducationProgress[];
+      return data.data as EducationProgressDetailWithSubject[];
     } else {
       throw new Error("Internal Error!");
     }

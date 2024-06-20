@@ -2,7 +2,7 @@
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import IndexString from "@/components/user/education/color/index-string";
-import { EducationProgressDetail } from "@/types/education";
+import { EducationProgressDetailWithSubject, SubjectDetail } from "@/types/education";
 import { Member } from "@/types/member";
 import {
   CircleUserRoundIcon,
@@ -13,14 +13,14 @@ import {
 import SubjectCard from "./subject-card";
 
 interface ProgressDetailProps {
-  educationProgressDetail: EducationProgressDetail;
+  educationProgressDetail: EducationProgressDetailWithSubject;
   searchSubjectText: string;
   familyMember: Member;
   styles: any;
   sortSubjectType: string;
   progressBar: number;
-  onSubjectClick: (subjectId: number) => void;
-  selectedSubject: number | null;
+  onSubjectClick: (subjectId: SubjectDetail) => void;
+  selectedSubject: SubjectDetail | null;
 }
 
 const ProgressDetail = ({
@@ -67,18 +67,16 @@ const ProgressDetail = ({
         <div className="flex flex-col items-start justify-center gap-3">
           <div className="">
             <h1 className="p-1 font-bold text-lg">
-              {educationProgressDetail.education_progress_info.title}
+              {educationProgressDetail.title}
             </h1>
           </div>
           <div className="flex flex-row gap-2 items-center h-6">
             <School className="w-4 h-4" />
-            <p>{educationProgressDetail.education_progress_info.school_info}</p>
+            <p>{educationProgressDetail.school_info}</p>
           </div>
           <div className="flex flex-row gap-2 items-center h-6">
             <NotebookPen className="w-4 h-4" />
-            <p>
-              {educationProgressDetail.education_progress_info.progress_notes}
-            </p>
+            <p>{educationProgressDetail.progress_notes}</p>
           </div>
           {/* <div className="flex flex-row gap-2 items-center h-6">
             <p>{progressBar}%</p>
@@ -87,14 +85,14 @@ const ProgressDetail = ({
         </div>
       </button>
       <div className="flex flex-1 flex-col overflow-y-auto">
-        {!educationProgressDetail.subjects_info && (
+        {!educationProgressDetail.subjects && (
           <div className="flex flex-1 items-center justify-center">
             <p className="text-lg">No data available</p>
           </div>
         )}
-        {educationProgressDetail.subjects_info && (
+        {educationProgressDetail.subjects && (
           <div className="grid lg:grid-cols-2 grid-cols-1 gap-5">
-            {educationProgressDetail.subjects_info
+            {educationProgressDetail.subjects
               .filter((value) =>
                 value.subject_name
                   .toLowerCase()
