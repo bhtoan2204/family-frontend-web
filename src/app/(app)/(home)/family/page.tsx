@@ -33,7 +33,7 @@ const FamilySetup = () => {
   if (isLoading) {
     return <Loader />;
   } else if (families.length > 0 && !isLoading) {
-    return router.push(`/family/${families[0].id_family}`);
+    return router.push(`/family/${families[0].id_family}/chat`);
   } else if (families.length === 0 && !isLoading) {
     return (
       <div className="flex flex-col items-center justify-center h-full w-full gap-10">
