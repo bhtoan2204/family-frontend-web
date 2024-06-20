@@ -570,7 +570,32 @@ const EducationPage = () => {
     if (data.error) {
       console.error(data.error);
     } else {
+      if (educationProgressDetail) {
+        setEducationProgressDetail(
+          Object.assign(educationProgressDetail, {
+            title,
+            progressNotes,
+            schoolInfo,
+          })
+        );
+      }
     }
+  };
+
+  const deleteEducationProgress = async () => {
+    await deleteEducation(
+      session!.accessToken,
+      selectedProgress!.id_education_progress,
+      Number(params!.familyId)
+    );
+    fetchEducationProgress(
+      session!.accessToken,
+      Number(params!.familyId),
+      "1",
+      ITEMS_PER_PAGE.toString()
+    ).then((res) => {
+      setEducationProgress(res);
+    });
   };
 
   const addSubjectSubmit = async (values: z.infer<typeof SubjectSchema>) => {};
@@ -580,8 +605,6 @@ const EducationPage = () => {
   const editTestsSubmit = (values: z.infer<typeof SubjectTestSchema>) => {};
 
   const removeTestSubmit = () => {};
-
-  const deleteEducationProgress = async () => {};
 
   const deleteSubjectSubmit = async () => {};
 
