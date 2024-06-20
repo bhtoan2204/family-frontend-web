@@ -8,7 +8,7 @@ interface Props {
 }
 
 const AuthProvider = ({ children }: Props) => {
-  return <SessionProvider>{children}</SessionProvider>;
+  return <SessionProvider basePath="/api/auth">{children}</SessionProvider>;
 };
 
 export default AuthProvider;
